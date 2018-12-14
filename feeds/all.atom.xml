@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2018-03-13T03:33:00-07:00</updated><entry><title>Test Post</title><link href="https://swpease.github.io/test-post.html" rel="alternate"></link><published>2018-03-13T03:33:00-07:00</published><updated>2018-03-13T03:33:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2018-03-13:/test-post.html</id><summary type="html">&lt;p&gt;My first test post.&lt;/p&gt;
+&lt;h1&gt;Test header1&lt;/h1&gt;
+&lt;h1&gt;Alt-H1&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;emph&lt;/em&gt;
+&lt;strong&gt;bold&lt;/strong&gt;
+&lt;strong&gt;&lt;em&gt;blah&lt;/em&gt;&lt;/strong&gt;
+~~glkweng~~
+sdg&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;First.&lt;/li&gt;
+&lt;li&gt;Second.
+..* Second A&lt;/li&gt;
+&lt;/ol&gt;</summary><content type="html">&lt;p&gt;My first test post.&lt;/p&gt;
+&lt;h1&gt;Test header1&lt;/h1&gt;
+&lt;h1&gt;Alt-H1&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;emph&lt;/em&gt;
+&lt;strong&gt;bold&lt;/strong&gt;
+&lt;strong&gt;&lt;em&gt;blah&lt;/em&gt;&lt;/strong&gt;
+~~glkweng~~
+sdg&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;First.&lt;/li&gt;
+&lt;li&gt;Second.
+..* Second A&lt;/li&gt;
+&lt;/ol&gt;</content></entry></feed>
