@@ -11,36 +11,48 @@
         <header id="banner" class="body">
                 <h1><a href="https://swpease.github.io/">Scott's Stuff </a></h1>
                 <nav><ul>
-                    <li><a href="https://swpease.github.io/category/test.html">Test</a></li>
+                    <li><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/test-post.html">Test Post</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/stuff-about-ports-and-sockets.html">Stuff About Ports and Sockets</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2018-03-13T03:33:00-07:00">
-                Published: Tue 13 March 2018
+        <abbr class="published" title="2018-12-15T00:00:00-08:00">
+                Published: Sat 15 December 2018
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="https://swpease.github.io/category/test.html">Test</a>.</p>
+<p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
 
-</footer><!-- /.post-info --><p>My first test post.</p>
-<h1>Test header1</h1>
-<h1>Alt-H1</h1>
-<p><em>emph</em>
-<strong>bold</strong>
-<strong><em>blah</em></strong>
-~~glkweng~~
-sdg</p>
-<ol>
-<li>First.</li>
-<li>Second.
-..* Second A</li>
-</ol>                </article>
+</footer><!-- /.post-info --><p>Socket = {IP Address : Port}
+Connection = {Local Socket + Remote Socket + Protocol}
+Protocol = TCP, UDP, etc.
+Listen = Look for client requests at a specific well-known port.</p>
+<p>A server socket can serve multiple clients because the service just kinda keeps track of which requests are associated with which clients. Which I suppose makes complete sense without any thought.</p>
+<p><a href="https://stackoverflow.com/questions/3329641/how-do-multiple-clients-connect-simultaneously-to-one-port-say-80-on-a-server">Stack Overflow</a>: How to multiple clients connect simultaneously to one port?</p>
+<p>When a client connects to a server, the client uses a random, unused, high-number port. That way multiple people with the same IP address (family, coworkers, etc.) can use the same service at the same time.</p>
+<p><a href="https://stackoverflow.com/questions/1694144/can-two-applications-listen-to-the-same-port">Stack Overflow</a>: Can two applications listen to the same port?</p>
+<p>For TCP, no. That's the reason ports exist: to allow multiple applications to share the network without conflicts. Well, technically yes, but not without work.</p>
+<p><a href="https://en.wikipedia.org/wiki/Port_(computer_networking)">Wikipedia</a>:</p>
+<blockquote>
+<p>For TCP, only one process may bind to a specific IP address and port combination.
+Common application failures, sometimes called port conflicts, occur when multiple programs attempt to use the same port number on the same IP address with the same protocol.</p>
+</blockquote>
+<p><a href="https://www.quora.com/What-is-the-difference-between-HTTP-protocol-and-TCP-protocol">Quora</a>: The differences between IP, TCP, HTTP, etc.</p>
+<h2>Sockets</h2>
+<p>The answer given by Daniel Miller is quite good.
+See also <a href="https://en.wikipedia.org/wiki/Internet_protocol_suite#Internet_layer">Wikipedia</a>.</p>
+<blockquote>
+<p>Application programmers are typically concerned only with interfaces in the application layer and often also in the transport layer, while the layers below are services provided by the TCP/IP stack in the operating system. Most IP implementations are accessible to programmers through sockets and APIs.</p>
+</blockquote>
+<p>There are multiple, different definitions of "socket" depending on context. e.g. the <a href="https://en.wikipedia.org/wiki/Berkeley_sockets">Berkeley socket</a>, for which a socket is an abstract representation for the local endpoint of a network communication path. Incidentally, Berkeley sockets answers my questions about where IP and transport layer coding is stored / interacted with (a socket API).</p>
+<p>And <a href="https://docs.python.org/3.7/howto/sockets.html">Python sockets HOWTO</a></p>
+<p>Useful answer on <a href="https://askubuntu.com/questions/247625/what-is-the-loopback-device-and-how-do-i-use-it">loopback</a>
+<a href="https://docs.freebsd.org/44doc/psd/20.ipctut/paper.pdf">Berkeley sockets</a></p>                </article>
             </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Scott's Stuff - Scott Pease</title>
+        <title>Stuff About Ports and Sockets</title>
         <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
         <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
 </head>
@@ -11,13 +11,18 @@
         <header id="banner" class="body">
                 <h1><a href="https://swpease.github.io/">Scott's Stuff </a></h1>
                 <nav><ul>
-                    <li><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
+                    <li class="active"><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="bookmark"
+           title="Permalink to Stuff About Ports and Sockets">Stuff About Ports and Sockets</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/stuff-about-ports-and-sockets.html">Stuff About Ports and Sockets</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-12-15T00:00:00-08:00">
                 Published: Sat 15 December 2018
@@ -28,7 +33,7 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
 
-</footer><!-- /.post-info --><p>Socket = {IP Address : Port}
+</footer><!-- /.post-info -->      <p>Socket = {IP Address : Port}
 Connection = {Local Socket + Remote Socket + Protocol}
 Protocol = TCP, UDP, etc.
 Listen = Look for client requests at a specific well-known port.</p>
@@ -52,8 +57,11 @@ See also <a href="https://en.wikipedia.org/wiki/Internet_protocol_suite#Internet
 <p>There are multiple, different definitions of "socket" depending on context. e.g. the <a href="https://en.wikipedia.org/wiki/Berkeley_sockets">Berkeley socket</a>, for which a socket is an abstract representation for the local endpoint of a network communication path. Incidentally, Berkeley sockets answers my questions about where IP and transport layer coding is stored / interacted with (a socket API).</p>
 <p>And <a href="https://docs.python.org/3.7/howto/sockets.html">Python sockets HOWTO</a></p>
 <p>Useful answer on <a href="https://askubuntu.com/questions/247625/what-is-the-loopback-device-and-how-do-i-use-it">loopback</a>
-<a href="https://docs.freebsd.org/44doc/psd/20.ipctut/paper.pdf">Berkeley sockets</a></p>                </article>
-            </aside><!-- /#featured -->
+<a href="https://docs.freebsd.org/44doc/psd/20.ipctut/paper.pdf">Berkeley sockets</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
