@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
+BIND = "127.0.0.1"
+
 AUTHOR = 'Scott Pease'
 SITENAME = "Scott's Stuff"
 SITEURL = ''
 
 PATH = 'content'
+OUTPUT_PATH = '..'
 
 TIMEZONE = 'America/Los_Angeles'
 
