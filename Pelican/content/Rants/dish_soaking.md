@@ -1,6 +1,6 @@
 Title: Soaking Dishes
 Date: 2019-1-6
-Category: Cooking
+Category: Rants
 Tags: cooking, cleaning
 
 # Dish Soaking Traumas
