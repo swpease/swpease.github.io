@@ -1,6 +1,7 @@
 Title: Stuff About Ports and Sockets
 Date: 2018-12-15
 Category: Notes
+Tags: computer, networking, sockets
 
 Socket = {IP Address : Port}
 Connection = {Local Socket + Remote Socket + Protocol}
