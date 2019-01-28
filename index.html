@@ -3,50 +3,99 @@
 <head>
         <meta charset="utf-8" />
         <title>Scott's Stuff</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
+        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Scott's Stuff </a></h1>
+                <h1><a href="https://swpease.github.io/">Scott's Stuff </a></h1>
                 <nav><ul>
-                    <li><a href="/category/notes.html">Notes</a></li>
-                    <li><a href="/category/rants.html">Rants</a></li>
+                    <li><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
+                    <li><a href="https://swpease.github.io/category/rants.html">Rants</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/soaking-dishes.html">Soaking Dishes</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html">Setting up Gunicorn with systemd on Ubuntu</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2019-01-06T00:00:00-08:00">
-                Published: Sun 06 January 2019
+        <abbr class="published" title="2019-01-25T00:00:00-08:00">
+                Published: Fri 25 January 2019
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/rants.html">Rants</a>.</p>
-<p>tags: <a href="/tag/cooking.html">cooking</a> <a href="/tag/cleaning.html">cleaning</a> </p>
-</footer><!-- /.post-info --><h1>Dish Soaking Traumas</h1>
-<p>Ever since moving out of the dorm in college, I have be plagued by a roommate who is a dish soaker. It's horrible! This essentially translates to that, aside from times when I have lived alone, there has been a dirty dish in the sink very nearly every single day of my life. There have been three primary offenders:</p>
-<h2>Roommate #1</h2>
-<p>This primarily constituted peanut-butter coated utensils. The strategy appeared to be:</p>
-<ol>
-<li>Clean the spoon / knife that has been festering in the sink for the better part of a day.</li>
-<li>Get out a new spoon / knife for peanut butter.</li>
-<li>Place said utensil in the sink.</li>
-</ol>
-<p>This also yielded perpetual peanut butter spots on the bottom of the sink. The icing on the cake is that this roommate did not wash the peanut butter off the sponge, so there were globs of peanut butter left on it for me to clean off 🤢.</p>
-<p>As an aside, Roommate #1 was an incompetent dishwasher. They didn't seem to grasp the concept that dishes are three-dimensional objects. Further, they didn't seem to grasp that, by virtue of their dish soaking, they were paradoxically making their dishes dirtier. Take a frying pan for instance. The residual oil in the pan, when put into the sink, get distributed across some larger portion of the pan, most notably the bottom. This wouldn't be an issue if my roommate was aware of what was happening, but they didn't consider anything except the initially relevant portion worth running a sponge over, so the bottom of the pan wound up worse off after its "cleaning". A similar argument exists for the handles of the peanut butter utensils.</p>
-<p>This dish soaking dirtification, which I always think of as a manifestation of <a href="https://en.wikipedia.org/wiki/Fugacity_capacity">fugacity capacity</a>, seems to be lost on dish soakers. Which brings me to...</p>
-<h2>Roommate #2</h2>
-<p>They had this big red bowl that they would use for virtually every meal. I would go so far as so say that the sink was where their bowl's storage spot. I can't remember it not ever being in there. The weakest offender of the trio, they were definitely cognizant of the three-dimensional nature of dishes. Plus I never used that bowl, so its cleanliness wasn't a huge deal to me. It just always kinda grossed me out to see that bowl getting covered in who knows what over the course of the day. So, last, but certainly not least...</p>
-<h2>Roommate #3</h2>
-<p>Again, a competent dish washer. The main issue I had with this dish soaker was that our faucet was leaky, and they somehow were not bothered by the sound of water drops splashing into a little pool. My room was on the second floor, so I would frequently have to go downstairs to the kitchen and move the faucet so that it wasn't over the bowl or pan that they were soaking. They knew I hated it and thought it was funny. The best revenge I could think of was to lay a plate in their favorite spot for cups in the dish washer; "It's like you do it on purpose!".</p>
-<h1>The Utility of Soaking</h1>
-<p>While my prior interlude during my rant on Roommate #1 covers the majority of my issue with dish soaking, I would like to add that I believe the desire to soak dishes comes from a typically greatly overestimated estimate as to how long a dish has to soak for it to become easy to wash. I have mostly left my dishes randomly dispersed on the counters / stove. I have never figured out if any of my roommates hated this strategy as much as I hate dish soaking. But, typically I am able to soak dishes in the time it takes me to do the dishes that don't require soaking. For instance, the pan with dried red sauce I'll put in the sink before doing some utensils or some such, and this brief soak gets me most of the way to where the three-hour soak would. That being said, there are definitely some dishes that require a long soak. Things like cheesy casserole dishes. I almost forgot, it is harder for someone else to do dishes when you are soaking your dishes.</p>
-<p>I think that about covers my opinions on dish soaking.</p>                </article>
+<p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/backend.html">backend</a> <a href="https://swpease.github.io/tag/howto.html">howto</a> </p>
+</footer><!-- /.post-info --><h1>Background</h1>
+<p>Gunicorn provides <a href="http://docs.gunicorn.org/en/stable/deploy.html">a number of ways</a> for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when it crashes'.</p>
+<p>In skimming over the options that Gunicorn listed, I initially thought of using Supervisor, probably because I had seen it mentioned before. I am wary of my disposition to trusting things just because I've heard of them, but decided to look into it anyway. I saw that I would need to install Python 2 to use it, and put my foot down.
+I decided to try out systemd because it was a built-in tool, and I am suspicious of taking on dependencies for what seem to be minimal tasks. It also seemed the most generalizable thing to learn.</p>
+<h1>Research</h1>
+<p>The best basic introduction I found was on <a href="https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files#anatomy-of-a-unit-file">Digital Ocean</a>.
+The systemd creators have their documentation as well: <a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html#">systemd</a>, <a href="https://www.freedesktop.org/software/systemd/man/systemctl.html">systemctl</a>.
+More advanced topics, such as security and setting up your own software to handle systemd socket stuff, are covered in this dude Pid Eins's <a href="http://0pointer.de/blog/projects/security.html">blog</a>, though it's not spectacularly organized.
+For implementing systemd for Gunicorn, I referenced mostly <a href="http://docs.gunicorn.org/en/stable/deploy.html">Gunicorn</a>, but also <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04#create-a-gunicorn-systemd-service-file">Digital Ocean</a>.
+I might need a systemd service file for <a href="https://www.nginx.com/resources/wiki/start/topics/examples/initscripts/">nginx</a>.</p>
+<h1>Execution</h1>
+<p>Gunicorn recommends setting up a socket, which is always listening, which starts up Gunicorn proper via a corresponding "service". Per Eins's blog, this can be a more efficient way to use resources. For instance, if you have a bunch of rarely-accessed websites on the same server, you could activate / deactivate them as needed. I wonder if this is how Heroku manages its hobby-tier apps.</p>
+<p>The gunicorn.socket file is super simple:</p>
+<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">gunicorn socket</span>
+
+<span class="k">[Socket]</span>
+<span class="na">ListenStream</span><span class="o">=</span><span class="s">/run/gunicorn/socket</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">sockets.target</span>
+</pre></div>
+
+
+<p>It basically specifies an address to listen on for a stream socket. systemd appears to create this socket as part of this gunicorn.socket file's existence -- this socket is the only contents of /run/gunicorn when you navigate to it upon starting up the server.</p>
+<p>The gunicorn.service is a bit more complex:</p>
+<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">gunicorn daemon</span>
+<span class="na">Requires</span><span class="o">=</span><span class="s">gunicorn.socket</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">PIDFile</span><span class="o">=</span><span class="s">/run/gunicorn/pid</span>
+<span class="na">User</span><span class="o">=</span><span class="s">vagrant</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">RuntimeDirectory</span><span class="o">=</span><span class="s">gunicorn</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/vagrant/mysite</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/home/vagrant/.local/share/virtualenvs/vagrant-gKDsaKU3/bin/gunicorn --pid /run/gunicorn/pid --bind unix:/run/gunicorn/socket mysite.wsgi</span>
+<span class="na">ExecReload</span><span class="o">=</span><span class="s">/bin/kill -s HUP $MAINPID</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/kill -s TERM $MAINPID</span>
+<span class="na">PrivateTmp</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+
+
+<p>This is more complex. An annotation (NB: I do not know what all of these mean) goes something like:</p>
+<p><code>Requires=gunicorn.socket</code> says that gunicorn.service is dependent upon gunicorn.socket.</p>
+<p><code>PIDFile=/run/gunicorn/pid</code> I'm unsure why Gunicorn's docs have this in here. Look at the systemd docs for more info on it.</p>
+<p><code>User</code> and <code>Group</code> per Digital Ocean,</p>
+<blockquote>
+<p>We will give our regular user account ownership of the process since it owns all of the relevant files. We'll give group ownership to the www-data group so that Nginx can communicate easily with Gunicorn.</p>
+</blockquote>
+<p>I am still a bit unclear about what user and group will be needed.</p>
+<p><code>RuntimeDirectory=gunicorn</code> The <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#">docs</a> indicate that the directory's lifetime will be bound to the daemon's. Upon running <code>sudo systemctl stop gunicorn.service</code>, which calls the <code>ExecStop</code> command, /run/gunicorn is empty, i.e. the socket is gone. It looks like this declaration supersedes the Gunicorn docs's suggestion of having /etc/tmpfiles.d/gunicorn.conf (systemd says tmpfiles.d is for complex cases).
+Removing this line yields the following error when trying to connect:</p>
+<blockquote>
+<p>curl: (56) Recv failure: Connection reset by peer</p>
+</blockquote>
+<p>And it appears that /run/gunicorn and its parent dirs are owned by root with permissions 755. Conversely, when RuntimeDirectory is specified, /run/gunicorn has User and Group equal to what they were specified as in the gunicorn.service file (vagrant and www-data in this case).
+When the service has been halted, then, per RuntimeDirectory's behavior, /run/gunicorn will be deleted. As such, to restart things, you need to restart gunicorn.socket with <code>sudo systemctl restart gunicorn.socket</code>. This will recreate the /run/gunicorn directory with the socket in it.</p>
+<p><code>WorkingDirectory</code> sets the directory for any executed commands (e.g. ExecStart).</p>
+<p><code>ExecStart</code> and company are just commands to execute at the relevant lifecycle events. For my purposes, because I have Gunicorn installed via a virtual environment, I have to provide the path to its actual install. I think I could alternatively use other lifecycle hooks to start and stop the virtual environment, the just call 'gunicorn' in my ExecStart.</p>
+<p><code>PrivateTmp</code> is described as a security feature (see also Eins's blog)</p>
+<h1>Problems I Encountered</h1>
+<p>I made some edits to my gunicorn.service file, and I was not getting my curl test to work (<code>curl --unix-socket /run/gunicorn/socket http://localhost:8000</code> <em>mind the port</em>). Upon restarting the VM, it worked. I believe I needed to run <code>sudo systemctl daemon-restart</code>.</p>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -55,7 +104,30 @@
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/stuff-about-ports-and-sockets.html" rel="bookmark"
+                    <h1><a href="https://swpease.github.io/soaking-dishes.html" rel="bookmark"
+                           title="Permalink to Soaking Dishes">Soaking Dishes</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-01-06T00:00:00-08:00">
+                Published: Sun 06 January 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/rants.html">Rants</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/cooking.html">cooking</a> <a href="https://swpease.github.io/tag/cleaning.html">cleaning</a> </p>
+</footer><!-- /.post-info -->                <h1>Dish Soaking Traumas</h1>
+<p>Ever since moving out of the dorm in college, I have be plagued by a roommate who is a dish soaker. It's horrible! This essentially translates to that, aside from times when I have lived alone, there has been a dirty dish in the sink very nearly …</p>
+                <a class="readmore" href="https://swpease.github.io/soaking-dishes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="bookmark"
                            title="Permalink to Stuff About Ports and Sockets">Stuff About Ports and Sockets</a></h1>
                 </header>
 
@@ -66,16 +138,16 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/notes.html">Notes</a>.</p>
-<p>tags: <a href="/tag/computer.html">computer</a> <a href="/tag/networking.html">networking</a> <a href="/tag/sockets.html">sockets</a> </p>
+<p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/networking.html">networking</a> <a href="https://swpease.github.io/tag/sockets.html">sockets</a> </p>
 </footer><!-- /.post-info -->                <p>Socket = {IP Address : Port}
 Connection = {Local Socket + Remote Socket + Protocol}
 Protocol = TCP, UDP, etc.
 Listen = Look for client requests at a specific well-known port.</p>
 <p>A server socket can serve multiple clients because the service just kinda keeps track of which requests are associated with which clients. Which I suppose makes …</p>
-                <a class="readmore" href="/stuff-about-ports-and-sockets.html">read more</a>
+                <a class="readmore" href="https://swpease.github.io/stuff-about-ports-and-sockets.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
@@ -91,6 +163,7 @@ Listen = Look for client requests at a specific well-known port.</p>
                 <div class="social">
                         <h2>social</h2>
                         <ul>
+                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/swpease">github</a></li>
                         </ul>

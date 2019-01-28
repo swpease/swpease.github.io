@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Scott's Stuff - computer</title>
+        <title>Scott's Stuff - howto</title>
         <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
         <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
 </head>
@@ -97,38 +97,6 @@ When the service has been halted, then, per RuntimeDirectory's behavior, /run/gu
 <h1>Problems I Encountered</h1>
 <p>I made some edits to my gunicorn.service file, and I was not getting my curl test to work (<code>curl --unix-socket /run/gunicorn/socket http://localhost:8000</code> <em>mind the port</em>). Upon restarting the VM, it worked. I believe I needed to run <code>sudo systemctl daemon-restart</code>.</p>                </article>
             </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="bookmark"
-                           title="Permalink to Stuff About Ports and Sockets">Stuff About Ports and Sockets</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-12-15T00:00:00-08:00">
-                Published: Sat 15 December 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
-        </address>
-<p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/networking.html">networking</a> <a href="https://swpease.github.io/tag/sockets.html">sockets</a> </p>
-</footer><!-- /.post-info -->                <p>Socket = {IP Address : Port}
-Connection = {Local Socket + Remote Socket + Protocol}
-Protocol = TCP, UDP, etc.
-Listen = Look for client requests at a specific well-known port.</p>
-<p>A server socket can serve multiple clients because the service just kinda keeps track of which requests are associated with which clients. Which I suppose makes …</p>
-                <a class="readmore" href="https://swpease.github.io/stuff-about-ports-and-sockets.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
