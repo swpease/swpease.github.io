@@ -18,7 +18,51 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html">Setting up Gunicorn with systemd on Ubuntu</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/shaving.html">Shaving</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-04-24T00:00:00-07:00">
+                Published: Wed 24 April 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/rants.html">Rants</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/grooming.html">grooming</a> </p>
+</footer><!-- /.post-info --><h1>The Options</h1>
+<p>I have had to shave regularly, since some time in high school. I have fairly thick hair, particularly in the chin and mustache region. It can be a hassle. I've tried a few options over the years:
+1. Buying cartridges in stores.
+2. Subscribing to online clubs.
+3. Safety razors.</p>
+<p>They each have their pros and cons, which I'll go over.</p>
+<h3>Buying Cartridges in Stores</h3>
+<p>The classic for anyone who isn't geriatric. I remember when my dad taught me to shave. It was basically, "spray some shaving cream into your hand, rub it over your face, then rub this razor over your face..." There's really nothing to it.</p>
+<p>I like shaving with these the best. I have always been a fan on the two-bladed cartridges. Three is okay, but I dislike how bulky the larger-count cartridges are. I also feel like they're a complete waste, given how effective two blades have been for me.</p>
+<p>The only issue for me is cost. I recently checked out the cartridges selection at Fred Meyer, and saw my trusty Sensor Excels at 10 for $30. That's just too much. This price is what drove me to try option #2 on the list.</p>
+<h3>Subscribing to Online Clubs</h3>
+<p>I tried out Dollar Shave Club. I went with the two-bladed model. At first I was pleased with it: it did the job well and cost a fraction of the price (I think ~ $1 / cartridge).</p>
+<p>But then, I visited my parents, where I still have some of the classic cartridges (both Sensor Excel and Mach 3). It felt like heaven to my face in comparison.</p>
+<p>If I had to guess, I'd say that the issue was the flimsy construction, which might cause some shaking / other motion that leads to uneven speeds across my face, leading to more tugging. But that's just conjecture.</p>
+<p>Which led me to option #3 on the list.</p>
+<h3>Safety Razors</h3>
+<p>I performed a little research using some relevant subreddit. I forget the name. But I wound up going with Maggard for my razor, styptic, alum block, brush, a variety pack of blades, and 'sapone di barba' or whatever.</p>
+<p>I've been using it for close to a year now, and my conclusion is: it's okay. I haven't been this nonplussed by a hyped alternative product since organic peanut butter.</p>
+<p>I did learn why dads teaching their sons how to shave is actually a thing: there's a lot more going on with safety razor shaving compared to cartridge shaving. You gotta lather the shaving cream, angle the razor, be careful about the grain...</p>
+<p>But, I still just prefer the ease and comfort of a Gillette cartridge and canned shaving cream. Sure, my <em>sapone</em> smells nice, but it's inconvenient and expensive. It is more common for me to miss spots with my safety razor as well, stemming from the fact that it's not as comfortable on my face. Plus I'm still trying to find my optimum razor blades, an area for which reviews aren't really much use, since other reviewers don't have your face.</p>
+<p>That being said, the cartridge is not 10+ times the price better. So I'll stick with my safety razor.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html" rel="bookmark"
+                           title="Permalink to Setting up Gunicorn with systemd on Ubuntu">Setting up Gunicorn with systemd on Ubuntu</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-01-25T00:00:00-08:00">
                 Published: Fri 25 January 2019
@@ -29,78 +73,11 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/backend.html">backend</a> <a href="https://swpease.github.io/tag/howto.html">howto</a> </p>
-</footer><!-- /.post-info --><h1>Background</h1>
-<p>Gunicorn provides <a href="http://docs.gunicorn.org/en/stable/deploy.html">a number of ways</a> for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when it crashes'.</p>
-<p>In skimming over the options that Gunicorn listed, I initially thought of using Supervisor, probably because I had seen it mentioned before. I am wary of my disposition to trusting things just because I've heard of them, but decided to look into it anyway. I saw that I would need to install Python 2 to use it, and put my foot down.
-I decided to try out systemd because it was a built-in tool, and I am suspicious of taking on dependencies for what seem to be minimal tasks. It also seemed the most generalizable thing to learn.</p>
-<h1>Research</h1>
-<p>The best basic introduction I found was on <a href="https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files#anatomy-of-a-unit-file">Digital Ocean</a>.
-The systemd creators have their documentation as well: <a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html#">systemd</a>, <a href="https://www.freedesktop.org/software/systemd/man/systemctl.html">systemctl</a>.
-More advanced topics, such as security and setting up your own software to handle systemd socket stuff, are covered in this dude Pid Eins's <a href="http://0pointer.de/blog/projects/security.html">blog</a>, though it's not spectacularly organized.
-For implementing systemd for Gunicorn, I referenced mostly <a href="http://docs.gunicorn.org/en/stable/deploy.html">Gunicorn</a>, but also <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04#create-a-gunicorn-systemd-service-file">Digital Ocean</a>.
-I might need a systemd service file for <a href="https://www.nginx.com/resources/wiki/start/topics/examples/initscripts/">nginx</a>.</p>
-<h1>Execution</h1>
-<p>Gunicorn recommends setting up a socket, which is always listening, which starts up Gunicorn proper via a corresponding "service". Per Eins's blog, this can be a more efficient way to use resources. For instance, if you have a bunch of rarely-accessed websites on the same server, you could activate / deactivate them as needed. I wonder if this is how Heroku manages its hobby-tier apps.</p>
-<p>The gunicorn.socket file is super simple:</p>
-<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">gunicorn socket</span>
-
-<span class="k">[Socket]</span>
-<span class="na">ListenStream</span><span class="o">=</span><span class="s">/run/gunicorn/socket</span>
-
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">sockets.target</span>
-</pre></div>
-
-
-<p>It basically specifies an address to listen on for a stream socket. systemd appears to create this socket as part of this gunicorn.socket file's existence -- this socket is the only contents of /run/gunicorn when you navigate to it upon starting up the server.</p>
-<p>The gunicorn.service is a bit more complex:</p>
-<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">gunicorn daemon</span>
-<span class="na">Requires</span><span class="o">=</span><span class="s">gunicorn.socket</span>
-<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
-
-<span class="k">[Service]</span>
-<span class="na">PIDFile</span><span class="o">=</span><span class="s">/run/gunicorn/pid</span>
-<span class="na">User</span><span class="o">=</span><span class="s">vagrant</span>
-<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
-<span class="na">RuntimeDirectory</span><span class="o">=</span><span class="s">gunicorn</span>
-<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/vagrant/mysite</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/home/vagrant/.local/share/virtualenvs/vagrant-gKDsaKU3/bin/gunicorn --pid /run/gunicorn/pid --bind unix:/run/gunicorn/socket mysite.wsgi</span>
-<span class="na">ExecReload</span><span class="o">=</span><span class="s">/bin/kill -s HUP $MAINPID</span>
-<span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/kill -s TERM $MAINPID</span>
-<span class="na">PrivateTmp</span><span class="o">=</span><span class="s">true</span>
-
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
-</pre></div>
-
-
-<p>This is more complex. An annotation (NB: I do not know what all of these mean) goes something like:</p>
-<p><code>Requires=gunicorn.socket</code> says that gunicorn.service is dependent upon gunicorn.socket.</p>
-<p><code>PIDFile=/run/gunicorn/pid</code> I'm unsure why Gunicorn's docs have this in here. Look at the systemd docs for more info on it.</p>
-<p><code>User</code> and <code>Group</code> per Digital Ocean,</p>
-<blockquote>
-<p>We will give our regular user account ownership of the process since it owns all of the relevant files. We'll give group ownership to the www-data group so that Nginx can communicate easily with Gunicorn.</p>
-</blockquote>
-<p>I am still a bit unclear about what user and group will be needed.</p>
-<p><code>RuntimeDirectory=gunicorn</code> The <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#">docs</a> indicate that the directory's lifetime will be bound to the daemon's. Upon running <code>sudo systemctl stop gunicorn.service</code>, which calls the <code>ExecStop</code> command, /run/gunicorn is empty, i.e. the socket is gone. It looks like this declaration supersedes the Gunicorn docs's suggestion of having /etc/tmpfiles.d/gunicorn.conf (systemd says tmpfiles.d is for complex cases).
-Removing this line yields the following error when trying to connect:</p>
-<blockquote>
-<p>curl: (56) Recv failure: Connection reset by peer</p>
-</blockquote>
-<p>And it appears that /run/gunicorn and its parent dirs are owned by root with permissions 755. Conversely, when RuntimeDirectory is specified, /run/gunicorn has User and Group equal to what they were specified as in the gunicorn.service file (vagrant and www-data in this case).
-When the service has been halted, then, per RuntimeDirectory's behavior, /run/gunicorn will be deleted. As such, to restart things, you need to restart gunicorn.socket with <code>sudo systemctl restart gunicorn.socket</code>. This will recreate the /run/gunicorn directory with the socket in it.</p>
-<p><code>WorkingDirectory</code> sets the directory for any executed commands (e.g. ExecStart).</p>
-<p><code>ExecStart</code> and company are just commands to execute at the relevant lifecycle events. For my purposes, because I have Gunicorn installed via a virtual environment, I have to provide the path to its actual install. I think I could alternatively use other lifecycle hooks to start and stop the virtual environment, the just call 'gunicorn' in my ExecStart.</p>
-<p><code>PrivateTmp</code> is described as a security feature (see also Eins's blog)</p>
-<h1>Problems I Encountered</h1>
-<p>I made some edits to my gunicorn.service file, and I was not getting my curl test to work (<code>curl --unix-socket /run/gunicorn/socket http://localhost:8000</code> <em>mind the port</em>). Upon restarting the VM, it worked. I believe I needed to run <code>sudo systemctl daemon-restart</code>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <h1>Background</h1>
+<p>Gunicorn provides <a href="http://docs.gunicorn.org/en/stable/deploy.html">a number of ways</a> for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when …</p>
+                <a class="readmore" href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

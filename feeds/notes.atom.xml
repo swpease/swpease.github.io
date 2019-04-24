@@ -54,7 +54,7 @@ I might need a systemd service file for &lt;a href="https://www.nginx.com/resour
 &lt;blockquote&gt;
 &lt;p&gt;We will give our regular user account ownership of the process since it owns all of the relevant files. We'll give group ownership to the www-data group so that Nginx can communicate easily with Gunicorn.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;I am still a bit unclear about what user and group will be needed.&lt;/p&gt;
+&lt;p&gt;I am still a bit unclear about what user and group will be needed. I tried setting both &lt;code&gt;User&lt;/code&gt; and &lt;code&gt;Group&lt;/code&gt; to be "vagrant", and tried both as "www-data", and both yield responses when connecting to the index page on localhost.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;RuntimeDirectory=gunicorn&lt;/code&gt; The &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#"&gt;docs&lt;/a&gt; indicate that the directory's lifetime will be bound to the daemon's. Upon running &lt;code&gt;sudo systemctl stop gunicorn.service&lt;/code&gt;, which calls the &lt;code&gt;ExecStop&lt;/code&gt; command, /run/gunicorn is empty, i.e. the socket is gone. It looks like this declaration supersedes the Gunicorn docs's suggestion of having /etc/tmpfiles.d/gunicorn.conf (systemd says tmpfiles.d is for complex cases).
 Removing this line yields the following error when trying to connect:&lt;/p&gt;
 &lt;blockquote&gt;
