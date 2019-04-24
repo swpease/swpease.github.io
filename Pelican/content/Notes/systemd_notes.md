@@ -62,7 +62,7 @@ This is more complex. An annotation (NB: I do not know what all of these mean) g
 `User` and `Group` per Digital Ocean,
 > We will give our regular user account ownership of the process since it owns all of the relevant files. We'll give group ownership to the www-data group so that Nginx can communicate easily with Gunicorn.
 
-I am still a bit unclear about what user and group will be needed.
+I am still a bit unclear about what user and group will be needed. I tried setting both `User` and `Group` to be "vagrant", and tried both as "www-data", and both yield responses when connecting to the index page on localhost.
 
 `RuntimeDirectory=gunicorn` The [docs](https://www.freedesktop.org/software/systemd/man/systemd.exec.html#) indicate that the directory's lifetime will be bound to the daemon's. Upon running `sudo systemctl stop gunicorn.service`, which calls the `ExecStop` command, /run/gunicorn is empty, i.e. the socket is gone. It looks like this declaration supersedes the Gunicorn docs's suggestion of having /etc/tmpfiles.d/gunicorn.conf (systemd says tmpfiles.d is for complex cases).
 Removing this line yields the following error when trying to connect:
