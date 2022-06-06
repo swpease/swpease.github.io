@@ -52,7 +52,7 @@ I created a metric from these logarithmed seedings that I called **upset potenti
 
   - **upset potential** = `log2(higher seed) - log2(lower seed)`
 
-I also think of the upset potential as equating to **skill gap**. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?[^3]
+I set any amateurs' seeding as 128. I also think of the upset potential as equating to **skill gap**. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?[^3]
 
 ## Splitting Out the Upset Potentials
 Here are the average upset potentials, split out by match length:
@@ -125,7 +125,7 @@ Finally, a general point about the graph:
 I think the major takeaways from this analysis are:
 
   - **Upsets are more likely in shorter matches.**
-  - **Longer matches tend to be easier for higher seeds.**
+  - **Shorter matches tend to be against harder opponents for higher seeds.**
   - **At a given skill gap, there isn't a consistent relationship between match length and the chances of an upset.**
 
 That's all for now! I hope you at least gave the graphs a good look.
