@@ -42,7 +42,7 @@ So, looking at Best of 9's – 11's, upsets are less likely in longer matches. *
 
 Case closed! Right? Well... these matches aren't all between the same seedings each time. How much does that change things?
 
-# Factoring in Match Difficulty
+# Factoring in Match Difficulty... or "Math with Opinions"
 ## Upset Potentials Defined
 Seed 2 losing to seed 42 is a bigger upset than seed 42 losing to seed 82. To account for this aspect of the rankings, I converted the seeds using the base-2 logarithm, which I'll write as `log2(seed)`. If you're unfamiliar with logarithms, here are some reference values to get the gist:
 

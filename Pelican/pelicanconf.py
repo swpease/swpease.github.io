@@ -33,3 +33,6 @@ DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
+# https://github.com/pelican-plugins/render-math
+# MATH_JAX = {'color':'blue'}

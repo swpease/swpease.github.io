@@ -1,6 +1,6 @@
 Title: Shaving
 Date: 2019-4-24
-Category: Rants
+Category: Misc
 Tags: grooming
 
 # The Options

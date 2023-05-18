@@ -1,5 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2022-05-25T00:00:00-07:00</updated><entry><title>It's A Coin Flip!</title><link href="https://swpease.github.io/its-a-coin-flip.html" rel="alternate"></link><published>2022-05-25T00:00:00-07:00</published><updated>2022-05-25T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2022-05-25:/its-a-coin-flip.html</id><summary type="html">&lt;h1&gt;The Problem&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2023-05-16T00:00:00-07:00</updated><entry><title>It's A Coin Flip! (Part 2)</title><link href="https://swpease.github.io/its-a-coin-flip-part-2.html" rel="alternate"></link><published>2023-05-16T00:00:00-07:00</published><updated>2023-05-16T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2023-05-16:/its-a-coin-flip-part-2.html</id><summary type="html">&lt;h1&gt;Intro&lt;/h1&gt;
+&lt;p&gt;Continuing my attempts to demonstrate that winning shorter matches in snooker should not be belittled, here I wanted to look at the Championship League. The impetus for this is that John Higgins recently won the tournament for the fourth time, beating Judd Trump (who was also going for his …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Intro&lt;/h1&gt;
+&lt;p&gt;Continuing my attempts to demonstrate that winning shorter matches in snooker should not be belittled, here I wanted to look at the Championship League. The impetus for this is that John Higgins recently won the tournament for the fourth time, beating Judd Trump (who was also going for his fourth win). That's 7 out of 17 wins between them. Clearly there's a knack for these things.&lt;/p&gt;
+&lt;p&gt;The format of Championship League is kind of confusing, but here is a general outline:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Two stages:&lt;ul&gt;
+&lt;li&gt;Group Stage (7 total, 7 players each group)&lt;/li&gt;
+&lt;li&gt;Winner's Group (1 total, the 7 Group Stage winners)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Best of 5's.&lt;/li&gt;
+&lt;li&gt;Each group begins with a round robin format:&lt;ul&gt;
+&lt;li&gt;If you're in the top four after the round robin, you enter a play-off.&lt;/li&gt;
+&lt;li&gt;If you're #5, you're put into the next of the Group Stages.&lt;/li&gt;
+&lt;li&gt;If you're in the bottom two, you're eliminated from the tournament.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Play-off has the standard knock-out format.&lt;ul&gt;
+&lt;li&gt;If you win, you go on to the Winner's Group&lt;/li&gt;
+&lt;li&gt;If you don't, you're put into the next of the Group Stages.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, to win the tournament, you need to win a Group Stage, and then win the Winner's Group. 4 of the 7 players in each group are put into the next Group Stage group. Except for after the last Group Stage group, of course. Group.&lt;/p&gt;
+&lt;p&gt;This is invitational, so players get to pick which group stage they'd like to enter into the tournament at.&lt;/p&gt;
+&lt;h1&gt;Set-up&lt;/h1&gt;
+&lt;p&gt;I decided to look at it from the skeptical perspective: &lt;strong&gt;Winning the tournament is random chance&lt;/strong&gt;. This means that I'm giving everyone a 1 in 7 chance of winning a given group. &lt;/p&gt;
+&lt;p&gt;My thinking was:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;John Higgins is one of the best players.&lt;/li&gt;
+&lt;li&gt;The odds of his four wins in a "roll of the dice" scenario is presumably quite low.&lt;/li&gt;
+&lt;li&gt;The lower the math works out for the odds to be, the stronger my position that these wins are skill-based.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;The Math&lt;/h1&gt;
+&lt;h2&gt;Winning One Tournament&lt;/h2&gt;
+&lt;h3&gt;Probabilities, Visualized&lt;/h3&gt;
+&lt;p&gt;Pictures are nice. To see what I'm doing, here is an example probability tree, for someone entering in Group 5 (and ignoring the Winner' Group):&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Probability Tree" src="https://swpease.github.io/images/snooker/championship_league/snooker_CL_p_tree.png"&gt;&lt;/p&gt;
+&lt;p&gt;As an example of how to look at this, imagine:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The player is one of the 4 players who don't win Group 5, but aren't eliminated (i.e. not in the bottom 2 of the round robin phase). &lt;/li&gt;
+&lt;li&gt;Then, they win Group 6.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The probability of getting to the Winner's Group by that route is (4/7)*(1/7) = 4/49. &lt;/p&gt;
+&lt;p&gt;Add up all of the routes-to-the-Winner's-Group probabilities to get the total probability of reaching the Winner's Group.&lt;/p&gt;
+&lt;h3&gt;Mathematical Formulation&lt;/h3&gt;
+&lt;p&gt;The probability of advancing to the Winner's Group is:
+&lt;/p&gt;
+&lt;div class="math"&gt;$$  \sum_{r=0}^{n - 1} p_{win}*p_{next}^{r} $$&lt;/div&gt;
+&lt;p&gt;
+Where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(n\)&lt;/span&gt; is the initial number of rounds remaining.&lt;ul&gt;
+&lt;li&gt;For example, if you entered in round 5 (always of 7), n is 3 (rounds 5, 6, and 7).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(p_{win}\)&lt;/span&gt; is the probability of winning a group.&lt;ul&gt;
+&lt;li&gt;Here, this means 1/7.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(p_{next}\)&lt;/span&gt; is the probability of going to the next Group Stage group.&lt;ul&gt;
+&lt;li&gt;Here, this means 4/7.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since I'm assuming the probability of winning a group is always the same, the probability of winning the tournament is just 1/7 times the probability of reaching the Winner's Group:
+&lt;/p&gt;
+&lt;div class="math"&gt;$$  p_{win} * \sum_{r=0}^{n - 1} p_{win}*p_{next}^{r} $$&lt;/div&gt;
+&lt;h3&gt;In Python&lt;/h3&gt;
+&lt;p&gt;Here is the above equation, in Python!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;p_win_group_stage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_win&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_next&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;    num_rounds: # of group stage rounds the player has, i.e # of opportunities to reach the final stage.&lt;/span&gt;
+&lt;span class="sd"&gt;    p_win: Probability of winning a round (group or final)&lt;/span&gt;
+&lt;span class="sd"&gt;    p_next: Probability of going to next Group Stage group (non-final rounds of group stage)&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;p_win&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_next&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;p_win_tourn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_win&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_next&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;    num_rounds: # of group stage rounds the player has, i.e # of opportunities to reach the final stage.&lt;/span&gt;
+&lt;span class="sd"&gt;    p_win: Probability of winning a round (group or final)&lt;/span&gt;
+&lt;span class="sd"&gt;    p_next: Probability of going to next Group Stage group (non-final rounds of group stage)&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;p_win&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;p_win_group_stage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_win&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_next&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Winning Multiple Tournaments&lt;/h2&gt;
+&lt;p&gt;We have a binary outcome for each tournament (Win/Loss). Ordinarily, we could model our #-of-Wins with a binomial distribution. However, in our case, that doesn't work, because players can enter in different rounds of the Group Stage. If they do, then they have different probabilities of winning each tournament. This calls for the... &lt;strong&gt;Poisson Binomial distribution&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3&gt;The Poisson Binomial Distribution&lt;/h3&gt;
+&lt;p&gt;The idea is just like the binomial distribution, except that each of the independent Bernoulli trials can have its own probability of success.&lt;/p&gt;
+&lt;p&gt;Both the Poisson Binomial and binomial distributions are the sums of their Bernoulli trials. As such, both can be found by taking the &lt;a href="https://en.wikipedia.org/wiki/Convolution_of_probability_distributions"&gt;convolution&lt;/a&gt; of the Bernoulli trials.&lt;/p&gt;
+&lt;p&gt;This is all well and good, but it's not like you're going to calculate it by hand or write the function to calculate it. Well, I did out of curiosity, but then I just found a Python package that does it for me.&lt;/p&gt;
+&lt;h1&gt;The Odds of Higgins's Performance&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;1 in 900&lt;/strong&gt; (ish, in a roll-of-the-dice scenario)&lt;/p&gt;
+&lt;p&gt;John Higgins played in 14 of the 17 Invitational Championship Leagues, entering in the following rounds (most recent first):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# W  W           W  W&lt;/span&gt;
+ &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So he won 3 events where he entered in the final Group Stage group!&lt;/p&gt;
+&lt;h2&gt;The Poisson Binomial Code&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;poibin&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PoiBin&lt;/span&gt; &lt;span class="c1"&gt;# An un-published package I found on GitHub. There are other options.&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;p_win&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
+    &lt;span class="n"&gt;p_next&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
+    &lt;span class="n"&gt;max_rounds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
+                      &lt;span class="c1"&gt;# W  W           W  W&lt;/span&gt;
+    &lt;span class="n"&gt;entered_in_round&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;num_rounds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;max_rounds&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;  &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rd&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;rd&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;entered_in_round&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;tourn_win_probs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;p_win_tourn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_win&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_next&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num_rds&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;pb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PoiBin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tourn_win_probs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;p_over_3_wins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cdf&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;p_over_3_wins&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Alternate Odds&lt;/h2&gt;
+&lt;p&gt;I also checked the odds if we assume that Higgins will definitely get to the group playoffs (i.e. past the round robin phase), but the playoffs are still a dice roll. In code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    &lt;span class="n"&gt;p_win&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;
+    &lt;span class="n"&gt;p_next&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this scenario, the odds of Higgins's performance are way way better: &lt;strong&gt;1 in 7&lt;/strong&gt;!&lt;/p&gt;
+&lt;p&gt;Just adding in a little bit of an edge in favor of Higgins quickly improves the odds of his performance, down to believable levels. Here's a full table of odds against Higgins's performance at various probabilities of winning (p_win) and getting to the next Group Stage group (p_next), with blue highlights on the (rounded) two scenarios I've considered above:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Odds Table" src="https://swpease.github.io/images/snooker/championship_league/higgins_odds_table.png"&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Even just rounding 1/7 and 4/7 to two digits (0.14 and 0.57) yields pretty different odds. It doesn't take much of a shift away from roll-of-the-dice to wind up in believeable odds territory, so my argument isn't air-tight, but it's something!&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;Code for the Above Table&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;round_win_ps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.14&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;round_x_ps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.28&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.75&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;48&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;max_rounds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
+                  &lt;span class="c1"&gt;# W  W           W  W&lt;/span&gt;
+&lt;span class="n"&gt;entered_in_round&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;num_rounds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;max_rounds&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;  &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rd&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;rd&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;entered_in_round&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="n"&gt;odds_over_3_wins_all&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;win_p&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;round_win_ps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;odds_over_3_wins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;x_p&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;round_x_ps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;p_wins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;p_win_tourn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;win_p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x_p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num_rds&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="n"&gt;pb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PoiBin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_wins&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cdf&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="n"&gt;odds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;
+        &lt;span class="n"&gt;odds_over_3_wins&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;odds&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;odds_over_3_wins_all&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;odds_over_3_wins&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Bonus: Brute Force!&lt;/h1&gt;
+&lt;p&gt;I'm always a bit worried about my math when dealing with probabilities — it's so easy to make a mistake! So, I decided to make a brute force alternate formulation to check my math, and I guess kind of check my code. Voila:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;brute_force_single_tourn_outcome&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rounds&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;rn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;rn&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  &lt;span class="c1"&gt;# Won&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+    &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;rn&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  &lt;span class="c1"&gt;# Eliminated&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;num_rounds&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  &lt;span class="c1"&gt;# Eliminated b/c no more rounds.&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  &lt;span class="c1"&gt;# Through to next round of group stage.&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;brute_force_single_tourn_outcome&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num_rounds&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;brute_force_p_win_tourn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100_000&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
+        &lt;span class="n"&gt;results&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;results&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;brute_force_single_tourn_outcome&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;results&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Snooker"></category><category term="analysis"></category></entry><entry><title>It's A Coin Flip!</title><link href="https://swpease.github.io/its-a-coin-flip.html" rel="alternate"></link><published>2022-05-25T00:00:00-07:00</published><updated>2022-05-25T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2022-05-25:/its-a-coin-flip.html</id><summary type="html">&lt;h1&gt;The Problem&lt;/h1&gt;
 &lt;p&gt;While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People tend to complain that the shorter formats add a larger element of luck to the outcomes. I decided to try and put some numbers to this …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;The Problem&lt;/h1&gt;
 &lt;p&gt;While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People tend to complain that the shorter formats add a larger element of luck to the outcomes. I decided to try and put some numbers to this perception.&lt;/p&gt;
 &lt;h1&gt;The Data&lt;/h1&gt;
@@ -19,7 +257,7 @@
 &lt;p&gt;I guess longer matches make upsets a bit rarer, but it's hardly night and day. A handy thing about this plot is the two y-axes (# Upsets) go to 100%, so we can use the heights of the dots between the Top 16 seeds and the non-Top 16 seeds for percent-wise comparison. &lt;/p&gt;
 &lt;p&gt;What are the actual numbers? &lt;/p&gt;
 &lt;h2&gt;Upset Percentages&lt;/h2&gt;
-&lt;p&gt;Now let's look at the upset percentages of all tournaments combined, split out by match length. I'll also split out the Top 16 seeds&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; from the sub-Top 16 higher seeds. (See below&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt; for counts of the matches in each sub-group, so we know how many we're talking about. Important, but busy.) I'll include the Shoot-Out and British Open here and in any subsequent tables, even though I don't pay them much attention, because an extra line on a table is easier to ignore than extra lines/dots on a chart. Let's see:&lt;/p&gt;
+&lt;p&gt;Now let's look at the upset percentages of all tournaments combined, split out by match length. I'll also split out the Top 16 seeds&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; from the sub-Top 16 higher seeds. (See below&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; for counts of the matches in each sub-group, so we know how many we're talking about. Important, but busy.) I'll include the Shoot-Out and British Open here and in any subsequent tables, even though I don't pay them much attention, because an extra line on a table is easier to ignore than extra lines/dots on a chart. Let's see:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Table 4" src="https://swpease.github.io/images/snooker/snooker_total_upset_pct.png"&gt;&lt;/p&gt;
 &lt;p&gt;So, looking at Best of 9's – 11's, upsets are less likely in longer matches. &lt;strong&gt;We can expect one more Top 16 Seed to be upset in Best of 7's compared to Best of 11's (2 -&amp;gt; 3, of 16), and three more non-Top 16 Seeds (13 -&amp;gt; 16, of 48)&lt;/strong&gt;. For reference: &lt;/p&gt;
 &lt;ul&gt;
@@ -29,7 +267,7 @@
 &lt;li&gt;12% = 1 in 8 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Case closed! Right? Well... these matches aren't all between the same seedings each time. How much does that change things?&lt;/p&gt;
-&lt;h1&gt;Factoring in Match Difficulty&lt;/h1&gt;
+&lt;h1&gt;Factoring in Match Difficulty... or "Math with Opinions"&lt;/h1&gt;
 &lt;h2&gt;Upset Potentials Defined&lt;/h2&gt;
 &lt;p&gt;Seed 2 losing to seed 42 is a bigger upset than seed 42 losing to seed 82. To account for this aspect of the rankings, I converted the seeds using the base-2 logarithm, which I'll write as &lt;code&gt;log2(seed)&lt;/code&gt;. If you're unfamiliar with logarithms, here are some reference values to get the gist:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Table 6" src="https://swpease.github.io/images/snooker/snooker_lg_ref.png"&gt;&lt;/p&gt;
@@ -37,7 +275,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;upset potential&lt;/strong&gt; = &lt;code&gt;log2(higher seed) - log2(lower seed)&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;I set any amateurs' seeding as 128. I also think of the upset potential as equating to &lt;strong&gt;skill gap&lt;/strong&gt;. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?&lt;sup id="fnref:3"&gt;&lt;a class="footnote-ref" href="#fn:3" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;I set any amateurs' seeding as 128. I also think of the upset potential as equating to &lt;strong&gt;skill gap&lt;/strong&gt;. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?&lt;sup id="fnref:3"&gt;&lt;a class="footnote-ref" href="#fn:3"&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 &lt;h2&gt;Splitting Out the Upset Potentials&lt;/h2&gt;
 &lt;p&gt;Here are the average upset potentials, split out by match length:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Table 7" src="https://swpease.github.io/images/snooker/snooker_upset_potential.png"&gt;&lt;/p&gt;
@@ -49,8 +287,8 @@
 &lt;h3&gt;Upset Percents, Grouped by Upset Potential&lt;/h3&gt;
 &lt;p&gt;Well, so how does a higher seed do for a given upset potential, i.e. against players of the same skill gap, across the match lengths? Here is the data, rounding down the upset potentials to the nearest whole number:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Table 9" src="https://swpease.github.io/images/snooker/snooker_u_p_barplt_log2.png"&gt;&lt;/p&gt;
-&lt;p&gt;50% upsets is the proverbial coin flip. The blue / orange / green bars show what has &lt;em&gt;actually happened&lt;/em&gt;, while the black lines at the top of each bar are the 95% confidence intervals. Essentially, the longer the black line, the less trust you should put in the corresponding colored bar staying where it is as more data is collected. Some of these are pretty huge (Top 16 upset potential of 0, 1, 6, 7). I'm guessing there aren't many data points... Nope. See here&lt;sup id="fnref:4"&gt;&lt;a class="footnote-ref" href="#fn:4" rel="footnote"&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-&lt;p&gt;Well, in that case, let's use that other upset potential metric from Footnote &lt;sup id="fnref2:3"&gt;&lt;a class="footnote-ref" href="#fn:3" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt; and see what happens. The counts look better&lt;sup id="fnref:5"&gt;&lt;a class="footnote-ref" href="#fn:5" rel="footnote"&gt;5&lt;/a&gt;&lt;/sup&gt;, so how does the plot look?:&lt;/p&gt;
+&lt;p&gt;50% upsets is the proverbial coin flip. The blue / orange / green bars show what has &lt;em&gt;actually happened&lt;/em&gt;, while the black lines at the top of each bar are the 95% confidence intervals. Essentially, the longer the black line, the less trust you should put in the corresponding colored bar staying where it is as more data is collected. Some of these are pretty huge (Top 16 upset potential of 0, 1, 6, 7). I'm guessing there aren't many data points... Nope. See here&lt;sup id="fnref:4"&gt;&lt;a class="footnote-ref" href="#fn:4"&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Well, in that case, let's use that other upset potential metric from Footnote &lt;sup id="fnref2:3"&gt;&lt;a class="footnote-ref" href="#fn:3"&gt;3&lt;/a&gt;&lt;/sup&gt; and see what happens. The counts look better&lt;sup id="fnref:5"&gt;&lt;a class="footnote-ref" href="#fn:5"&gt;5&lt;/a&gt;&lt;/sup&gt;, so how does the plot look?:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Table 10" src="https://swpease.github.io/images/snooker/snooker_u_p_barplt_ceillog2div4.png"&gt;&lt;/p&gt;
 &lt;p&gt;So it looks pretty similar, except at higher upset potentials for Top 16 matches, which was exactly the point.&lt;/p&gt;
 &lt;h4&gt;Conclusions&lt;/h4&gt;
@@ -98,26 +336,26 @@
 &lt;hr&gt;
 &lt;ol&gt;
 &lt;li id="fn:1"&gt;
-&lt;p&gt;Note I said "Seeds", not "Ranking". So the defending champion is Seed 1. Yes, it's a smidge imprecise, but using rankings would have been a lot more effort for minimal gain.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Note I said "Seeds", not "Ranking". So the defending champion is Seed 1. Yes, it's a smidge imprecise, but using rankings would have been a lot more effort for minimal gain.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:2"&gt;
-&lt;p&gt;&lt;img alt="Table 5" src="https://swpease.github.io/images/snooker/snooker_split_upset_pct.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Table 5" src="https://swpease.github.io/images/snooker/snooker_split_upset_pct.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:3"&gt;
-&lt;p&gt;I know it's not perfect, but I tried a more complicated transformation, namely &lt;code&gt;1 + log2(ceil(seeding / 4))&lt;/code&gt;, which seemed closer to correct to me, but the graphs wound up looking basically the same, so I decided to keep the simpler transformation.&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:3" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I know it's not perfect, but I tried a more complicated transformation, namely &lt;code&gt;1 + log2(ceil(seeding / 4))&lt;/code&gt;, which seemed closer to correct to me, but the graphs wound up looking basically the same, so I decided to keep the simpler transformation.&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:4"&gt;
 &lt;p&gt;&lt;img alt="Table 6 supp_1" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2.png"&gt;
  &lt;img alt="Table 6 supp_2" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_non-top16_plt.png"&gt;
-&lt;img alt="Table 6 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_top16_plt.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:4" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;img alt="Table 6 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_top16_plt.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:5"&gt;
 &lt;p&gt;&lt;img alt="Table 7 supp" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4.png"&gt;
 &lt;img alt="Table 7 supp_2" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_non-top16_plt.png"&gt;
-&lt;img alt="Table 7 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_top16_plt.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:5" rev="footnote" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;img alt="Table 7 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_top16_plt.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="analysis"></category></entry><entry><title>Shaving</title><link href="https://swpease.github.io/shaving.html" rel="alternate"></link><published>2019-04-24T00:00:00-07:00</published><updated>2019-04-24T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2019-04-24:/shaving.html</id><summary type="html">&lt;h1&gt;The Options&lt;/h1&gt;
+&lt;/div&gt;</content><category term="Snooker"></category><category term="analysis"></category></entry><entry><title>Shaving</title><link href="https://swpease.github.io/shaving.html" rel="alternate"></link><published>2019-04-24T00:00:00-07:00</published><updated>2019-04-24T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2019-04-24:/shaving.html</id><summary type="html">&lt;h1&gt;The Options&lt;/h1&gt;
 &lt;p&gt;I have had to shave regularly, since some time in high school. I have fairly thick hair, particularly in the chin and mustache region. It can be a hassle. I've tried a few options over the years:
 1. Buying cartridges in stores.
 2. Subscribing to online clubs.
@@ -141,7 +379,7 @@
 &lt;p&gt;I've been using it for close to a year now, and my conclusion is: it's okay. I haven't been this nonplussed by a hyped alternative product since organic peanut butter.&lt;/p&gt;
 &lt;p&gt;I did learn why dads teaching their sons how to shave is actually a thing: there's a lot more going on with safety razor shaving compared to cartridge shaving. You gotta lather the shaving cream, angle the razor, be careful about the grain...&lt;/p&gt;
 &lt;p&gt;But, I still just prefer the ease and comfort of a Gillette cartridge and canned shaving cream. Sure, my &lt;em&gt;sapone&lt;/em&gt; smells nice, but it's inconvenient and expensive. It is more common for me to miss spots with my safety razor as well, stemming from the fact that it's not as comfortable on my face. Plus I'm still trying to find my optimum razor blades, an area for which reviews aren't really much use, since other reviewers don't have your face.&lt;/p&gt;
-&lt;p&gt;That being said, the cartridge is not 10+ times the price better. So I'll stick with my safety razor.&lt;/p&gt;</content><category term="grooming"></category></entry><entry><title>Setting up Gunicorn with systemd on Ubuntu</title><link href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html" rel="alternate"></link><published>2019-01-25T00:00:00-08:00</published><updated>2019-01-25T00:00:00-08:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2019-01-25:/setting-up-gunicorn-with-systemd-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Background&lt;/h1&gt;
+&lt;p&gt;That being said, the cartridge is not 10+ times the price better. So I'll stick with my safety razor.&lt;/p&gt;</content><category term="Misc"></category><category term="grooming"></category></entry><entry><title>Setting up Gunicorn with systemd on Ubuntu</title><link href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html" rel="alternate"></link><published>2019-01-25T00:00:00-08:00</published><updated>2019-01-25T00:00:00-08:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2019-01-25:/setting-up-gunicorn-with-systemd-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Background&lt;/h1&gt;
 &lt;p&gt;Gunicorn provides &lt;a href="http://docs.gunicorn.org/en/stable/deploy.html"&gt;a number of ways&lt;/a&gt; for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Background&lt;/h1&gt;
 &lt;p&gt;Gunicorn provides &lt;a href="http://docs.gunicorn.org/en/stable/deploy.html"&gt;a number of ways&lt;/a&gt; for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when it crashes'.&lt;/p&gt;
 &lt;p&gt;In skimming over the options that Gunicorn listed, I initially thought of using Supervisor, probably because I had seen it mentioned before. I am wary of my disposition to trusting things just because I've heard of them, but decided to look into it anyway. I saw that I would need to install Python 2 to use it, and put my foot down.
@@ -155,7 +393,7 @@ I might need a systemd service file for &lt;a href="https://www.nginx.com/resour
 &lt;h1&gt;Execution&lt;/h1&gt;
 &lt;p&gt;Gunicorn recommends setting up a socket, which is always listening, which starts up Gunicorn proper via a corresponding "service". Per Eins's blog, this can be a more efficient way to use resources. For instance, if you have a bunch of rarely-accessed websites on the same server, you could activate / deactivate them as needed. I wonder if this is how Heroku manages its hobby-tier apps.&lt;/p&gt;
 &lt;p&gt;The gunicorn.socket file is super simple:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;gunicorn socket&lt;/span&gt;
 
 &lt;span class="k"&gt;[Socket]&lt;/span&gt;
@@ -163,12 +401,11 @@ I might need a systemd service file for &lt;a href="https://www.nginx.com/resour
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;sockets.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It basically specifies an address to listen on for a stream socket. systemd appears to create this socket as part of this gunicorn.socket file's existence -- this socket is the only contents of /run/gunicorn when you navigate to it upon starting up the server.&lt;/p&gt;
 &lt;p&gt;The gunicorn.service is a bit more complex:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;gunicorn daemon&lt;/span&gt;
 &lt;span class="na"&gt;Requires&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;gunicorn.socket&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;network.target&lt;/span&gt;
@@ -186,8 +423,7 @@ I might need a systemd service file for &lt;a href="https://www.nginx.com/resour
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This is more complex. An annotation (NB: I do not know what all of these mean) goes something like:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Requires=gunicorn.socket&lt;/code&gt; says that gunicorn.service is dependent upon gunicorn.socket.&lt;/p&gt;
@@ -208,7 +444,7 @@ When the service has been halted, then, per RuntimeDirectory's behavior, /run/gu
 &lt;p&gt;&lt;code&gt;ExecStart&lt;/code&gt; and company are just commands to execute at the relevant lifecycle events. For my purposes, because I have Gunicorn installed via a virtual environment, I have to provide the path to its actual install. I think I could alternatively use other lifecycle hooks to start and stop the virtual environment, the just call 'gunicorn' in my ExecStart.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;PrivateTmp&lt;/code&gt; is described as a security feature (see also Eins's blog)&lt;/p&gt;
 &lt;h1&gt;Problems I Encountered&lt;/h1&gt;
-&lt;p&gt;I made some edits to my gunicorn.service file, and I was not getting my curl test to work (&lt;code&gt;curl --unix-socket /run/gunicorn/socket http://localhost:8000&lt;/code&gt; &lt;em&gt;mind the port&lt;/em&gt;). Upon restarting the VM, it worked. I believe I needed to run &lt;code&gt;sudo systemctl daemon-restart&lt;/code&gt;.&lt;/p&gt;</content><category term="computer"></category><category term="backend"></category><category term="howto"></category></entry><entry><title>Stuff About Ports and Sockets</title><link href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="alternate"></link><published>2018-12-15T00:00:00-08:00</published><updated>2018-12-15T00:00:00-08:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2018-12-15:/stuff-about-ports-and-sockets.html</id><summary type="html">&lt;p&gt;Socket = {IP Address : Port}
+&lt;p&gt;I made some edits to my gunicorn.service file, and I was not getting my curl test to work (&lt;code&gt;curl --unix-socket /run/gunicorn/socket http://localhost:8000&lt;/code&gt; &lt;em&gt;mind the port&lt;/em&gt;). Upon restarting the VM, it worked. I believe I needed to run &lt;code&gt;sudo systemctl daemon-restart&lt;/code&gt;.&lt;/p&gt;</content><category term="Network and Web"></category><category term="computer"></category><category term="backend"></category><category term="howto"></category></entry><entry><title>Stuff About Ports and Sockets</title><link href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="alternate"></link><published>2018-12-15T00:00:00-08:00</published><updated>2018-12-15T00:00:00-08:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2018-12-15:/stuff-about-ports-and-sockets.html</id><summary type="html">&lt;p&gt;Socket = {IP Address : Port}
 Connection = {Local Socket + Remote Socket + Protocol}
 Protocol = TCP, UDP, etc.
 Listen = Look for client requests at a specific well-known port.&lt;/p&gt;
@@ -236,4 +472,4 @@ See also &lt;a href="https://en.wikipedia.org/wiki/Internet_protocol_suite#Inter
 &lt;p&gt;There are multiple, different definitions of "socket" depending on context. e.g. the &lt;a href="https://en.wikipedia.org/wiki/Berkeley_sockets"&gt;Berkeley socket&lt;/a&gt;, for which a socket is an abstract representation for the local endpoint of a network communication path. Incidentally, Berkeley sockets answers my questions about where IP and transport layer coding is stored / interacted with (a socket API).&lt;/p&gt;
 &lt;p&gt;And &lt;a href="https://docs.python.org/3.7/howto/sockets.html"&gt;Python sockets HOWTO&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Useful answer on &lt;a href="https://askubuntu.com/questions/247625/what-is-the-loopback-device-and-how-do-i-use-it"&gt;loopback&lt;/a&gt;
-&lt;a href="https://docs.freebsd.org/44doc/psd/20.ipctut/paper.pdf"&gt;Berkeley sockets&lt;/a&gt;&lt;/p&gt;</content><category term="computer"></category><category term="networking"></category><category term="sockets"></category></entry></feed>
+&lt;a href="https://docs.freebsd.org/44doc/psd/20.ipctut/paper.pdf"&gt;Berkeley sockets&lt;/a&gt;&lt;/p&gt;</content><category term="Network and Web"></category><category term="computer"></category><category term="networking"></category><category term="sockets"></category></entry></feed>

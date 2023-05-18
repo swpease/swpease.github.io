@@ -1,6 +1,6 @@
 Title: Stuff About Ports and Sockets
 Date: 2018-12-15
-Category: Notes
+Category: Network and Web
 Tags: computer, networking, sockets
 
 Socket = {IP Address : Port}

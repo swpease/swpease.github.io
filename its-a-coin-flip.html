@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
         <title>It's A Coin Flip!</title>
-        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
-        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="The Problem While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://swpease.github.io/">Scott's Stuff </a></h1>
+                <h1><a href="/">Scott's Stuff</a></h1>
                 <nav><ul>
-                    <li><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
-                    <li><a href="https://swpease.github.io/category/rants.html">Rants</a></li>
-                    <li class="active"><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li><a href="/category/misc.html">Misc</a></li>
+                    <li><a href="/category/network-and-web.html">Network and Web</a></li>
+                    <li class="active"><a href="/category/snooker.html">Snooker</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="https://swpease.github.io/its-a-coin-flip.html" rel="bookmark"
+        <a href="/its-a-coin-flip.html" rel="bookmark"
            title="Permalink to It's A Coin Flip!">It's A Coin Flip!</a></h1>
     </header>
 
@@ -31,10 +33,10 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+<p>In <a href="/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="/tag/analysis.html">analysis</a> </p>
 </footer><!-- /.post-info -->      <h1>The Problem</h1>
 <p>While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People tend to complain that the shorter formats add a larger element of luck to the outcomes. I decided to try and put some numbers to this perception.</p>
 <h1>The Data</h1>
@@ -48,14 +50,14 @@
 <h1>Basic Comparison</h1>
 <h2>Upsets by Tournament</h2>
 <p>Let's start by looking at things on a tournament-by-tournament basis over time, because that's how the data comes at us. What percentage of matches per tournament were upsets?</p>
-<p><img alt="Table 1" src="https://swpease.github.io/images/snooker/snooker_pct_upsets_by_season.png"></p>
+<p><img alt="Table 1" src="/images/snooker/snooker_pct_upsets_by_season.png"></p>
 <p>Hm. This isn't <em>super</em> informative... Let's ignore the seasons, group the tournaments by match length, and split out Top 16 seeds from the others:</p>
-<p><img alt="Table 2" src="https://swpease.github.io/images/snooker/snooker_num_upsets_by_tourn.png"></p>
+<p><img alt="Table 2" src="/images/snooker/snooker_num_upsets_by_tourn.png"></p>
 <p>I guess longer matches make upsets a bit rarer, but it's hardly night and day. A handy thing about this plot is the two y-axes (# Upsets) go to 100%, so we can use the heights of the dots between the Top 16 seeds and the non-Top 16 seeds for percent-wise comparison. </p>
 <p>What are the actual numbers? </p>
 <h2>Upset Percentages</h2>
-<p>Now let's look at the upset percentages of all tournaments combined, split out by match length. I'll also split out the Top 16 seeds<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> from the sub-Top 16 higher seeds. (See below<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup> for counts of the matches in each sub-group, so we know how many we're talking about. Important, but busy.) I'll include the Shoot-Out and British Open here and in any subsequent tables, even though I don't pay them much attention, because an extra line on a table is easier to ignore than extra lines/dots on a chart. Let's see:</p>
-<p><img alt="Table 4" src="https://swpease.github.io/images/snooker/snooker_total_upset_pct.png"></p>
+<p>Now let's look at the upset percentages of all tournaments combined, split out by match length. I'll also split out the Top 16 seeds<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> from the sub-Top 16 higher seeds. (See below<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> for counts of the matches in each sub-group, so we know how many we're talking about. Important, but busy.) I'll include the Shoot-Out and British Open here and in any subsequent tables, even though I don't pay them much attention, because an extra line on a table is easier to ignore than extra lines/dots on a chart. Let's see:</p>
+<p><img alt="Table 4" src="/images/snooker/snooker_total_upset_pct.png"></p>
 <p>So, looking at Best of 9's – 11's, upsets are less likely in longer matches. <strong>We can expect one more Top 16 Seed to be upset in Best of 7's compared to Best of 11's (2 -&gt; 3, of 16), and three more non-Top 16 Seeds (13 -&gt; 16, of 48)</strong>. For reference: </p>
 <ul>
 <li>20% = 1 in 5 </li>
@@ -64,29 +66,29 @@
 <li>12% = 1 in 8 </li>
 </ul>
 <p>Case closed! Right? Well... these matches aren't all between the same seedings each time. How much does that change things?</p>
-<h1>Factoring in Match Difficulty</h1>
+<h1>Factoring in Match Difficulty... or "Math with Opinions"</h1>
 <h2>Upset Potentials Defined</h2>
 <p>Seed 2 losing to seed 42 is a bigger upset than seed 42 losing to seed 82. To account for this aspect of the rankings, I converted the seeds using the base-2 logarithm, which I'll write as <code>log2(seed)</code>. If you're unfamiliar with logarithms, here are some reference values to get the gist:</p>
-<p><img alt="Table 6" src="https://swpease.github.io/images/snooker/snooker_lg_ref.png"></p>
+<p><img alt="Table 6" src="/images/snooker/snooker_lg_ref.png"></p>
 <p>I created a metric from these logarithmed seedings that I called <strong>upset potential</strong>, which is just the size of the difference in the match's two players' logarithmed seedings, i.e.:</p>
 <ul>
 <li><strong>upset potential</strong> = <code>log2(higher seed) - log2(lower seed)</code></li>
 </ul>
-<p>I set any amateurs' seeding as 128. I also think of the upset potential as equating to <strong>skill gap</strong>. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></p>
+<p>I set any amateurs' seeding as 128. I also think of the upset potential as equating to <strong>skill gap</strong>. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
 <h2>Splitting Out the Upset Potentials</h2>
 <p>Here are the average upset potentials, split out by match length:</p>
-<p><img alt="Table 7" src="https://swpease.github.io/images/snooker/snooker_upset_potential.png"></p>
+<p><img alt="Table 7" src="/images/snooker/snooker_upset_potential.png"></p>
 <p>A smaller upset potential means the match had players closer in seeding. So we see that, moving from Best of 7 to Best of 11, the average upset potential increased, which means that <strong>the higher seeded players had easier matches on average with increasing match length</strong>. How much easier? Well, the Top 16 Seeds had on average an upset potential in their matches 0.4 greater in Best of 11 compared to Best of 9. That's like playing Seed 28 instead of Seed 21, Seed 42 instead of Seed 32, or Seed 84 instead of Seed 64!</p>
 <p>And the same info, further split by whether an upset occurred:</p>
-<p><img alt="Table 8" src="https://swpease.github.io/images/snooker/snooker_upset_potential_split.png"></p>
+<p><img alt="Table 8" src="/images/snooker/snooker_upset_potential_split.png"></p>
 <p>So, for a given match length, the upsets have a smaller average upset potential compared to the non-upsets, i.e. upsets happen when the players are closer in skill level. Obviously. This happens across the board. Wait... what about the Top 16 seeds in the Best of 11? Top 16 seeds have been more likely to lose against <em>worse</em> players in Best of 11s these past several years! Oh dear.</p>
 <h2>Splitting Out the Upset Potentials Even More</h2>
 <h3>Upset Percents, Grouped by Upset Potential</h3>
 <p>Well, so how does a higher seed do for a given upset potential, i.e. against players of the same skill gap, across the match lengths? Here is the data, rounding down the upset potentials to the nearest whole number:</p>
-<p><img alt="Table 9" src="https://swpease.github.io/images/snooker/snooker_u_p_barplt_log2.png"></p>
-<p>50% upsets is the proverbial coin flip. The blue / orange / green bars show what has <em>actually happened</em>, while the black lines at the top of each bar are the 95% confidence intervals. Essentially, the longer the black line, the less trust you should put in the corresponding colored bar staying where it is as more data is collected. Some of these are pretty huge (Top 16 upset potential of 0, 1, 6, 7). I'm guessing there aren't many data points... Nope. See here<sup id="fnref:4"><a class="footnote-ref" href="#fn:4" rel="footnote">4</a></sup>.</p>
-<p>Well, in that case, let's use that other upset potential metric from Footnote <sup id="fnref2:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup> and see what happens. The counts look better<sup id="fnref:5"><a class="footnote-ref" href="#fn:5" rel="footnote">5</a></sup>, so how does the plot look?:</p>
-<p><img alt="Table 10" src="https://swpease.github.io/images/snooker/snooker_u_p_barplt_ceillog2div4.png"></p>
+<p><img alt="Table 9" src="/images/snooker/snooker_u_p_barplt_log2.png"></p>
+<p>50% upsets is the proverbial coin flip. The blue / orange / green bars show what has <em>actually happened</em>, while the black lines at the top of each bar are the 95% confidence intervals. Essentially, the longer the black line, the less trust you should put in the corresponding colored bar staying where it is as more data is collected. Some of these are pretty huge (Top 16 upset potential of 0, 1, 6, 7). I'm guessing there aren't many data points... Nope. See here<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup>.</p>
+<p>Well, in that case, let's use that other upset potential metric from Footnote <sup id="fnref2:3"><a class="footnote-ref" href="#fn:3">3</a></sup> and see what happens. The counts look better<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>, so how does the plot look?:</p>
+<p><img alt="Table 10" src="/images/snooker/snooker_u_p_barplt_ceillog2div4.png"></p>
 <p>So it looks pretty similar, except at higher upset potentials for Top 16 matches, which was exactly the point.</p>
 <h4>Conclusions</h4>
 <p>What can we get out of these plots? </p>
@@ -105,7 +107,7 @@
 <p>"Percent realized upset potential" a lot of words; let's unpack it. We've established what "upset potential" means. "Realized" refers to the upsets that actually happened. "Percent" refers to totaling the realized upset potentials, and dividing by the total upset potentials over all the matches in the tournament round.</p>
 <p>A simple example: only two matches in the round, Match 1 has an upset potential of 3, while Match 2 has an upset potential of 1. If neither is an upset, the percent realized upset potential is 0%. If both are upsets, it is 100%. If Match 1 is an upset while Match 2 isn't, it is 3/4 = 75%. If Match 2 is an upset while Match 1 isn't, it is 1/4 = 25%.</p>
 <p>Here's what it looks like:</p>
-<p><img alt="Table 11" src="https://swpease.github.io/images/snooker/snooker_pct_realized_u_p.png"></p>
+<p><img alt="Table 11" src="/images/snooker/snooker_pct_realized_u_p.png"></p>
 <p>There seem to be a few aspects in favor of either side of the argument.</p>
 <p><strong>Points in favor of match length mattering:</strong></p>
 <ul>
@@ -133,23 +135,23 @@
 <hr>
 <ol>
 <li id="fn:1">
-<p>Note I said "Seeds", not "Ranking". So the defending champion is Seed 1. Yes, it's a smidge imprecise, but using rankings would have been a lot more effort for minimal gain.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Note I said "Seeds", not "Ranking". So the defending champion is Seed 1. Yes, it's a smidge imprecise, but using rankings would have been a lot more effort for minimal gain.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
-<p><img alt="Table 5" src="https://swpease.github.io/images/snooker/snooker_split_upset_pct.png">&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><img alt="Table 5" src="/images/snooker/snooker_split_upset_pct.png">&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:3">
-<p>I know it's not perfect, but I tried a more complicated transformation, namely <code>1 + log2(ceil(seeding / 4))</code>, which seemed closer to correct to me, but the graphs wound up looking basically the same, so I decided to keep the simpler transformation.&#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>I know it's not perfect, but I tried a more complicated transformation, namely <code>1 + log2(ceil(seeding / 4))</code>, which seemed closer to correct to me, but the graphs wound up looking basically the same, so I decided to keep the simpler transformation.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:4">
-<p><img alt="Table 6 supp_1" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2.png">
- <img alt="Table 6 supp_2" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_non-top16_plt.png">
-<img alt="Table 6 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_top16_plt.png">&#160;<a class="footnote-backref" href="#fnref:4" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p><img alt="Table 6 supp_1" src="/images/snooker/snooker_u_p_bin_counts_log2.png">
+ <img alt="Table 6 supp_2" src="/images/snooker/snooker_u_p_bin_counts_log2_non-top16_plt.png">
+<img alt="Table 6 supp_3" src="/images/snooker/snooker_u_p_bin_counts_log2_top16_plt.png">&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:5">
-<p><img alt="Table 7 supp" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4.png">
-<img alt="Table 7 supp_2" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_non-top16_plt.png">
-<img alt="Table 7 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_top16_plt.png">&#160;<a class="footnote-backref" href="#fnref:5" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p><img alt="Table 7 supp" src="/images/snooker/snooker_u_p_bin_counts_stuffdiv4.png">
+<img alt="Table 7 supp_2" src="/images/snooker/snooker_u_p_bin_counts_stuffdiv4_non-top16_plt.png">
+<img alt="Table 7 supp_3" src="/images/snooker/snooker_u_p_bin_counts_stuffdiv4_top16_plt.png">&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -168,7 +170,6 @@
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/swpease">github</a></li>
                         </ul>
@@ -177,10 +178,10 @@
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>

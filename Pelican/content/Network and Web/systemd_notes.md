@@ -1,6 +1,6 @@
 Title: Setting up Gunicorn with systemd on Ubuntu
 Date: 2019-01-25
-Category: Notes
+Category: Network and Web
 Tags: computer, backend, howto
 
 # Background

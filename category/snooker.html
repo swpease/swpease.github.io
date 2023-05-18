@@ -2,153 +2,303 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
         <title>Scott's Stuff - Snooker</title>
-        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
-        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://swpease.github.io/">Scott's Stuff </a></h1>
+                <h1><a href="/">Scott's Stuff</a></h1>
                 <nav><ul>
-                    <li><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
-                    <li><a href="https://swpease.github.io/category/rants.html">Rants</a></li>
-                    <li class="active"><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li><a href="/category/misc.html">Misc</a></li>
+                    <li><a href="/category/network-and-web.html">Network and Web</a></li>
+                    <li class="active"><a href="/category/snooker.html">Snooker</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/its-a-coin-flip.html">It's A Coin Flip!</a></h1>
+                    <h1 class="entry-title"><a href="/its-a-coin-flip-part-2.html">It's A Coin Flip! (Part 2)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2023-05-16T00:00:00-07:00">
+                Published: Tue 16 May 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Intro</h1>
+<p>Continuing my attempts to demonstrate that winning shorter matches in snooker should not be belittled, here I wanted to look at the Championship League. The impetus for this is that John Higgins recently won the tournament for the fourth time, beating Judd Trump (who was also going for his fourth win). That's 7 out of 17 wins between them. Clearly there's a knack for these things.</p>
+<p>The format of Championship League is kind of confusing, but here is a general outline:</p>
+<ul>
+<li>Two stages:<ul>
+<li>Group Stage (7 total, 7 players each group)</li>
+<li>Winner's Group (1 total, the 7 Group Stage winners)</li>
+</ul>
+</li>
+<li>Best of 5's.</li>
+<li>Each group begins with a round robin format:<ul>
+<li>If you're in the top four after the round robin, you enter a play-off.</li>
+<li>If you're #5, you're put into the next of the Group Stages.</li>
+<li>If you're in the bottom two, you're eliminated from the tournament.</li>
+</ul>
+</li>
+<li>Play-off has the standard knock-out format.<ul>
+<li>If you win, you go on to the Winner's Group</li>
+<li>If you don't, you're put into the next of the Group Stages.</li>
+</ul>
+</li>
+</ul>
+<p>So, to win the tournament, you need to win a Group Stage, and then win the Winner's Group. 4 of the 7 players in each group are put into the next Group Stage group. Except for after the last Group Stage group, of course. Group.</p>
+<p>This is invitational, so players get to pick which group stage they'd like to enter into the tournament at.</p>
+<h1>Set-up</h1>
+<p>I decided to look at it from the skeptical perspective: <strong>Winning the tournament is random chance</strong>. This means that I'm giving everyone a 1 in 7 chance of winning a given group. </p>
+<p>My thinking was:</p>
+<ul>
+<li>John Higgins is one of the best players.</li>
+<li>The odds of his four wins in a "roll of the dice" scenario is presumably quite low.</li>
+<li>The lower the math works out for the odds to be, the stronger my position that these wins are skill-based.</li>
+</ul>
+<h1>The Math</h1>
+<h2>Winning One Tournament</h2>
+<h3>Probabilities, Visualized</h3>
+<p>Pictures are nice. To see what I'm doing, here is an example probability tree, for someone entering in Group 5 (and ignoring the Winner' Group):</p>
+<p><img alt="Probability Tree" src="/images/snooker/championship_league/snooker_CL_p_tree.png"></p>
+<p>As an example of how to look at this, imagine:</p>
+<ul>
+<li>The player is one of the 4 players who don't win Group 5, but aren't eliminated (i.e. not in the bottom 2 of the round robin phase). </li>
+<li>Then, they win Group 6.  </li>
+</ul>
+<p>The probability of getting to the Winner's Group by that route is (4/7)*(1/7) = 4/49. </p>
+<p>Add up all of the routes-to-the-Winner's-Group probabilities to get the total probability of reaching the Winner's Group.</p>
+<h3>Mathematical Formulation</h3>
+<p>The probability of advancing to the Winner's Group is:
+</p>
+<div class="math">$$  \sum_{r=0}^{n - 1} p_{win}*p_{next}^{r} $$</div>
+<p>
+Where:</p>
+<ul>
+<li><span class="math">\(n\)</span> is the initial number of rounds remaining.<ul>
+<li>For example, if you entered in round 5 (always of 7), n is 3 (rounds 5, 6, and 7).</li>
+</ul>
+</li>
+<li><span class="math">\(p_{win}\)</span> is the probability of winning a group.<ul>
+<li>Here, this means 1/7.</li>
+</ul>
+</li>
+<li><span class="math">\(p_{next}\)</span> is the probability of going to the next Group Stage group.<ul>
+<li>Here, this means 4/7.</li>
+</ul>
+</li>
+</ul>
+<p>Since I'm assuming the probability of winning a group is always the same, the probability of winning the tournament is just 1/7 times the probability of reaching the Winner's Group:
+</p>
+<div class="math">$$  p_{win} * \sum_{r=0}^{n - 1} p_{win}*p_{next}^{r} $$</div>
+<h3>In Python</h3>
+<p>Here is the above equation, in Python!</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">p_win_group_stage</span><span class="p">(</span><span class="n">num_rounds</span><span class="p">,</span> <span class="n">p_win</span><span class="p">,</span> <span class="n">p_next</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    num_rounds: # of group stage rounds the player has, i.e # of opportunities to reach the final stage.</span>
+<span class="sd">    p_win: Probability of winning a round (group or final)</span>
+<span class="sd">    p_next: Probability of going to next Group Stage group (non-final rounds of group stage)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">p_win</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_next</span> <span class="o">**</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rounds</span><span class="p">)])</span>
+
+
+<span class="k">def</span> <span class="nf">p_win_tourn</span><span class="p">(</span><span class="n">num_rounds</span><span class="p">,</span> <span class="n">p_win</span><span class="p">,</span> <span class="n">p_next</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    num_rounds: # of group stage rounds the player has, i.e # of opportunities to reach the final stage.</span>
+<span class="sd">    p_win: Probability of winning a round (group or final)</span>
+<span class="sd">    p_next: Probability of going to next Group Stage group (non-final rounds of group stage)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">p_win</span> <span class="o">*</span> <span class="n">p_win_group_stage</span><span class="p">(</span><span class="n">num_rounds</span><span class="p">,</span> <span class="n">p_win</span><span class="p">,</span> <span class="n">p_next</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Winning Multiple Tournaments</h2>
+<p>We have a binary outcome for each tournament (Win/Loss). Ordinarily, we could model our #-of-Wins with a binomial distribution. However, in our case, that doesn't work, because players can enter in different rounds of the Group Stage. If they do, then they have different probabilities of winning each tournament. This calls for the... <strong>Poisson Binomial distribution</strong>.</p>
+<h3>The Poisson Binomial Distribution</h3>
+<p>The idea is just like the binomial distribution, except that each of the independent Bernoulli trials can have its own probability of success.</p>
+<p>Both the Poisson Binomial and binomial distributions are the sums of their Bernoulli trials. As such, both can be found by taking the <a href="https://en.wikipedia.org/wiki/Convolution_of_probability_distributions">convolution</a> of the Bernoulli trials.</p>
+<p>This is all well and good, but it's not like you're going to calculate it by hand or write the function to calculate it. Well, I did out of curiosity, but then I just found a Python package that does it for me.</p>
+<h1>The Odds of Higgins's Performance</h1>
+<p><strong>1 in 900</strong> (ish, in a roll-of-the-dice scenario)</p>
+<p>John Higgins played in 14 of the 17 Invitational Championship Leagues, entering in the following rounds (most recent first):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># W  W           W  W</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div>
+
+<p>So he won 3 events where he entered in the final Group Stage group!</p>
+<h2>The Poisson Binomial Code</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">poibin</span> <span class="kn">import</span> <span class="n">PoiBin</span> <span class="c1"># An un-published package I found on GitHub. There are other options.</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">p_win</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">7</span>
+    <span class="n">p_next</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">7</span>
+    <span class="n">max_rounds</span> <span class="o">=</span> <span class="mi">7</span>
+                      <span class="c1"># W  W           W  W</span>
+    <span class="n">entered_in_round</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">num_rounds</span> <span class="o">=</span> <span class="p">[(</span><span class="n">max_rounds</span> <span class="o">+</span>  <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">rd</span> <span class="k">for</span> <span class="n">rd</span> <span class="ow">in</span> <span class="n">entered_in_round</span><span class="p">]</span>
+    <span class="n">tourn_win_probs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_win_tourn</span><span class="p">(</span><span class="n">num_rds</span><span class="p">,</span> <span class="n">p_win</span><span class="p">,</span> <span class="n">p_next</span><span class="p">)</span> <span class="k">for</span> <span class="n">num_rds</span> <span class="ow">in</span> <span class="n">num_rounds</span><span class="p">]</span>
+    <span class="n">pb</span> <span class="o">=</span> <span class="n">PoiBin</span><span class="p">(</span><span class="n">tourn_win_probs</span><span class="p">)</span>
+    <span class="n">p_over_3_wins</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pb</span><span class="o">.</span><span class="n">cdf</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">p_over_3_wins</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Alternate Odds</h2>
+<p>I also checked the odds if we assume that Higgins will definitely get to the group playoffs (i.e. past the round robin phase), but the playoffs are still a dice roll. In code:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">p_win</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">4</span>
+    <span class="n">p_next</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">4</span>
+</code></pre></div>
+
+<p>In this scenario, the odds of Higgins's performance are way way better: <strong>1 in 7</strong>!</p>
+<p>Just adding in a little bit of an edge in favor of Higgins quickly improves the odds of his performance, down to believable levels. Here's a full table of odds against Higgins's performance at various probabilities of winning (p_win) and getting to the next Group Stage group (p_next), with blue highlights on the (rounded) two scenarios I've considered above:</p>
+<p><img alt="Odds Table" src="/images/snooker/championship_league/higgins_odds_table.png"></p>
+<h2>Conclusion</h2>
+<p><strong>Even just rounding 1/7 and 4/7 to two digits (0.14 and 0.57) yields pretty different odds. It doesn't take much of a shift away from roll-of-the-dice to wind up in believeable odds territory, so my argument isn't air-tight, but it's something!</strong></p>
+<h3>Code for the Above Table</h3>
+<div class="highlight"><pre><span></span><code><span class="n">round_win_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.14</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">round_x_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+<span class="n">max_rounds</span> <span class="o">=</span> <span class="mi">7</span>
+                  <span class="c1"># W  W           W  W</span>
+<span class="n">entered_in_round</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">num_rounds</span> <span class="o">=</span> <span class="p">[(</span><span class="n">max_rounds</span> <span class="o">+</span>  <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">rd</span> <span class="k">for</span> <span class="n">rd</span> <span class="ow">in</span> <span class="n">entered_in_round</span><span class="p">]</span>
+
+<span class="n">odds_over_3_wins_all</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">win_p</span> <span class="ow">in</span> <span class="n">round_win_ps</span><span class="p">:</span>
+    <span class="n">odds_over_3_wins</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x_p</span> <span class="ow">in</span> <span class="n">round_x_ps</span><span class="p">:</span>
+        <span class="n">p_wins</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_win_tourn</span><span class="p">(</span><span class="n">num_rds</span><span class="p">,</span> <span class="n">win_p</span><span class="p">,</span> <span class="n">x_p</span><span class="p">)</span> <span class="k">for</span> <span class="n">num_rds</span> <span class="ow">in</span> <span class="n">num_rounds</span><span class="p">]</span>
+        <span class="n">pb</span> <span class="o">=</span> <span class="n">PoiBin</span><span class="p">(</span><span class="n">p_wins</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pb</span><span class="o">.</span><span class="n">cdf</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">odds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span>
+        <span class="n">odds_over_3_wins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">odds</span><span class="p">)</span>
+    <span class="n">odds_over_3_wins_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">odds_over_3_wins</span><span class="p">)</span>
+</code></pre></div>
+
+<h1>Bonus: Brute Force!</h1>
+<p>I'm always a bit worried about my math when dealing with probabilities — it's so easy to make a mistake! So, I decided to make a brute force alternate formulation to check my math, and I guess kind of check my code. Voila:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">brute_force_single_tourn_outcome</span><span class="p">(</span><span class="n">num_rounds</span><span class="p">):</span>
+    <span class="n">rn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rn</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">7</span><span class="p">):</span>  <span class="c1"># Won</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">rn</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">7</span><span class="p">):</span>  <span class="c1"># Eliminated</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">num_rounds</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Eliminated b/c no more rounds.</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Through to next round of group stage.</span>
+            <span class="k">return</span> <span class="n">brute_force_single_tourn_outcome</span><span class="p">(</span><span class="n">num_rounds</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">brute_force_p_win_tourn</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">brute_force_single_tourn_outcome</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+</code></pre></div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/its-a-coin-flip.html" rel="bookmark"
+                           title="Permalink to It's A Coin Flip!">It's A Coin Flip!</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2022-05-25T00:00:00-07:00">
                 Published: Wed 25 May 2022
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>The Problem</h1>
-<p>While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People tend to complain that the shorter formats add a larger element of luck to the outcomes. I decided to try and put some numbers to this perception.</p>
-<h1>The Data</h1>
-<p>I got the data from <a href="snooker.org">snooker.org</a>'s API. I took data from the 2015/16 season through to the end of the past season (2021/22). I picked this timespan because it looks like the current rankings system <a href="http://api.snooker.org/help.html#RankingTypes">started then</a>. I looked at ranking events only, and only those first rounds of 128 players. I restricted to the round of 128 to try and keep things as even as possible (full draw, no "hot" players, etc.). I omitted walkovers, of which there are often one or two, and sometimes a lot (Gibralter Open 2022). To summarize:</p>
-<ol>
-<li>Seasons 2015/16 – 2021/22</li>
-<li>Ranking events</li>
-<li>First round only, of 128 players</li>
-<li>Walkovers excluded</li>
-</ol>
-<h1>Basic Comparison</h1>
-<h2>Upsets by Tournament</h2>
-<p>Let's start by looking at things on a tournament-by-tournament basis over time, because that's how the data comes at us. What percentage of matches per tournament were upsets?</p>
-<p><img alt="Table 1" src="https://swpease.github.io/images/snooker/snooker_pct_upsets_by_season.png"></p>
-<p>Hm. This isn't <em>super</em> informative... Let's ignore the seasons, group the tournaments by match length, and split out Top 16 seeds from the others:</p>
-<p><img alt="Table 2" src="https://swpease.github.io/images/snooker/snooker_num_upsets_by_tourn.png"></p>
-<p>I guess longer matches make upsets a bit rarer, but it's hardly night and day. A handy thing about this plot is the two y-axes (# Upsets) go to 100%, so we can use the heights of the dots between the Top 16 seeds and the non-Top 16 seeds for percent-wise comparison. </p>
-<p>What are the actual numbers? </p>
-<h2>Upset Percentages</h2>
-<p>Now let's look at the upset percentages of all tournaments combined, split out by match length. I'll also split out the Top 16 seeds<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> from the sub-Top 16 higher seeds. (See below<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup> for counts of the matches in each sub-group, so we know how many we're talking about. Important, but busy.) I'll include the Shoot-Out and British Open here and in any subsequent tables, even though I don't pay them much attention, because an extra line on a table is easier to ignore than extra lines/dots on a chart. Let's see:</p>
-<p><img alt="Table 4" src="https://swpease.github.io/images/snooker/snooker_total_upset_pct.png"></p>
-<p>So, looking at Best of 9's – 11's, upsets are less likely in longer matches. <strong>We can expect one more Top 16 Seed to be upset in Best of 7's compared to Best of 11's (2 -&gt; 3, of 16), and three more non-Top 16 Seeds (13 -&gt; 16, of 48)</strong>. For reference: </p>
-<ul>
-<li>20% = 1 in 5 </li>
-<li>17% = 1 in 6 </li>
-<li>14% = 1 in 7 </li>
-<li>12% = 1 in 8 </li>
-</ul>
-<p>Case closed! Right? Well... these matches aren't all between the same seedings each time. How much does that change things?</p>
-<h1>Factoring in Match Difficulty</h1>
-<h2>Upset Potentials Defined</h2>
-<p>Seed 2 losing to seed 42 is a bigger upset than seed 42 losing to seed 82. To account for this aspect of the rankings, I converted the seeds using the base-2 logarithm, which I'll write as <code>log2(seed)</code>. If you're unfamiliar with logarithms, here are some reference values to get the gist:</p>
-<p><img alt="Table 6" src="https://swpease.github.io/images/snooker/snooker_lg_ref.png"></p>
-<p>I created a metric from these logarithmed seedings that I called <strong>upset potential</strong>, which is just the size of the difference in the match's two players' logarithmed seedings, i.e.:</p>
-<ul>
-<li><strong>upset potential</strong> = <code>log2(higher seed) - log2(lower seed)</code></li>
-</ul>
-<p>I set any amateurs' seeding as 128. I also think of the upset potential as equating to <strong>skill gap</strong>. For instance, Yan (16) losing to Ding (32) has an upset potential of 1.00, and Ding losing to Ursenbacher (62) has an upset potential of 0.95. Does that sound about right to you?<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></p>
-<h2>Splitting Out the Upset Potentials</h2>
-<p>Here are the average upset potentials, split out by match length:</p>
-<p><img alt="Table 7" src="https://swpease.github.io/images/snooker/snooker_upset_potential.png"></p>
-<p>A smaller upset potential means the match had players closer in seeding. So we see that, moving from Best of 7 to Best of 11, the average upset potential increased, which means that <strong>the higher seeded players had easier matches on average with increasing match length</strong>. How much easier? Well, the Top 16 Seeds had on average an upset potential in their matches 0.4 greater in Best of 11 compared to Best of 9. That's like playing Seed 28 instead of Seed 21, Seed 42 instead of Seed 32, or Seed 84 instead of Seed 64!</p>
-<p>And the same info, further split by whether an upset occurred:</p>
-<p><img alt="Table 8" src="https://swpease.github.io/images/snooker/snooker_upset_potential_split.png"></p>
-<p>So, for a given match length, the upsets have a smaller average upset potential compared to the non-upsets, i.e. upsets happen when the players are closer in skill level. Obviously. This happens across the board. Wait... what about the Top 16 seeds in the Best of 11? Top 16 seeds have been more likely to lose against <em>worse</em> players in Best of 11s these past several years! Oh dear.</p>
-<h2>Splitting Out the Upset Potentials Even More</h2>
-<h3>Upset Percents, Grouped by Upset Potential</h3>
-<p>Well, so how does a higher seed do for a given upset potential, i.e. against players of the same skill gap, across the match lengths? Here is the data, rounding down the upset potentials to the nearest whole number:</p>
-<p><img alt="Table 9" src="https://swpease.github.io/images/snooker/snooker_u_p_barplt_log2.png"></p>
-<p>50% upsets is the proverbial coin flip. The blue / orange / green bars show what has <em>actually happened</em>, while the black lines at the top of each bar are the 95% confidence intervals. Essentially, the longer the black line, the less trust you should put in the corresponding colored bar staying where it is as more data is collected. Some of these are pretty huge (Top 16 upset potential of 0, 1, 6, 7). I'm guessing there aren't many data points... Nope. See here<sup id="fnref:4"><a class="footnote-ref" href="#fn:4" rel="footnote">4</a></sup>.</p>
-<p>Well, in that case, let's use that other upset potential metric from Footnote <sup id="fnref2:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup> and see what happens. The counts look better<sup id="fnref:5"><a class="footnote-ref" href="#fn:5" rel="footnote">5</a></sup>, so how does the plot look?:</p>
-<p><img alt="Table 10" src="https://swpease.github.io/images/snooker/snooker_u_p_barplt_ceillog2div4.png"></p>
-<p>So it looks pretty similar, except at higher upset potentials for Top 16 matches, which was exactly the point.</p>
-<h4>Conclusions</h4>
-<p>What can we get out of these plots? </p>
-<ul>
-<li><strong>At a given upset potential (skill gap), there are more instances of the expected pattern of increasing match length yielding decreasing upset % <em>not</em> happening than happening.</strong> </li>
-<li><strong>At a given skill gap, the differences in upset % usually and at most equate to differences of a few more/fewer upsets.</strong> Maximums: <ul>
-<li>For Top-16 Seeds: 3 fewer in Best of 11 vs Best of 7 at upset potential of 2.</li>
-<li>For non-Top-16 Seeds: 4 fewer in Best of 11 vs Best of 9 (note: not 7!) at upset potential of 0.</li>
-</ul>
-</li>
-<li><strong>At a given match length, increasing skill gap makes upsets less and less likely, with the notable exception of Top 16 seeds in Best of 11's, for which the opposite trend is true.</strong></li>
-</ul>
-<h2>Yet Another View</h2>
-<h3>Percent Realized Upset Potential</h3>
-<p>One last way I wanted to look at the data is comparing the total upset potential for a tournament against the amount of that upset potential that actually occurred.</p>
-<p>"Percent realized upset potential" a lot of words; let's unpack it. We've established what "upset potential" means. "Realized" refers to the upsets that actually happened. "Percent" refers to totaling the realized upset potentials, and dividing by the total upset potentials over all the matches in the tournament round.</p>
-<p>A simple example: only two matches in the round, Match 1 has an upset potential of 3, while Match 2 has an upset potential of 1. If neither is an upset, the percent realized upset potential is 0%. If both are upsets, it is 100%. If Match 1 is an upset while Match 2 isn't, it is 3/4 = 75%. If Match 2 is an upset while Match 1 isn't, it is 1/4 = 25%.</p>
-<p>Here's what it looks like:</p>
-<p><img alt="Table 11" src="https://swpease.github.io/images/snooker/snooker_pct_realized_u_p.png"></p>
-<p>There seem to be a few aspects in favor of either side of the argument.</p>
-<p><strong>Points in favor of match length mattering:</strong></p>
-<ul>
-<li>The Shoot-Out and British Open are at the upper end of percent realized upset potential.</li>
-<li>The Best of 7's at similar total upset potential to longer matches are also at the upper end of percent realized upset potential in that subset.</li>
-</ul>
-<p>However, in both cases there are not very many data points. Even so, I suspect neither the Shoot-Out nor the British Open data will budge much in coming years, given their unique formats.</p>
-<p><strong>Points in favor of match length not mattering:</strong></p>
-<ul>
-<li>The Best of 9's seem to have a similar distribution to the Best of 7's at the lower total upset potentials, along with a similar distribution to the Best of 11's at the higher total upset potentials. </li>
-</ul>
-<p>Finally, a general point about the graph:</p>
-<ul>
-<li>The percent realized upset potential seems to get both less variable and on average smaller as the total upset potential increases. However, the match lengths tend to increase as total upset potential increases, confounding the relationship. </li>
-</ul>
-<h1>Conclusions</h1>
-<p>I think the major takeaways from this analysis are:</p>
-<ul>
-<li><strong>Upsets are more likely in shorter matches.</strong></li>
-<li><strong>Shorter matches tend to be against harder opponents for higher seeds.</strong></li>
-<li><strong>At a given skill gap, there isn't a consistent relationship between match length and the chances of an upset.</strong></li>
-</ul>
-<p>That's all for now! I hope you at least gave the graphs a good look.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Note I said "Seeds", not "Ranking". So the defending champion is Seed 1. Yes, it's a smidge imprecise, but using rankings would have been a lot more effort for minimal gain.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:2">
-<p><img alt="Table 5" src="https://swpease.github.io/images/snooker/snooker_split_upset_pct.png">&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-<li id="fn:3">
-<p>I know it's not perfect, but I tried a more complicated transformation, namely <code>1 + log2(ceil(seeding / 4))</code>, which seemed closer to correct to me, but the graphs wound up looking basically the same, so I decided to keep the simpler transformation.&#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
-</li>
-<li id="fn:4">
-<p><img alt="Table 6 supp_1" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2.png">
- <img alt="Table 6 supp_2" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_non-top16_plt.png">
-<img alt="Table 6 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_log2_top16_plt.png">&#160;<a class="footnote-backref" href="#fnref:4" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
-</li>
-<li id="fn:5">
-<p><img alt="Table 7 supp" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4.png">
-<img alt="Table 7 supp_2" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_non-top16_plt.png">
-<img alt="Table 7 supp_3" src="https://swpease.github.io/images/snooker/snooker_u_p_bin_counts_stuffdiv4_top16_plt.png">&#160;<a class="footnote-backref" href="#fnref:5" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>                </article>
-            </aside><!-- /#featured -->
+<p>In <a href="/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info -->                <h1>The Problem</h1>
+<p>While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People tend to complain that the shorter formats add a larger element of luck to the outcomes. I decided to try and put some numbers to this …</p>
+                <a class="readmore" href="/its-a-coin-flip.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
@@ -160,7 +310,6 @@
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/swpease">github</a></li>
                         </ul>
@@ -169,10 +318,10 @@
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>

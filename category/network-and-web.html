@@ -2,34 +2,35 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Scott's Stuff - Notes</title>
-        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
-        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Scott's Stuff - Network and Web</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://swpease.github.io/">Scott's Stuff </a></h1>
+                <h1><a href="/">Scott's Stuff</a></h1>
                 <nav><ul>
-                    <li class="active"><a href="https://swpease.github.io/category/notes.html">Notes</a></li>
-                    <li><a href="https://swpease.github.io/category/rants.html">Rants</a></li>
-                    <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li><a href="/category/misc.html">Misc</a></li>
+                    <li class="active"><a href="/category/network-and-web.html">Network and Web</a></li>
+                    <li><a href="/category/snooker.html">Snooker</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html">Setting up Gunicorn with systemd on Ubuntu</a></h1>
+                    <h1 class="entry-title"><a href="/setting-up-gunicorn-with-systemd-on-ubuntu.html">Setting up Gunicorn with systemd on Ubuntu</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2019-01-25T00:00:00-08:00">
                 Published: Fri 25 January 2019
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/backend.html">backend</a> <a href="https://swpease.github.io/tag/howto.html">howto</a> </p>
+<p>In <a href="/category/network-and-web.html">Network and Web</a>.</p>
+<p>tags: <a href="/tag/computer.html">computer</a> <a href="/tag/backend.html">backend</a> <a href="/tag/howto.html">howto</a> </p>
 </footer><!-- /.post-info --><h1>Background</h1>
 <p>Gunicorn provides <a href="http://docs.gunicorn.org/en/stable/deploy.html">a number of ways</a> for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when it crashes'.</p>
 <p>In skimming over the options that Gunicorn listed, I initially thought of using Supervisor, probably because I had seen it mentioned before. I am wary of my disposition to trusting things just because I've heard of them, but decided to look into it anyway. I saw that I would need to install Python 2 to use it, and put my foot down.
@@ -43,7 +44,7 @@ I might need a systemd service file for <a href="https://www.nginx.com/resources
 <h1>Execution</h1>
 <p>Gunicorn recommends setting up a socket, which is always listening, which starts up Gunicorn proper via a corresponding "service". Per Eins's blog, this can be a more efficient way to use resources. For instance, if you have a bunch of rarely-accessed websites on the same server, you could activate / deactivate them as needed. I wonder if this is how Heroku manages its hobby-tier apps.</p>
 <p>The gunicorn.socket file is super simple:</p>
-<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">gunicorn socket</span>
 
 <span class="k">[Socket]</span>
@@ -51,12 +52,11 @@ I might need a systemd service file for <a href="https://www.nginx.com/resources
 
 <span class="k">[Install]</span>
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">sockets.target</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>It basically specifies an address to listen on for a stream socket. systemd appears to create this socket as part of this gunicorn.socket file's existence -- this socket is the only contents of /run/gunicorn when you navigate to it upon starting up the server.</p>
 <p>The gunicorn.service is a bit more complex:</p>
-<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">gunicorn daemon</span>
 <span class="na">Requires</span><span class="o">=</span><span class="s">gunicorn.socket</span>
 <span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
@@ -74,8 +74,7 @@ I might need a systemd service file for <a href="https://www.nginx.com/resources
 
 <span class="k">[Install]</span>
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>This is more complex. An annotation (NB: I do not know what all of these mean) goes something like:</p>
 <p><code>Requires=gunicorn.socket</code> says that gunicorn.service is dependent upon gunicorn.socket.</p>
@@ -105,7 +104,7 @@ When the service has been halted, then, per RuntimeDirectory's behavior, /run/gu
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="bookmark"
+                    <h1><a href="/stuff-about-ports-and-sockets.html" rel="bookmark"
                            title="Permalink to Stuff About Ports and Sockets">Stuff About Ports and Sockets</a></h1>
                 </header>
 
@@ -116,16 +115,16 @@ When the service has been halted, then, per RuntimeDirectory's behavior, /run/gu
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="https://swpease.github.io/category/notes.html">Notes</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/networking.html">networking</a> <a href="https://swpease.github.io/tag/sockets.html">sockets</a> </p>
+<p>In <a href="/category/network-and-web.html">Network and Web</a>.</p>
+<p>tags: <a href="/tag/computer.html">computer</a> <a href="/tag/networking.html">networking</a> <a href="/tag/sockets.html">sockets</a> </p>
 </footer><!-- /.post-info -->                <p>Socket = {IP Address : Port}
 Connection = {Local Socket + Remote Socket + Protocol}
 Protocol = TCP, UDP, etc.
 Listen = Look for client requests at a specific well-known port.</p>
 <p>A server socket can serve multiple clients because the service just kinda keeps track of which requests are associated with which clients. Which I suppose makes …</p>
-                <a class="readmore" href="https://swpease.github.io/stuff-about-ports-and-sockets.html">read more</a>
+                <a class="readmore" href="/stuff-about-ports-and-sockets.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
@@ -141,7 +140,6 @@ Listen = Look for client requests at a specific well-known port.</p>
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/swpease">github</a></li>
                         </ul>
@@ -150,10 +148,10 @@ Listen = Look for client requests at a specific well-known port.</p>
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>
