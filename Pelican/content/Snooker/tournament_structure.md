@@ -31,6 +31,9 @@ The bottom players have to play a whopping nine (9) rounds. On the one hand, the
 ## Before We Begin
 There'a a lot of words coming up. You might want to just skip to the bottom four graphs. The results probably won't surprise you (at least, they didn't surprise me).
 
+## Data Source
+As usual, the [snooker.org API](https://api.snooker.org/).
+
 # The Tournaments
 I'm looking at:
 

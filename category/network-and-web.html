@@ -5,32 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Scott's Stuff - Network and Web</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
+        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Scott's Stuff</a></h1>
+                <h1><a href="https://swpease.github.io/">Scott's Stuff</a></h1>
                 <nav><ul>
-                    <li><a href="/category/misc.html">Misc</a></li>
-                    <li class="active"><a href="/category/network-and-web.html">Network and Web</a></li>
-                    <li><a href="/category/snooker.html">Snooker</a></li>
+                    <li><a href="https://swpease.github.io/category/misc.html">Misc</a></li>
+                    <li class="active"><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
+                    <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/setting-up-gunicorn-with-systemd-on-ubuntu.html">Setting up Gunicorn with systemd on Ubuntu</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/setting-up-gunicorn-with-systemd-on-ubuntu.html">Setting up Gunicorn with systemd on Ubuntu</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2019-01-25T00:00:00-08:00">
                 Published: Fri 25 January 2019
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/network-and-web.html">Network and Web</a>.</p>
-<p>tags: <a href="/tag/computer.html">computer</a> <a href="/tag/backend.html">backend</a> <a href="/tag/howto.html">howto</a> </p>
+<p>In <a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/backend.html">backend</a> <a href="https://swpease.github.io/tag/howto.html">howto</a> </p>
 </footer><!-- /.post-info --><h1>Background</h1>
 <p>Gunicorn provides <a href="http://docs.gunicorn.org/en/stable/deploy.html">a number of ways</a> for you to handle running it in deployment. You need a supervisor, which is just a process that monitors and manages some other process. So you can tell it things like, 'start gunicorn when someone first requests a webpage' and 'reload gunicorn when it crashes'.</p>
 <p>In skimming over the options that Gunicorn listed, I initially thought of using Supervisor, probably because I had seen it mentioned before. I am wary of my disposition to trusting things just because I've heard of them, but decided to look into it anyway. I saw that I would need to install Python 2 to use it, and put my foot down.
@@ -104,7 +105,7 @@ When the service has been halted, then, per RuntimeDirectory's behavior, /run/gu
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/stuff-about-ports-and-sockets.html" rel="bookmark"
+                    <h1><a href="https://swpease.github.io/stuff-about-ports-and-sockets.html" rel="bookmark"
                            title="Permalink to Stuff About Ports and Sockets">Stuff About Ports and Sockets</a></h1>
                 </header>
 
@@ -115,16 +116,16 @@ When the service has been halted, then, per RuntimeDirectory's behavior, /run/gu
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/network-and-web.html">Network and Web</a>.</p>
-<p>tags: <a href="/tag/computer.html">computer</a> <a href="/tag/networking.html">networking</a> <a href="/tag/sockets.html">sockets</a> </p>
+<p>In <a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/computer.html">computer</a> <a href="https://swpease.github.io/tag/networking.html">networking</a> <a href="https://swpease.github.io/tag/sockets.html">sockets</a> </p>
 </footer><!-- /.post-info -->                <p>Socket = {IP Address : Port}
 Connection = {Local Socket + Remote Socket + Protocol}
 Protocol = TCP, UDP, etc.
 Listen = Look for client requests at a specific well-known port.</p>
 <p>A server socket can serve multiple clients because the service just kinda keeps track of which requests are associated with which clients. Which I suppose makes …</p>
-                <a class="readmore" href="/stuff-about-ports-and-sockets.html">read more</a>
+                <a class="readmore" href="https://swpease.github.io/stuff-about-ports-and-sockets.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
@@ -140,6 +141,7 @@ Listen = Look for client requests at a specific well-known port.</p>
                 <div class="social">
                         <h2>social</h2>
                         <ul>
+                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/swpease">github</a></li>
                         </ul>

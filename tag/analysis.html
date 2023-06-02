@@ -5,32 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Scott's Stuff - analysis</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
+        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Scott's Stuff</a></h1>
+                <h1><a href="https://swpease.github.io/">Scott's Stuff</a></h1>
                 <nav><ul>
-                    <li><a href="/category/misc.html">Misc</a></li>
-                    <li><a href="/category/network-and-web.html">Network and Web</a></li>
-                    <li><a href="/category/snooker.html">Snooker</a></li>
+                    <li><a href="https://swpease.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
+                    <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/what-does-tournament-structure-matter.html">What Does Tournament Structure Matter?</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/what-does-tournament-structure-matter.html">What Does Tournament Structure Matter?</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2023-05-31T00:00:00-07:00">
                 Published: Wed 31 May 2023
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="/tag/analysis.html">analysis</a> </p>
+<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
 </footer><!-- /.post-info --><h1>The Situation</h1>
 <p>"Oh boy, Jersey Shore!" you might be thinking. Sorry, not today.</p>
 <p>There are a few different tournament structures that they use in snooker. The three that I'm considering today are:</p>
@@ -58,6 +59,8 @@
 <p>The bottom players have to play a whopping nine (9) rounds. On the one hand, they're playing lower ranked players compared to other structures, but on the other hand, nine rounds. Similarly, the two middle tiers of player have 8 and 7 rounds.</p>
 <h2>Before We Begin</h2>
 <p>There'a a lot of words coming up. You might want to just skip to the bottom four graphs. The results probably won't surprise you (at least, they didn't surprise me).</p>
+<h2>Data Source</h2>
+<p>As usual, the <a href="https://api.snooker.org/">snooker.org API</a>.</p>
 <h1>The Tournaments</h1>
 <p>I'm looking at:</p>
 <ul>
@@ -84,15 +87,15 @@
 <p>I'd prefer to lump together all tournamentes with a given structure together and take their averages. There's not many tournaments in each group, so just being able to go from 4 to 5 would be nice.</p>
 <h3>Flat Draws</h3>
 <p>The flat draw is easy: it's always the UK. </p>
-<p><img alt="Figure 1" src="/images/snooker/tournament_structure/flat_tournaments.png"></p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/snooker/tournament_structure/flat_tournaments.png"></p>
 <p>Overlapping dots are points that <em>were</em> on the same spot, so I nudged them to make sure all were visible. If there were no players left at a given round, they're at zero (i.e. not on the chart).</p>
 <h3>Tiered Draws</h3>
 <p>The tiered draw tournaments' lump-ability largely depends on your belief in how much match length and tournament name matter. I'm convinced that match length is way overblown in terms of match outcomes, but am concerned about lumping the UK in with the Worlds. I'll plot the number of players who reached a given round, split out by their tier and the tournaments:</p>
-<p><img alt="Figure 2" src="/images/snooker/tournament_structure/tiered_tournaments.png"></p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/snooker/tournament_structure/tiered_tournaments.png"></p>
 <p>The WC 2022 is indistinguishable from 2019-2021. I'm less confident with the UK, which looks a bit different, but that looks mostly due to the good performance of the 17-48 ranked players (which included Ding!).</p>
 <h3>Random Draws</h3>
 <p>The random draws are in the British Open and ShootOut, two very different tournaments. Here is the same graph as above, but for these tournaments:</p>
-<p><img alt="Figure 3" src="/images/snooker/tournament_structure/random_tournaments.png"></p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/snooker/tournament_structure/random_tournaments.png"></p>
 <p>Sorry that it's getting a bit pointillist. In the British Opens, the 17-48 tier looks to have done a bit better at the expense of the 81+ tier, but... well it's not a huge difference. I'm not particularly interested in the random draw right now. Maybe I should just leave the British Open out. We'll cross that bridge when we come to it.</p>
 <h3>The Lumps</h3>
 <p>Actually, I'll just leave out the British Open and 2022 UK. I think including them would raise more doubts than the extra power is worth. I've looked at the subsequent charts in both scenarios, and they look close, so in the end it doesn't much matter.</p>
@@ -117,10 +120,10 @@
 </li>
 </ul>
 <h2>The Graphs, Split up by Player Tiers</h2>
-<p><img alt="Figure 4" src="/images/snooker/tournament_structure/avg_1-16.png">
-<img alt="Figure 5" src="/images/snooker/tournament_structure/avg_17-48.png">
-<img alt="Figure 6" src="/images/snooker/tournament_structure/avg_49-80.png">
-<img alt="Figure 7" src="/images/snooker/tournament_structure/avg_81plus.png"></p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/snooker/tournament_structure/avg_1-16.png">
+<img alt="Figure 5" src="https://swpease.github.io/images/snooker/tournament_structure/avg_17-48.png">
+<img alt="Figure 6" src="https://swpease.github.io/images/snooker/tournament_structure/avg_49-80.png">
+<img alt="Figure 7" src="https://swpease.github.io/images/snooker/tournament_structure/avg_81plus.png"></p>
 <p>I've rounded the average counts to the nearest whole numbers, because the graphs look way better this way. One issue that can't really go away is the differing number of rounds and entry points across tournament structure and player seeding. The result of this is that the lines you naturally try to make by connecting the dots aren't going to be quite right in most cases (e.g. L128 and L64 has L80 and L48 shoved in between).</p>
 <h2>Assessing the Graphs</h2>
 <h3>Tier 1-16</h3>
@@ -161,7 +164,7 @@ Firstly, this image appears too small (at least on my screen). You can get the f
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/its-a-coin-flip-part-2.html" rel="bookmark"
+                    <h1><a href="https://swpease.github.io/its-a-coin-flip-part-2.html" rel="bookmark"
                            title="Permalink to It's A Coin Flip! (Part 2)">It's A Coin Flip! (Part 2)</a></h1>
                 </header>
 
@@ -172,19 +175,19 @@ Firstly, this image appears too small (at least on my screen). You can get the f
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="/tag/analysis.html">analysis</a> </p>
+<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
 </footer><!-- /.post-info -->                <h1>Intro</h1>
 <p>Continuing my attempts to demonstrate that winning shorter matches in snooker should not be belittled, here I wanted to look at the Championship League. The impetus for this is that John Higgins recently won the tournament for the fourth time, beating Judd Trump (who was also going for his …</p>
-                <a class="readmore" href="/its-a-coin-flip-part-2.html">read more</a>
+                <a class="readmore" href="https://swpease.github.io/its-a-coin-flip-part-2.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/its-a-coin-flip.html" rel="bookmark"
+                    <h1><a href="https://swpease.github.io/its-a-coin-flip.html" rel="bookmark"
                            title="Permalink to It's A Coin Flip!">It's A Coin Flip!</a></h1>
                 </header>
 
@@ -195,13 +198,13 @@ Firstly, this image appears too small (at least on my screen). You can get the f
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/scott-pease.html">Scott Pease</a>
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
         </address>
-<p>In <a href="/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="/tag/analysis.html">analysis</a> </p>
+<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
 </footer><!-- /.post-info -->                <h1>The Problem</h1>
 <p>While I have only been watching snooker since the 2019 World Championship, I gather than matches have become shorter over time. People tend to complain that the shorter formats add a larger element of luck to the outcomes. I decided to try and put some numbers to this …</p>
-                <a class="readmore" href="/its-a-coin-flip.html">read more</a>
+                <a class="readmore" href="https://swpease.github.io/its-a-coin-flip.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
@@ -217,6 +220,7 @@ Firstly, this image appears too small (at least on my screen). You can get the f
                 <div class="social">
                         <h2>social</h2>
                         <ul>
+                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/swpease">github</a></li>
                         </ul>
