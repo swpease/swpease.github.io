@@ -32,7 +32,7 @@ This figure shows the scores of each player over the course of the match.
   - The yellow band(s) indicate where in the match there were snookers required.
 
 
-## 2. Shot Types over the Course of the Match
+## 2. Shot Outcomes over the Course of the Match
 ![Figure 2]({static}/images/snooker/livescores/frame_actions.png)
 
 This figure shows the outcome of each player's shots over the course of the match.
