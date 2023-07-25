@@ -21,7 +21,64 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/what-does-tournament-structure-matter.html">What Does Tournament Structure Matter?</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/livescore-graphics-wishes.html">Livescore Graphics Wishes</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2023-07-25T00:00:00-07:00">
+                Published: Tue 25 July 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>WST has in the past provided livescores and recent results for matches. The livescores showed:</p>
+<ul>
+<li>Who was at the table and their current break.</li>
+<li>The current frame's score and points remaining.</li>
+<li>The match score.</li>
+<li>Average shot times for the match.</li>
+</ul>
+<p>Strangely, they also offered the scores for each frame of the match, but only made it available after the match was finished, unless you went to <a href="snooker.org">snooker.org</a>, which somehow had these links mid-match.</p>
+<p>They are rolling out a new scoring site. A temporary one is currently up, which has had issues (e.g. wrong scores). I <strong>hope</strong> that this new site takes more advantage of the shot-by-shot data, because I think that there is a lot of potential to make things more interesting.</p>
+<h1>My Wish List</h1>
+<p>The WST does not to my knowledge publish information about the frames of matches it oversees. Luckily, the <a href="https://snookerscores.net/">WPBSA site</a> has tournament histories with matches and frame information. This <strong>does not</strong> include WST matches, but does include other snooker organizations, such as the Women's and Seniors' tours. In most cases, the frame data was manually recorded, so it is not there, but in some cases, such as the <a href="https://snookerscores.net/tournament-manager/2023-british-womens-open/results">British Women's Open</a>, some of the matches <strong>do</strong> have what are called a <strong>"frame sheet"</strong>. These frame sheets list the shot time and outcomes of the shots for each shot of the frame (<a href="https://snookerscores.net/scoreboard/frame/9iwyicyxumm5vmp7iocqod7mwhnimjcg/sheet">example</a>).</p>
+<p>Below are a couple of prototype graphics I've created from a WPBSA frame sheet from the 2023 British Women's Open final between Bai Yulu and Reanne Evans. Assuming that the WST has the data required to generate such a frame sheet for its own matches, I think things along these lines would be great additions to the livescoring site.</p>
+<p>Also, I'm aware that it should be "Bai" rather than "Yulu" in the legends. I just copied over the data.</p>
+<h2>1. Frame Scores over the Course of the Match</h2>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/snooker/livescores/frame_scores.png"></p>
+<p>This figure shows the scores of each player over the course of the match. </p>
+<ul>
+<li>The colored circles indicate which colored ball was potted at that time (hopefully obvious). </li>
+<li>The red "X"s indicate where a player fouled. In this match, Reanne fouled five times. </li>
+<li>The yellow band(s) indicate where in the match there were snookers required.</li>
+</ul>
+<h2>2. Shot Types over the Course of the Match</h2>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/snooker/livescores/frame_actions.png"></p>
+<p>This figure shows the outcome of each player's shots over the course of the match.</p>
+<p>I like how this graph provides a snapshot of the match that is complementary to the first graph. You can see things such as: </p>
+<ul>
+<li>Where a break went awry.</li>
+<li>Who played a good (dare I say, telling) safety resulting in fouls.</li>
+<li>Where a safety battle occurred.</li>
+</ul>
+<h2>Ending Remarks</h2>
+<p>These are just prototype graphs. I like them, but there are presumably other directions you can go with the data. I considered lumping the two together, but it looked so busy in my mental image that I didn't even actually try it.</p>
+<p>I do hope that the new WST livescore site takes better advantage of the frame data; you can really paint a picture with it.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/what-does-tournament-structure-matter.html" rel="bookmark"
+                           title="Permalink to What Does Tournament Structure Matter?">What Does Tournament Structure Matter?</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2023-05-31T00:00:00-07:00">
                 Published: Wed 31 May 2023
@@ -32,7 +89,7 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>The Situation</h1>
+</footer><!-- /.post-info -->                <h1>The Situation</h1>
 <p>"Oh boy, Jersey Shore!" you might be thinking. Sorry, not today.</p>
 <p>There are a few different tournament structures that they use in snooker. The three that I'm considering today are:</p>
 <ol>
@@ -42,125 +99,10 @@
 </ul>
 </li>
 <li>Flat draws:<ul>
-<li>Tournaments: UK Championship prior to 2022</li>
-<li>Structure: Seed 1 v 128, 2 v 127, ..., 64 v 65</li>
-</ul>
-</li>
-<li>Tiered draws:<ul>
-<li>Tournaments: World Championship, UK 2022</li>
-<li>Structure: Hard to describe. See <a href="https://en.wikipedia.org/wiki/2023_World_Snooker_Championship">Wikipedia</a> for an example.</li>
-</ul>
-</li>
-</ol>
-<p>In general, the tournaments try to strike a balance of maximizing the spotlight for the stars without being too harsh on the non-stars. People want to see Neil Robertson (for instance), so his qualifying matches are against a low-ranked player and are held over to the main event just in case (Astley 😠), or he gets a bye to the last 32.</p>
-<p>The common complaint with the flat draw structure is that it's unfair for the lower ranked players — particularly the new ones: "Congratulations on becoming a professional snooker player! Have fun playing Ronnie, Kyren, and Judd!" Poor Amine Amiri.</p>
-<p>The tiered draw structure prevents that scenario. However, it means that the lower ranked you are, the more matches you have to play. That aspect was what I was particularly interested in: who benefits, who doesn't? It can't magically be better for everyone. </p>
-<p>The top players come in at the Last 32. The common asterisks brought up seem to be "match sharpness" and the added risk of no ranking points for a first-match loss. But surely only a madman would say, "No thanks, I'll pass on the bye to the Last 32 so that I can be match sharp." or "Good thing I'm ranked #17 in time for the Worlds!".</p>
-<p>The bottom players have to play a whopping nine (9) rounds. On the one hand, they're playing lower ranked players compared to other structures, but on the other hand, nine rounds. Similarly, the two middle tiers of player have 8 and 7 rounds.</p>
-<h2>Before We Begin</h2>
-<p>There'a a lot of words coming up. You might want to just skip to the bottom four graphs. The results probably won't surprise you (at least, they didn't surprise me).</p>
-<h2>Data Source</h2>
-<p>As usual, the <a href="https://api.snooker.org/">snooker.org API</a>.</p>
-<h1>The Tournaments</h1>
-<p>I'm looking at:</p>
-<ul>
-<li>UK Championship 2015-2022<ul>
-<li>Flat 2015-2021</li>
-<li>Tiered 2022</li>
-</ul>
-</li>
-<li>British Open 2021-2022<ul>
-<li>Random</li>
-</ul>
-</li>
-<li>ShootOut 2016-2022<ul>
-<li>Random</li>
-</ul>
-</li>
-<li>World Championship 2019-2022<ul>
-<li>Tiered</li>
-<li>Best of 11 pre-"Judgement Day" for 2019-2021</li>
-</ul>
-</li>
-</ul>
-<h2>Lumping Tournaments Together</h2>
-<p>I'd prefer to lump together all tournamentes with a given structure together and take their averages. There's not many tournaments in each group, so just being able to go from 4 to 5 would be nice.</p>
-<h3>Flat Draws</h3>
-<p>The flat draw is easy: it's always the UK. </p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/snooker/tournament_structure/flat_tournaments.png"></p>
-<p>Overlapping dots are points that <em>were</em> on the same spot, so I nudged them to make sure all were visible. If there were no players left at a given round, they're at zero (i.e. not on the chart).</p>
-<h3>Tiered Draws</h3>
-<p>The tiered draw tournaments' lump-ability largely depends on your belief in how much match length and tournament name matter. I'm convinced that match length is way overblown in terms of match outcomes, but am concerned about lumping the UK in with the Worlds. I'll plot the number of players who reached a given round, split out by their tier and the tournaments:</p>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/snooker/tournament_structure/tiered_tournaments.png"></p>
-<p>The WC 2022 is indistinguishable from 2019-2021. I'm less confident with the UK, which looks a bit different, but that looks mostly due to the good performance of the 17-48 ranked players (which included Ding!).</p>
-<h3>Random Draws</h3>
-<p>The random draws are in the British Open and ShootOut, two very different tournaments. Here is the same graph as above, but for these tournaments:</p>
-<p><img alt="Figure 3" src="https://swpease.github.io/images/snooker/tournament_structure/random_tournaments.png"></p>
-<p>Sorry that it's getting a bit pointillist. In the British Opens, the 17-48 tier looks to have done a bit better at the expense of the 81+ tier, but... well it's not a huge difference. I'm not particularly interested in the random draw right now. Maybe I should just leave the British Open out. We'll cross that bridge when we come to it.</p>
-<h3>The Lumps</h3>
-<p>Actually, I'll just leave out the British Open and 2022 UK. I think including them would raise more doubts than the extra power is worth. I've looked at the subsequent charts in both scenarios, and they look close, so in the end it doesn't much matter.</p>
-<h1>Average Outcomes</h1>
-<h2>Preliminary</h2>
-<h3>Using Averages</h3>
-<p>Are the averages useful metrics here? i.e. are any of the player counts wildly different between tournaments? Looking at the above three graphs, there are a few cases where things are pretty variable, but in general the averages look useful.</p>
-<h3>How to Look at the Following Graphs</h3>
-<p>Because of the variable number of rounds that players play in the different tournament structures, there's not exactly an obvious way to compare them. You could...</p>
-<ul>
-<li>Read things left to right.<ul>
-<li>This looks at the number of rounds that players have made it through.</li>
-</ul>
-</li>
-<li>Read things right to left.<ul>
-<li>This looks at how deep into a tournament players are getting.</li>
-</ul>
-</li>
-<li>Look at a middle point (Last 32)<ul>
-<li>This is where all the tournament types sync up.</li>
-</ul>
-</li>
-</ul>
-<h2>The Graphs, Split up by Player Tiers</h2>
-<p><img alt="Figure 4" src="https://swpease.github.io/images/snooker/tournament_structure/avg_1-16.png">
-<img alt="Figure 5" src="https://swpease.github.io/images/snooker/tournament_structure/avg_17-48.png">
-<img alt="Figure 6" src="https://swpease.github.io/images/snooker/tournament_structure/avg_49-80.png">
-<img alt="Figure 7" src="https://swpease.github.io/images/snooker/tournament_structure/avg_81plus.png"></p>
-<p>I've rounded the average counts to the nearest whole numbers, because the graphs look way better this way. One issue that can't really go away is the differing number of rounds and entry points across tournament structure and player seeding. The result of this is that the lines you naturally try to make by connecting the dots aren't going to be quite right in most cases (e.g. L128 and L64 has L80 and L48 shoved in between).</p>
-<h2>Assessing the Graphs</h2>
-<h3>Tier 1-16</h3>
-<p>Coming as no surprise, tiered tournaments are beneficial to these players. Unless they lose first round, which is now more likely.</p>
-<h3>Tier 17-48</h3>
-<p>This group looks like it's most heavily footing the bill in the tiered tournaments. I mean, just look at that graph — they do worse than in the flat draws.</p>
-<h3>Tier 49-80</h3>
-<p>Tiered tournaments seem to be beneficial to these players.</p>
-<ul>
-<li>They tend to get about as deep into the tiered or flat draw tournaments.</li>
-<li>They are a bit more likely to get to the Last 32 in tiered tournaments.</li>
-<li>They are more likely to win at least one match (and two and three matches) in tiered tournaments.</li>
-</ul>
-<h3>Tier 81+</h3>
-<p>It's more mixed for these players.</p>
-<ul>
-<li>They tend to get farther into flat draw tournaments.</li>
-<li>They are less likely to get to the Last 32 in tiered tournaments.</li>
-<li>As with the tier 49-80, they are more likely to win at least one match (and two and three matches) in tiered tournaments.</li>
-</ul>
-<h1>My Conclusions</h1>
-<p>My assessment of the above graphs is about what I thought the case would be beforehand.</p>
-<ul>
-<li>Tiered tournaments are good for the top players, with extra risk of a first-match exit due to harder opponents.</li>
-<li>Tiered tournaments are bad for players just outside the top 16. Like the top players, they have harder matches from the start, but they have more rounds to get through.</li>
-<li>Tiered tournaments are arguably beneficial for low-to-mid-ranked players. They have easier early-rounds matches, but have to get through more rounds.</li>
-</ul>
-<!-- So how do these three tournament structures' average outcomes look?
-
-![Figure 3]({static}/images/snooker/tournament_structure/avg_outcomes.png)
-
-Firstly, this image appears too small (at least on my screen). You can get the full-sized image by right clicking on it and clicking on "Open Image in New Tab". -->                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<li>Tournaments: UK Championship …</li></ul></li></ol>
+                <a class="readmore" href="https://swpease.github.io/what-does-tournament-structure-matter.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
