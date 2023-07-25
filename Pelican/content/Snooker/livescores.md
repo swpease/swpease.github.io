@@ -22,20 +22,20 @@ Below are a couple of prototype graphics I've created from a WPBSA frame sheet f
 
 Also, I'm aware that it should be "Bai" rather than "Yulu" in the legends. I just copied over the data.
 
-## 1. Frame Scores over the Course of the Match
+## 1. Scores over Time
 ![Figure 1]({static}/images/snooker/livescores/frame_scores.png)
 
-This figure shows the scores of each player over the course of the match. 
+This figure shows the scores of each player over the course of the frame. 
 
   - The colored circles indicate which colored ball was potted at that time (hopefully obvious). 
   - The red "X"s indicate where a player fouled. In this match, Reanne fouled five times. 
   - The yellow band(s) indicate where in the match there were snookers required.
 
 
-## 2. Shot Outcomes over the Course of the Match
+## 2. Shot Outcomes over Time
 ![Figure 2]({static}/images/snooker/livescores/frame_actions.png)
 
-This figure shows the outcome of each player's shots over the course of the match.
+This figure shows the outcome of each player's shots over the course of the frame.
 
 I like how this graph provides a snapshot of the match that is complementary to the first graph. You can see things such as: 
 
