@@ -15,13 +15,436 @@
                 <nav><ul>
                     <li><a href="https://swpease.github.io/category/misc.html">Misc</a></li>
                     <li><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
+                    <li><a href="https://swpease.github.io/category/science.html">Science</a></li>
                     <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/livescore-graphics-wishes.html">Livescore Graphics Wishes</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html">Sand Crabs Eating Bits of Plastic String</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2024-10-15T00:00:00-07:00">
+                Published: Tue 15 October 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>I read a paper, <a href="https://aslopubs.
+onlinelibrary.wiley.com/doi/10.1002/lol2.10137">"Effects of environmentally relevant concentrations of 
+microplastic fibers on Pacific mole crab (Emerita analoga) mortality and
+reproduction." Horn DA; Granek EF; Steele CL. 2019.</a> as part of reading up on 
+stuff for a job I applied to. I had been learning how to use Bayesian 
+methods, so this seemed like a good way to try our using real data from the 
+wild. I'll link throughout to files in a repository that shows my work.</p>
+<p>The gist of the experiment was they set up 64 jars of sand + sea water, with a 
+crab in 
+each.
+32 
+were subject to the addition of three plastic fibers (1mm long) every four 
+days, for up to 71 days. Dead crabs were frozen for later analysis.</p>
+<p>I have been a bit confused by their analysis methods. They use a linear 
+mixed effects model, which is all well and good, but there seems to be a few 
+things that don't make sense.</p>
+<h1>Data Discrepancies</h1>
+<p>The paper provides the data at two sites: <a href="https://zenodo.
+org/records/3564736">Zenodo</a> and <a href="https://github.
+com/cwgrldotty/Sand-Crab-PSU-Data">GitHub</a>. The problem is they don't line up: </p>
+<ul>
+<li>The GitHub data is missing rows.</li>
+<li>The Zenodo data is missing columns.</li>
+<li>Some of the data is different:<ul>
+<li>environmental plastics present</li>
+<li>egg stage at end of experiment</li>
+</ul>
+</li>
+</ul>
+<p>I think that the "egg stage at end of experiment" data is correct for GitHub,
+and wrong for Zenodo, because there is a "# of egg stages" column as well 
+that on the Zenodo dataset sometimes exceeds "egg stage at end of 
+experiment", which would mean starting at negative egg stages.</p>
+<p>I don't think they used junk data for their analyses; I just think the 
+uploads are wonky. Well, there is one possible data error: I think crab 15's 
+days alive number should be 21, not 71, based on the 
+recorded date of death. As someone with terrible handwriting, I could 
+totally see mixing up a 2 and a 7. </p>
+<p>I made the presumed correction to crab 15 for my analyses. I used the Zenodo 
+data for 
+survival times because it wasn't missing crabs.</p>
+<h1>Survival Curve</h1>
+<p><a href="https://github.
+com/swpease/sand-crabs/blob/master/sand_crab_mortality.Rmd">R Markdown Notebook</a></p>
+<p>The lack of a survival curve surprised me. Instead, they have a boxplot that 
+I can't figure out. It doesn't match the data. My guess is that it's the 
+fitted survival times post-linear mixed effects model, i.e. it's the 
+shrunken (via partial pooling) survival times. As it is, here is the 
+survival curves, with 50% CI's:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/sand_crabs/survival_curves.png"></p>
+<p>I used a log-rank test to compare the treatment vs control groups' survival 
+curves. The p-value of the (presumed) corrected data was 0.10, which is higher 
+than the publication's value of 
+0.03 for their assessment of difference in mortality. Though,
+the (presumed) wrong data yielded a p-value for 
+the log-rank test of 0.05, which is obviously much closer. </p>
+<p>10 vs 17 
+deaths does seem quite a bit different. I always find myself mentally replacing 
+something below some subconsciously-determined p-value threshold as 
+"definitely", but 0.1 just means, well there's evidence. Unless I want it 
+<em>not</em> to be true, in which case I think, "yeah it's totally a case of that 
+10%". I do 
+think it's slightly interesting 
+that 
+the curves are the same for the first three weeks. I wonder if there's 
+anything to that. Maybe it lends credence to the authors' idea that the 
+mechanism of harm is the dyes in the plastics. I could imagine that 
+the body burden of dye is 
+steadily increasing over time.</p>
+<h1>"Number of PP Fibers Internalized"</h1>
+<p>I don't like this name for this variable. At the end of the experiment 
+(crabs that died before the end were frozen), they 
+dissolved the crabs and counted the number of plastic fibers they filtered 
+out of that. That gives you the body burden at death/censoring, not 
+necessarily the total number of fibers they internalized. What if they 
+could expel the fibers somehow? Also, what if some of the fibers were stuck 
+to their outside? I'm guessing they washed them or something to account for 
+this, since they were meticulous in preventing contamination at all the 
+other phases, but didn't mention anything. Or maybe it's a non-issue.</p>
+<p>This variable is used for regressions to explain mortality, the number of 
+days that a crab held live/viable eggs, and other outcomes. I don't think 
+it's an accurate representation of what it claims to be. Here is a graph of 
+number of fibers collected out of each crab at the end of the experiment vs 
+when they died:</p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/sand_crabs/body_burden.png"></p>
+<p>The horizontal axis has ticks every 20 because I couldn't figure out how to get 
+ggplot to make it how I wanted in the amount of time it took for me to get 
+mad at The Grammar of Graphics&trade;.</p>
+<p>Anyway, it seems highly unlikely in looking at this graph that every fiber a 
+crab intakes stays in it until death. The number never exceeds five, in 
+spite of reaching five in one crab after one third of the experiment's 
+duration, and three in one crab after nine days.</p>
+<p>I tried a statistical test to get at this being the case, by looking for an 
+association between exposure duration (i.e. days alive in the experiment) and 
+number of fibers internalized. I 
+used a Poisson regression on <span class="math">\(log(days)\)</span>, because I read that doing so lets 
+you combine data with different exposure durations, with the <span class="math">\(log(days)\)</span>'s 
+coefficient indicating the change in rate over time. As it is, I feel like 
+it would be difficult to find a statistical test that <em>did</em> show some sort 
+of relationship between counts and duration of exposure. So my model (in R 
+code) was essentially (names changed for clarity): </p>
+<p><code>glm(fibers ~ log(days 
+alive), family = poisson(), data = 
+treatment crabs)</code></p>
+<p>Which yielded:</p>
+<table>
+<thead>
+<tr>
+<th>param</th>
+<th>Estimate</th>
+<th>Std. Error</th>
+<th>z value</th>
+<th>Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(Intercept)</td>
+<td>0.87576</td>
+<td>0.69172</td>
+<td>1.266</td>
+<td>0.205</td>
+</tr>
+<tr>
+<td>log(num_of_days_alive)</td>
+<td>-0.07686</td>
+<td>0.18669</td>
+<td>-0.412</td>
+<td>0.681</td>
+</tr>
+</tbody>
+</table>
+<p>Which I interpret as "no, there isn't much of an association between counts and the different durations over which the counts accumulated", because of the small Estimate, relatively large Std. Error, and small Pr() for log(num_of_days_alive)."</p>
+<p>I kinda wish they'd checked the number of fibers suspended in the water of 
+the jars somehow.</p>
+<p>I also wonder if sand crabs can vomit. This paper on decapod crustacean 
+welfare in experiments [<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>] references a study on red rock crab digestive 
+processes [<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>] that observed regurgitation/vomiting. So maybe?</p>
+<p>Back to the statistics, the authors report a relationship between fibers 
+internalized and a 
+decrease 
+in days alive. I'm skeptical that there's anything to it. If they 
+incorporated some sort of accounting for censored observations (maybe <code>lme4</code> 
+handles things somehow?) they don't mention it in the publication.</p>
+<h1>Wait, what happened to Bayes?</h1>
+<p>Oh.</p>
+<h2>Exponentially Distributed Survival</h2>
+<p><a href="https://github.com/swpease/sand-crabs/blob/master/sand_crabs.ipynb">Jupyter Notebook</a></p>
+<p>Well, I tried fitting an Exponential distribution to the mortality data, per 
+the suggestion found in this lecture from <a href="https://youtu.be/Zi6N3GLUJmw?si=AowaUikcftuAtCCk&amp;t=4882">Statistical Rethinking</a>. I 
+think it looks okay?</p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/science/sand_crabs/exponential_72d.png"></p>
+<p>and to see where these curves go:</p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/science/sand_crabs/exponential_730d.png"></p>
+<p>My biggest concern is: what would the data have wound up looking like if the 
+experiment went on for longer?</p>
+<p>The graphs get a bit muddled where the treatment and control fits overlap, 
+but there's nothing fascinating going on at the overlaps, so I just left it 
+as is rather than double the number of graphs.</p>
+<h3>Picking a prior</h3>
+<p>The exponential model only has one parameter, <span class="math">\(\lambda\)</span>. The mean of an 
+exponential distribution is <span class="math">\(1 / 
+\lambda\)</span>, so what's the expected mean?</p>
+<p>As far as expected survival times, <a href="https://en.
+wikipedia.org/wiki/Emerita_analoga">according to Wikipedia</a>, most sand crabs 
+die in the autumn of their second year. These crabs were collected on August 4,
+so I guess I'll assume ~400 days survival time for crabs in their first year,
+maybe just ~50 for crabs in their second year,
+and I guess half in their first v second year,
+so ~200+ days average survival time. Can you age crabs? I don't suppose 
+they've got otoliths.</p>
+<p>With that in mind, and per the suggestion of the <a href="https://youtu.be/Zi6N3GLUJmw?si=apBRHdMb0lCodpNI&amp;t=5366">al ighty cElreath</a> to set the priors on the log 
+of the inverse of <span class="math">\(\lambda\)</span>, so that they are easier to define, I went with 
+a prior on said log inverse of <span class="math">\(log(1/\lambda) \sim N(5, 1)\)</span>, because <span class="math">\(e^5 = 
+148\)</span> (and <span class="math">\(e^4 = 55\)</span> and <span class="math">\(e^6 = 400\)</span>). <a href="https://github.com/swpease/sand-crabs/blob/master/simulated_exp_data.Rmd">R Markdown Notebook</a></p>
+<h3>Expected Survival Times</h3>
+<p>So speaking of expected survival time, what does the Bayesian approach say 
+it might be?</p>
+<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/forest_ridgeplot_90hdi.png"></p>
+<p>The posterior means of the mean survival time are 195 days for the control 
+and 98 days for the treatment, but 
+obviously 
+it's pretty uncertain about the control, which makes sense given how few of 
+the crabs died. You can see the uncertainty in the previous plot as well: those 
+orange curves are pretty spread out. It's at least mildly encouraging that 
+the control's posterior mean of the mean survival is fairly 
+close to what I presumed 
+based on the Wikipedia article. And the treatment mean survival time seems 
+reasonable as well.</p>
+<p>And as for the contrast of <span class="math">\(control - treatment\)</span> expected survival times,
+most of the 
+probability 
+mass is above zero, with a mean of 98 days (no, I didn't mistake it for the 
+treatment's mean):</p>
+<p><img alt="Figure 6" src="https://swpease.github.io/images/science/sand_crabs/forest_90hdi_contrast.png"></p>
+<p>So the treatment crabs probably don't live as long as the control crabs on 
+average, but it's pretty uncertain what exactly the difference is.</p>
+<h3>Rejected Prior</h3>
+<p>I also toyed with the idea of describing the survival as a mix of two 
+populations, first year and second year crabs, by using a mix of two 
+Exponential distributions. I decided it was 
+just more 
+complicated without providing any apparent benefits. The curves it was 
+producing looked pretty similar to an Exponential distribution. <a href="https://github.com/swpease/sand-crabs/blob/master/simulated_exp_data_spectrum.Rmd">R Markdown 
+Notebook</a></p>
+<h3>Sensitivity to the Prior</h3>
+<p>There's not a ton of data, so how much does the prior matter? Not too much. 
+It pushes the averages around, but the relationships are pretty consistent. </p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">log(mu)-prior</th>
+<th style="text-align: center;">mu-prior</th>
+<th style="text-align: center;">sigma-prior</th>
+<th style="text-align: center;">mu-post-ctrl</th>
+<th style="text-align: center;">mu-post-trt</th>
+<th style="text-align: center;">mu-post-contrast</th>
+<th style="text-align: center;">P(contrast &gt; 0)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">180</td>
+<td style="text-align: center;">92</td>
+<td style="text-align: center;">87</td>
+<td style="text-align: center;">0.95</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">148</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">194</td>
+<td style="text-align: center;">98</td>
+<td style="text-align: center;">96</td>
+<td style="text-align: center;">0.96</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">400</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">215</td>
+<td style="text-align: center;">104</td>
+<td style="text-align: center;">111</td>
+<td style="text-align: center;">0.96</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">140</td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">0.94</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">148</td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">182</td>
+<td style="text-align: center;">104</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">0.95</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">400</td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">251</td>
+<td style="text-align: center;">131</td>
+<td style="text-align: center;">119</td>
+<td style="text-align: center;">0.95</td>
+</tr>
+</tbody>
+</table>
+<h2>Gamma Distributed Survival</h2>
+<p><a href="https://github.com/swpease/sand-crabs/blob/master/sand_crabs_gamma.ipynb">Jupyter Notebook</a></p>
+<p>The gamma distribution gives a sigmoidal survival curve. Maybe that'll look 
+a bit better? I think it does, particularly at the start, though it also 
+seems to have more posterior 
+draws that aren't particularly believable. For instance,
+look at the control fits' cutoffs on the right at over 700 days.</p>
+<p><img alt="Figure 7" src="https://swpease.github.io/images/science/sand_crabs/gamma_72d.png">
+<img alt="Figure 8" src="https://swpease.github.io/images/science/sand_crabs/gamma_730d.png"></p>
+<h3>Expected Survival Times</h3>
+<p>Overall, it's a similar story with the expected survival times here. The 
+posterior 
+means of the mean survival time are 195 days for the control 
+and 84 days for the treatment, but 
+once again 
+it's pretty uncertain about the control. Actually, it's even more uncertain: 
+the standard deviation in this case is 133, while it was merely 64 with the 
+exponential model. This uncertainty propogates to the contrasts, though the 
+probability density is still mostly above 0 (97% &gt; 0), with a mean of 112.
+<img alt="Figure 9" src="https://swpease.github.io/images/science/sand_crabs/forest_ridgeplot_gamma_90hdi.png">
+<img alt="Figure 10" src="https://swpease.github.io/images/science/sand_crabs/contrast_gamma_90hdi.png"></p>
+<h3>Picking a Prior</h3>
+<p>This uses the same logic as above, but now needs two priors, <span class="math">\(\alpha\)</span> 
+(shape) and 
+<span class="math">\(\beta\)</span> (rate), where for a gamma distribution <span class="math">\(\mu = \alpha / \beta\)</span> and 
+<span class="math">\(var = \alpha / \beta^2\)</span>. I settled on <span class="math">\(\alpha \sim Gamma(\alpha = 2, \beta = 
+1)\)</span> and <span class="math">\(\beta \sim HalfNormal(\sigma = 0.02)\)</span>, which gave mostly unabsurd 
+survival curves in prior predictive simulation. </p>
+<h3>Rejected Prior</h3>
+<p>I also tried <span class="math">\(\beta \sim LogNormal(\mu = -4, \sigma = 1)\)</span>, but this did not 
+seem to produce as good of fits to the data.</p>
+<h3>Sensitivity to the Prior</h3>
+<p>Changing the prior to <span class="math">\(\beta \sim HalfNormal(\sigma = 0.2)\)</span> yielded similar 
+results. That's all I looked at because I'm sick of looking at survival curves.</p>
+<h1>Discussion / Conclusions</h1>
+<p><strong>Eating plastic is probably bad.</strong> What a revelation. Really though, I am 
+surprised at the posterior difference in expected survival time, because the 
+experiment was designed to have environmentally relevant exposure levels. 
+Do sand crabs have much shorter lifespans nowadays? Were the control crabs 
+happy to have clean water (but not clean sediment!) for once? Can sand crabs 
+vomit? The 
+unanswered 
+question. I suppose if they all had at least one fiber in them, they at the 
+very least don't always vomit up accidentally ingested non-food. I wish 
+they'd collected the poop.</p>
+<p><strong>Stay tuned for part 2: egg stuff!</strong></p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>"Anaesthesia of decapod crustaceans." de Souza Valente C. 2022.
+https://doi.org/10.1016/j.vas.2022.100252&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>"Gastric processing and evacuation during emersion in the red rock 
+crab, Cancer productus." Mcgaw IJ. 2007. https://doi.org/10.1080/10236240701393461&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/livescore-graphics-wishes.html" rel="bookmark"
+                           title="Permalink to Livescore Graphics Wishes">Livescore Graphics Wishes</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2023-07-25T00:00:00-07:00">
                 Published: Tue 25 July 2023
@@ -32,7 +455,7 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>WST has in the past provided livescores and recent results for matches. The livescores showed:</p>
 <ul>
 <li>Who was at the table and their current break.</li>
@@ -40,37 +463,10 @@
 <li>The match score.</li>
 <li>Average shot times for the match.</li>
 </ul>
-<p>Strangely, they also offered the scores for each frame of the match, but only made it available after the match was finished, unless you went to <a href="snooker.org">snooker.org</a>, which somehow had these links mid-match.</p>
-<p>They are rolling out a new scoring site. A temporary one is currently up, which has had issues (e.g. wrong scores). I <strong>hope</strong> that this new site takes more advantage of the shot-by-shot data, because I think that there is a lot of potential to make things more interesting.</p>
-<h1>My Wish List</h1>
-<p>The WST does not to my knowledge publish information about the frames of matches it oversees. Luckily, the <a href="https://snookerscores.net/">WPBSA site</a> has tournament histories with matches and frame information. This <strong>does not</strong> include WST matches, but does include other snooker organizations, such as the Women's and Seniors' tours. In most cases, the frame data was manually recorded, so it is not there, but in some cases, such as the <a href="https://snookerscores.net/tournament-manager/2023-british-womens-open/results">British Women's Open</a>, some of the matches <strong>do</strong> have what are called a <strong>"frame sheet"</strong>. These frame sheets list the shot time and outcomes of the shots for each shot of the frame (<a href="https://snookerscores.net/scoreboard/frame/9iwyicyxumm5vmp7iocqod7mwhnimjcg/sheet">example</a>).</p>
-<p>Below are a couple of prototype graphics I've created from a WPBSA frame sheet from the 2023 British Women's Open final between Bai Yulu and Reanne Evans. Assuming that the WST has the data required to generate such a frame sheet for its own matches, I think things along these lines would be great additions to the livescoring site.</p>
-<p>Also, I'm aware that it should be "Bai" rather than "Yulu" in the legends. I just copied over the data.</p>
-<h2>1. Scores over Time</h2>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/snooker/livescores/frame_scores.png"></p>
-<p>This figure shows the scores of each player over the course of the frame. </p>
-<ul>
-<li>The colored circles indicate which colored ball was potted at that time (hopefully obvious). </li>
-<li>The red "X"s indicate where a player fouled. In this match, Reanne fouled five times. </li>
-<li>The yellow band(s) indicate where in the match there were snookers required.</li>
-</ul>
-<h2>2. Shot Outcomes over Time</h2>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/snooker/livescores/frame_actions.png"></p>
-<p>This figure shows the outcome of each player's shots over the course of the frame.</p>
-<p>I like how this graph provides a snapshot of the match that is complementary to the first graph. You can see things such as: </p>
-<ul>
-<li>Where a break went awry.</li>
-<li>Who played a good (dare I say, telling) safety resulting in fouls.</li>
-<li>Where a safety battle occurred.</li>
-</ul>
-<h2>Ending Remarks</h2>
-<p>These are just prototype graphs. I like them, but there are presumably other directions you can go with the data. I considered lumping the two together, but it looked so busy in my mental image that I didn't even actually try it.</p>
-<p>I do hope that the new WST livescore site takes better advantage of the frame data; you can really paint a picture with it.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Strangely, they also offered the scores for each frame …</p>
+                <a class="readmore" href="https://swpease.github.io/livescore-graphics-wishes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
