@@ -17,12 +17,274 @@
                     <li><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
                     <li><a href="https://swpease.github.io/category/science.html">Science</a></li>
                     <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li><a href="https://swpease.github.io/category/statistics.html">Statistics</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html">Sand Crabs Eating Bits of Plastic String</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string-part-2.html">Sand Crabs Eating Bits of Plastic String (Part 2)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2024-12-17T00:00:00-08:00">
+                Published: Tue 17 December 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>In the <a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html">previous post</a> on sand crabs, I 
+looked at the mortality of the treatments (exposed to environmentally 
+relevant concentrations of microplastic 
+fibers)
+vs controls. Now, I want to look at another outcome that they looked at: egg 
+development.</p>
+<p>Specifically, looking at starting vs ending egg development stages. This 
+endpoint is.. much trickier to think about. For starters,
+it would 
+help 
+if I knew much about sand crab reproduction, or developmental biology in 
+general; it was always a bit of a snooze for me. I mean, I thought the 
+reproductive physiology course I took was interesting, but that's different. </p>
+<p>The authors explain:</p>
+<blockquote>
+<p>The selected experimental time frame (71 d) allowed for two full embryonic 
+development cycles as E. analoga has an incubation cycle of 29–32 days.</p>
+</blockquote>
+<p>I don't really get how this works. Why is one full cycle insufficient? Are 
+they expecting slower development in the treatment crabs? Is this just my 
+lack of 
+understanding of developmental biology?</p>
+<p>Adding onto that, there is another observed variable, "# of days with viable 
+eggs", which I don't really understand with respect to the start/end egg 
+development stages. Do the eggs become inviable after completed development? 
+Are there commonly miscarriages (or the egg equivalent)? I guess I should 
+just treat this as an exercise in Bayesian stats. It's not like I'll have 
+any idea on how to make a useful prior, anyway. </p>
+<h1>Data Discrepancies (Again)</h1>
+<p>I am using the GitHub data, because the Zenodo data for egg development 
+doesn't make sense. The GitHub data also has several issues, but at least 
+mostly makes sense. For the GitHub data, there are 3 control crabs missing 
+and 4 treatment crabs 
+missing, 
+which yields 29 control crabs and 28 treatment crabs.</p>
+<p>I made a couple of bar charts as descriptive statistics-type things, which 
+let me notice that Treatment Crab #5 has wrong data for its egg development 
+columns. I was going to just omit it, but I see that there are two other crabs 
+for 
+which the "# of egg stages(start to finish)" column — which should presumably 
+validate the difference between start and end egg stages — is off by one, so 
+I think that Treatment Crab #5's end stage was "Z", not 2, plus its "# of egg 
+stages(start to finish)" is off by two. This supports by "bad handwriting" 
+hypothesis from the previous post. I know I started putting lines through my 
+Z's after doing math where some formula creator (I'm guessing with good 
+handwriting) 
+decided to use Z's and 2's all over the place. Stupid mxn. Stupid ijk. At 
+least I'm <a href="https://betterexplained.
+com/articles/linear-algebra-guide/">not alone</a>.</p>
+<p>Also, there is a column "Reach Larval Stage(9+) Y/N", which has six 
+discrepancies with "Egg Stage end of exp". </p>
+<p>Also, there are seven cases of "# of days with viable eggs" exceeding "# of 
+days alive".</p>
+<p>I guess these data discrepancies further support my thinking of, "Don't take 
+the results of my analysis too seriously.".</p>
+<h1>Descriptive Plots</h1>
+<p>Here's what the distribution of egg development stages looked like at the 
+start and end of the experiment:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/sand_crabs/eggs/starting_stage_hist.png"></p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/sand_crabs/eggs/ending_stage_hist.png"></p>
+<p>And how many stages were progressed, based on starting stage, and split out 
+by whether the crab died before the end of experiment or not.</p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/science/sand_crabs/eggs/stages_progressed.png"></p>
+<p>I was on the fence about splitting out the above figure by died/lived. I 
+decided to, because with them combined, my first question was, "Did those 
+starting stage 10 treatment crabs with no development progression die early?
+". I suppose I could've coded died/lived by shape, too.</p>
+<h1>The Modeling</h1>
+<p>Firstly, an explanatory note re what follows. I did the modeling months 
+ago, but had wanted to extend the model to incorporate censoring. Censored 
+discrete distributions were(/are) not implemented in PyMC, as I discovered. 
+One of the maintainers (Ricardo) fixed that problem within a couple of days 
+of my bringing it up. However, said fix has been <a href="https://github.com/pymc-devs/pymc/pull/7662">sitting in pull request 
+purgatory</a> for months now. Oh well. The point is, I'm revisiting this 
+analysis months after having done it, so I am probably forgetting some 
+nuances of decisions/explanations.</p>
+<p>So just looking at the above plots, I was expecting the model output to show 
+minimal differences between treatments and controls, for whichever model I 
+decided to use.</p>
+<p>I opted to use a proportional odds (ordered logit) model. I don't think it's 
+entirely 
+appropriate, and looking for an alternative model for ordinal data led me to 
+discover the <a href="https://www3.nd.
+edu/~rwilliam/gologit2/UnderStandingGologit2016.pdf">generalized ordered logit model</a>, but it seemed like the best 
+option of any model options I could find. As it is, I don't really think 
+that the appropriateness of a proportional odds model is 
+assessable by humans without using the Brant Test. Or maybe I just haven't 
+become one with the log-odds yet.</p>
+<p>The DAG of this model made me go "Woof!". On paper, its description is 
+pretty simple: an ordered categorical outcome with an ordered categorical 
+predictor and a categorical predictor. That is: final egg stage outcome with 
+starting egg stage and treatment group predictors. Well, everything 
+right/down of beta_trt is derived stuff (Stan's "generated quantities" block),
+so 
+I guess you can ignore that part.</p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/science/sand_crabs/eggs/DAG.png"></p>
+<p>And here is the PyMC model that produced that thing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">N_cutpoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">N_deltas</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;end_stage&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
+    <span class="s2">&quot;start_stage&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
+    <span class="s2">&quot;cutpoint&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_cutpoints</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">model4</span><span class="p">:</span>
+    <span class="c1"># Data</span>
+    <span class="n">y_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;y_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+    <span class="n">start_stage_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;start_stage_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+    <span class="n">grp_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;grp_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;c_or_t_grp&quot;</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Priors</span>
+    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span> 
+                        <span class="n">mu</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_cutpoints</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">,</span> 
+                        <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                    <span class="c1">#   initval=(np.arange(N_cutpoints) / 2) - 2.5,</span>
+                        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+                        <span class="n">shape</span><span class="o">=</span><span class="n">N_cutpoints</span><span class="p">)</span>
+    <span class="n">beta_trt</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_trt&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">beta_start</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_start&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Dirichlet</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">N_deltas</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">N_deltas</span><span class="p">)</span>
+    <span class="n">delta_j</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;delta_j&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">delta</span><span class="p">]))</span>
+    <span class="n">delta_j_cumulative</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;delta_j_cumulative&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">delta_j</span><span class="p">))</span>
+
+    <span class="c1"># params</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> 
+                           <span class="p">(</span><span class="n">beta_start</span> <span class="o">*</span> <span class="n">delta_j_cumulative</span><span class="p">[</span><span class="n">start_stage_data</span><span class="p">]</span> 
+                            <span class="o">+</span> <span class="n">beta_trt</span> <span class="o">*</span> <span class="n">grp_data</span><span class="p">),</span>
+                            <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+
+    <span class="c1"># lik</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">OrderedLogistic</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> 
+                               <span class="n">eta</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> 
+                               <span class="n">cutpoints</span><span class="o">=</span><span class="n">cutpoints</span><span class="p">,</span> 
+                               <span class="n">observed</span><span class="o">=</span><span class="n">y_data</span><span class="p">,</span>
+                               <span class="n">shape</span><span class="o">=</span><span class="n">grp_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># derived params</span>
+    <span class="n">cutpoints_col</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cutpoints_col&quot;</span><span class="p">,</span> <span class="n">cutpoints</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">bc_delta_j_cumulative</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;bc_delta_j_cumulative&quot;</span><span class="p">,</span>
+                                        <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">delta_j_cumulative</span><span class="p">,</span> <span class="p">(</span><span class="n">N_cutpoints</span><span class="p">,</span> <span class="n">N_deltas</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">cutpoints_by_grp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cutpoints_by_grp&quot;</span><span class="p">,</span>
+                                        <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span>
+                                            <span class="n">cutpoints_col</span> <span class="o">-</span> <span class="p">(</span><span class="n">bc_delta_j_cumulative</span> <span class="o">*</span> <span class="n">beta_start</span><span class="p">),</span>  <span class="c1"># phi = 0</span>
+                                            <span class="n">cutpoints_col</span> <span class="o">-</span> <span class="p">((</span><span class="n">bc_delta_j_cumulative</span> <span class="o">*</span> <span class="n">beta_start</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta_trt</span><span class="p">),</span>  <span class="c1"># phi = beta_trt</span>
+                                        <span class="p">],</span>
+                                        <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                                        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cutpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
+
+    <span class="c1"># derived vars</span>
+    <span class="n">cum_probs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cum_probs&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">invlogit</span><span class="p">(</span><span class="n">cutpoints_by_grp</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cutpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;probs&quot;</span><span class="p">,</span> 
+                             <span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">cum_probs</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))])</span> <span class="o">-</span>
+                             <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">cum_probs</span><span class="p">])),</span>
+                             <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;end_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
+</code></pre></div>
+
+<p>I had quite a time making myself confident that the indexing tetris required 
+for <code>probs</code> wound up correct.</p>
+<h2>Output</h2>
+<p>Assessing the output of this model was a bit of a chore. I looked at it from 
+a couple of different perspectives:</p>
+<ol>
+<li>Posterior predictions</li>
+<li>The distributions of the <code>probs</code> in a forest plot.</li>
+</ol>
+<p>The first view looks neater, while the second provides HDI's.</p>
+<p>First, the posterior predictions. This graph could be cleaner, but the lack 
+of any apparent difference between treatments and controls kind of took the 
+wind out of my sails, at least to the extent of fixing the 
+indexing and re-looking-up how to 
+customize legends in seaborn/matplotlib. The bins are split by control = 0 
+and treatment = 1 (as if it matters), and ordered by ending stage (0 = stage 
+1, ..., 9 = stage 10, 10 = stage Z). I suppose the main wrong thing with 
+this model is how the probability of final stages earlier than starting 
+stages is non-zero.</p>
+<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_preds.png"></p>
+<p>Second, the posterior probabilities arranged as ["end_stage", "start_stage", 
+"grp"]. I think it's a bit interesting how the <code>end_stage</code> of zygote 
+monotonically increases with <code>start_stage</code>, and non-zygote end stages kind 
+of do a wave pattern indicating the most highly expected development of maybe 
+5-ish stages (e.g. the [9, x, x] portion of the graph):</p>
+<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_probs.png"></p>
+<p>When it comes down to it, there's not a lot of data to go off of, though, 
+and I don't think all this modeling work does a whole lot more than what 
+could be eyeballed based on the descriptive stats/plots. </p>
+<h1>Conclusions</h1>
+<p>Keeping in mind the caveats of "not my experiment" and "I'm not an invert 
+zoologist", I think that this experiment doesn't show any meaningful 
+difference between treatments and controls in terms of egg development.</p>
+<p>Probably the most valuable thing to come out of this exercise was the 
+(pending) enhancement to PyMC's capabilities. I figure that even if I'd 
+gotten to incorporate censoring into the model, all it would've done 
+would've been to make the HDI's wider and maybe push some point estimates 
+around.</p>
+<h1>Discussion (but not what you're expecting)</h1>
+<p>I was thinking about the survival analysis from part 1, and it occurred to 
+me that these "environmentally relevant concentrations" are if anything 
+<em>low</em>, because in the wild, there is a continuously replenishing supply of 
+microplastics for the crabs to eat, while this experiment capped their 
+exposure: if one of the three plastics was eaten, then the ambient 
+concentration was now two per jar, until the new batch was introduced. So 
+the crabs in the wild should be hurting even more than this experiment 
+suggests. Have people noticed sand crab population shifts? I feel like as a 
+kid there were tons around at the beach, but even just a decade later they 
+were much rarer, though that's a pretty flimsy bit of anecdotal evidence 
+(for instance, I 
+certainly went to the shore much less often as I got older).</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/randomized-quantile-residuals.html" rel="bookmark"
+                           title="Permalink to Randomized Quantile Residuals">Randomized Quantile Residuals</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2024-12-11T00:00:00-08:00">
+                Published: Wed 11 December 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/statistics.html">Statistics</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/statistics.html">statistics</a> </p>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
+<p>This post should hopefully be helpful for people like me who aren't 
+statisticians, but can work with R decently.</p>
+<p>While working with count data, I encountered a new type of residual 
+(apparently there's different types) 
+called the "randomized quantile residual" (RQR).
+RQRs essentially convert your residuals such that you …</p>
+                <a class="readmore" href="https://swpease.github.io/randomized-quantile-residuals.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html" rel="bookmark"
+                           title="Permalink to Sand Crabs Eating Bits of Plastic String">Sand Crabs Eating Bits of Plastic String</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2024-10-15T00:00:00-07:00">
                 Published: Tue 15 October 2024
@@ -33,410 +295,15 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>I read a paper, <a href="https://aslopubs.
 onlinelibrary.wiley.com/doi/10.1002/lol2.10137">"Effects of environmentally relevant concentrations of 
 microplastic fibers on Pacific mole crab (Emerita analoga) mortality and
 reproduction." Horn DA; Granek EF; Steele CL. 2019.</a> as part of reading up on 
-stuff for a job I applied to. I had been learning how to use Bayesian 
-methods, so this seemed like a good way to try our using real data from the 
-wild. I'll link throughout to files in a repository that shows my work.</p>
-<p>The gist of the experiment was they set up 64 jars of sand + sea water, with a 
-crab in 
-each.
-32 
-were subject to the addition of three plastic fibers (1mm long) every four 
-days, for up to 71 days. Dead crabs were frozen for later analysis.</p>
-<p>I have been a bit confused by their analysis methods. They use a linear 
-mixed effects model, which is all well and good, but there seems to be a few 
-things that don't make sense.</p>
-<h1>Data Discrepancies</h1>
-<p>The paper provides the data at two sites: <a href="https://zenodo.
-org/records/3564736">Zenodo</a> and <a href="https://github.
-com/cwgrldotty/Sand-Crab-PSU-Data">GitHub</a>. The problem is they don't line up: </p>
-<ul>
-<li>The GitHub data is missing rows.</li>
-<li>The Zenodo data is missing columns.</li>
-<li>Some of the data is different:<ul>
-<li>environmental plastics present</li>
-<li>egg stage at end of experiment</li>
-</ul>
-</li>
-</ul>
-<p>I think that the "egg stage at end of experiment" data is correct for GitHub,
-and wrong for Zenodo, because there is a "# of egg stages" column as well 
-that on the Zenodo dataset sometimes exceeds "egg stage at end of 
-experiment", which would mean starting at negative egg stages.</p>
-<p>I don't think they used junk data for their analyses; I just think the 
-uploads are wonky. Well, there is one possible data error: I think crab 15's 
-days alive number should be 21, not 71, based on the 
-recorded date of death. As someone with terrible handwriting, I could 
-totally see mixing up a 2 and a 7. </p>
-<p>I made the presumed correction to crab 15 for my analyses. I used the Zenodo 
-data for 
-survival times because it wasn't missing crabs.</p>
-<h1>Survival Curve</h1>
-<p><a href="https://github.
-com/swpease/sand-crabs/blob/master/sand_crab_mortality.Rmd">R Markdown Notebook</a></p>
-<p>The lack of a survival curve surprised me. Instead, they have a boxplot that 
-I can't figure out. It doesn't match the data. My guess is that it's the 
-fitted survival times post-linear mixed effects model, i.e. it's the 
-shrunken (via partial pooling) survival times. As it is, here is the 
-survival curves, with 50% CI's:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/science/sand_crabs/survival_curves.png"></p>
-<p>I used a log-rank test to compare the treatment vs control groups' survival 
-curves. The p-value of the (presumed) corrected data was 0.10, which is higher 
-than the publication's value of 
-0.03 for their assessment of difference in mortality. Though,
-the (presumed) wrong data yielded a p-value for 
-the log-rank test of 0.05, which is obviously much closer. </p>
-<p>10 vs 17 
-deaths does seem quite a bit different. I always find myself mentally replacing 
-something below some subconsciously-determined p-value threshold as 
-"definitely", but 0.1 just means, well there's evidence. Unless I want it 
-<em>not</em> to be true, in which case I think, "yeah it's totally a case of that 
-10%". I do 
-think it's slightly interesting 
-that 
-the curves are the same for the first three weeks. I wonder if there's 
-anything to that. Maybe it lends credence to the authors' idea that the 
-mechanism of harm is the dyes in the plastics. I could imagine that 
-the body burden of dye is 
-steadily increasing over time.</p>
-<h1>"Number of PP Fibers Internalized"</h1>
-<p>I don't like this name for this variable. At the end of the experiment 
-(crabs that died before the end were frozen), they 
-dissolved the crabs and counted the number of plastic fibers they filtered 
-out of that. That gives you the body burden at death/censoring, not 
-necessarily the total number of fibers they internalized. What if they 
-could expel the fibers somehow? Also, what if some of the fibers were stuck 
-to their outside? I'm guessing they washed them or something to account for 
-this, since they were meticulous in preventing contamination at all the 
-other phases, but didn't mention anything. Or maybe it's a non-issue.</p>
-<p>This variable is used for regressions to explain mortality, the number of 
-days that a crab held live/viable eggs, and other outcomes. I don't think 
-it's an accurate representation of what it claims to be. Here is a graph of 
-number of fibers collected out of each crab at the end of the experiment vs 
-when they died:</p>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/science/sand_crabs/body_burden.png"></p>
-<p>The horizontal axis has ticks every 20 because I couldn't figure out how to get 
-ggplot to make it how I wanted in the amount of time it took for me to get 
-mad at The Grammar of Graphics&trade;.</p>
-<p>Anyway, it seems highly unlikely in looking at this graph that every fiber a 
-crab intakes stays in it until death. The number never exceeds five, in 
-spite of reaching five in one crab after one third of the experiment's 
-duration, and three in one crab after nine days.</p>
-<p>I tried a statistical test to get at this being the case, by looking for an 
-association between exposure duration (i.e. days alive in the experiment) and 
-number of fibers internalized. I 
-used a Poisson regression on <span class="math">\(log(days)\)</span>, because I read that doing so lets 
-you combine data with different exposure durations, with the <span class="math">\(log(days)\)</span>'s 
-coefficient indicating the change in rate over time. As it is, I feel like 
-it would be difficult to find a statistical test that <em>did</em> show some sort 
-of relationship between counts and duration of exposure. So my model (in R 
-code) was essentially (names changed for clarity): </p>
-<p><code>glm(fibers ~ log(days 
-alive), family = poisson(), data = 
-treatment crabs)</code></p>
-<p>Which yielded:</p>
-<table>
-<thead>
-<tr>
-<th>param</th>
-<th>Estimate</th>
-<th>Std. Error</th>
-<th>z value</th>
-<th>Pr(&gt;|z|)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>(Intercept)</td>
-<td>0.87576</td>
-<td>0.69172</td>
-<td>1.266</td>
-<td>0.205</td>
-</tr>
-<tr>
-<td>log(num_of_days_alive)</td>
-<td>-0.07686</td>
-<td>0.18669</td>
-<td>-0.412</td>
-<td>0.681</td>
-</tr>
-</tbody>
-</table>
-<p>Which I interpret as "no, there isn't much of an association between counts and the different durations over which the counts accumulated", because of the small Estimate, relatively large Std. Error, and small Pr() for log(num_of_days_alive)."</p>
-<p>I kinda wish they'd checked the number of fibers suspended in the water of 
-the jars somehow.</p>
-<p>I also wonder if sand crabs can vomit. This paper on decapod crustacean 
-welfare in experiments [<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>] references a study on red rock crab digestive 
-processes [<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>] that observed regurgitation/vomiting. So maybe?</p>
-<p>Back to the statistics, the authors report a relationship between fibers 
-internalized and a 
-decrease 
-in days alive. I'm skeptical that there's anything to it. If they 
-incorporated some sort of accounting for censored observations (maybe <code>lme4</code> 
-handles things somehow?) they don't mention it in the publication.</p>
-<h1>Wait, what happened to Bayes?</h1>
-<p>Oh.</p>
-<h2>Exponentially Distributed Survival</h2>
-<p><a href="https://github.com/swpease/sand-crabs/blob/master/sand_crabs.ipynb">Jupyter Notebook</a></p>
-<p>Well, I tried fitting an Exponential distribution to the mortality data, per 
-the suggestion found in this lecture from <a href="https://youtu.be/Zi6N3GLUJmw?si=AowaUikcftuAtCCk&amp;t=4882">Statistical Rethinking</a>. I 
-think it looks okay?</p>
-<p><img alt="Figure 3" src="https://swpease.github.io/images/science/sand_crabs/exponential_72d.png"></p>
-<p>and to see where these curves go:</p>
-<p><img alt="Figure 4" src="https://swpease.github.io/images/science/sand_crabs/exponential_730d.png"></p>
-<p>My biggest concern is: what would the data have wound up looking like if the 
-experiment went on for longer?</p>
-<p>The graphs get a bit muddled where the treatment and control fits overlap, 
-but there's nothing fascinating going on at the overlaps, so I just left it 
-as is rather than double the number of graphs.</p>
-<h3>Picking a prior</h3>
-<p>The exponential model only has one parameter, <span class="math">\(\lambda\)</span>. The mean of an 
-exponential distribution is <span class="math">\(1 / 
-\lambda\)</span>, so what's the expected mean?</p>
-<p>As far as expected survival times, <a href="https://en.
-wikipedia.org/wiki/Emerita_analoga">according to Wikipedia</a>, most sand crabs 
-die in the autumn of their second year. These crabs were collected on August 4,
-so I guess I'll assume ~400 days survival time for crabs in their first year,
-maybe just ~50 for crabs in their second year,
-and I guess half in their first v second year,
-so ~200+ days average survival time. Can you age crabs? I don't suppose 
-they've got otoliths.</p>
-<p>With that in mind, and per the suggestion of the <a href="https://youtu.be/Zi6N3GLUJmw?si=apBRHdMb0lCodpNI&amp;t=5366">al ighty cElreath</a> to set the priors on the log 
-of the inverse of <span class="math">\(\lambda\)</span>, so that they are easier to define, I went with 
-a prior on said log inverse of <span class="math">\(log(1/\lambda) \sim N(5, 1)\)</span>, because <span class="math">\(e^5 = 
-148\)</span> (and <span class="math">\(e^4 = 55\)</span> and <span class="math">\(e^6 = 400\)</span>). <a href="https://github.com/swpease/sand-crabs/blob/master/simulated_exp_data.Rmd">R Markdown Notebook</a></p>
-<h3>Expected Survival Times</h3>
-<p>So speaking of expected survival time, what does the Bayesian approach say 
-it might be?</p>
-<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/forest_ridgeplot_90hdi.png"></p>
-<p>The posterior means of the mean survival time are 195 days for the control 
-and 98 days for the treatment, but 
-obviously 
-it's pretty uncertain about the control, which makes sense given how few of 
-the crabs died. You can see the uncertainty in the previous plot as well: those 
-orange curves are pretty spread out. It's at least mildly encouraging that 
-the control's posterior mean of the mean survival is fairly 
-close to what I presumed 
-based on the Wikipedia article. And the treatment mean survival time seems 
-reasonable as well.</p>
-<p>And as for the contrast of <span class="math">\(control - treatment\)</span> expected survival times,
-most of the 
-probability 
-mass is above zero, with a mean of 98 days (no, I didn't mistake it for the 
-treatment's mean):</p>
-<p><img alt="Figure 6" src="https://swpease.github.io/images/science/sand_crabs/forest_90hdi_contrast.png"></p>
-<p>So the treatment crabs probably don't live as long as the control crabs on 
-average, but it's pretty uncertain what exactly the difference is.</p>
-<h3>Rejected Prior</h3>
-<p>I also toyed with the idea of describing the survival as a mix of two 
-populations, first year and second year crabs, by using a mix of two 
-Exponential distributions. I decided it was 
-just more 
-complicated without providing any apparent benefits. The curves it was 
-producing looked pretty similar to an Exponential distribution. <a href="https://github.com/swpease/sand-crabs/blob/master/simulated_exp_data_spectrum.Rmd">R Markdown 
-Notebook</a></p>
-<h3>Sensitivity to the Prior</h3>
-<p>There's not a ton of data, so how much does the prior matter? Not too much. 
-It pushes the averages around, but the relationships are pretty consistent. </p>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">log(mu)-prior</th>
-<th style="text-align: center;">mu-prior</th>
-<th style="text-align: center;">sigma-prior</th>
-<th style="text-align: center;">mu-post-ctrl</th>
-<th style="text-align: center;">mu-post-trt</th>
-<th style="text-align: center;">mu-post-contrast</th>
-<th style="text-align: center;">P(contrast &gt; 0)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">55</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">180</td>
-<td style="text-align: center;">92</td>
-<td style="text-align: center;">87</td>
-<td style="text-align: center;">0.95</td>
-</tr>
-<tr>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">148</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">194</td>
-<td style="text-align: center;">98</td>
-<td style="text-align: center;">96</td>
-<td style="text-align: center;">0.96</td>
-</tr>
-<tr>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">400</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">215</td>
-<td style="text-align: center;">104</td>
-<td style="text-align: center;">111</td>
-<td style="text-align: center;">0.96</td>
-</tr>
-<tr>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">55</td>
-<td style="text-align: center;">0.5</td>
-<td style="text-align: center;">140</td>
-<td style="text-align: center;">85</td>
-<td style="text-align: center;">55</td>
-<td style="text-align: center;">0.94</td>
-</tr>
-<tr>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">148</td>
-<td style="text-align: center;">0.5</td>
-<td style="text-align: center;">182</td>
-<td style="text-align: center;">104</td>
-<td style="text-align: center;">79</td>
-<td style="text-align: center;">0.95</td>
-</tr>
-<tr>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">400</td>
-<td style="text-align: center;">0.5</td>
-<td style="text-align: center;">251</td>
-<td style="text-align: center;">131</td>
-<td style="text-align: center;">119</td>
-<td style="text-align: center;">0.95</td>
-</tr>
-</tbody>
-</table>
-<h2>Gamma Distributed Survival</h2>
-<p><a href="https://github.com/swpease/sand-crabs/blob/master/sand_crabs_gamma.ipynb">Jupyter Notebook</a></p>
-<p>The gamma distribution gives a sigmoidal survival curve. Maybe that'll look 
-a bit better? I think it does, particularly at the start, though it also 
-seems to have more posterior 
-draws that aren't particularly believable. For instance,
-look at the control fits' cutoffs on the right at over 700 days.</p>
-<p><img alt="Figure 7" src="https://swpease.github.io/images/science/sand_crabs/gamma_72d.png">
-<img alt="Figure 8" src="https://swpease.github.io/images/science/sand_crabs/gamma_730d.png"></p>
-<h3>Expected Survival Times</h3>
-<p>Overall, it's a similar story with the expected survival times here. The 
-posterior 
-means of the mean survival time are 195 days for the control 
-and 84 days for the treatment, but 
-once again 
-it's pretty uncertain about the control. Actually, it's even more uncertain: 
-the standard deviation in this case is 133, while it was merely 64 with the 
-exponential model. This uncertainty propogates to the contrasts, though the 
-probability density is still mostly above 0 (97% &gt; 0), with a mean of 112.
-<img alt="Figure 9" src="https://swpease.github.io/images/science/sand_crabs/forest_ridgeplot_gamma_90hdi.png">
-<img alt="Figure 10" src="https://swpease.github.io/images/science/sand_crabs/contrast_gamma_90hdi.png"></p>
-<h3>Picking a Prior</h3>
-<p>This uses the same logic as above, but now needs two priors, <span class="math">\(\alpha\)</span> 
-(shape) and 
-<span class="math">\(\beta\)</span> (rate), where for a gamma distribution <span class="math">\(\mu = \alpha / \beta\)</span> and 
-<span class="math">\(var = \alpha / \beta^2\)</span>. I settled on <span class="math">\(\alpha \sim Gamma(\alpha = 2, \beta = 
-1)\)</span> and <span class="math">\(\beta \sim HalfNormal(\sigma = 0.02)\)</span>, which gave mostly unabsurd 
-survival curves in prior predictive simulation. </p>
-<h3>Rejected Prior</h3>
-<p>I also tried <span class="math">\(\beta \sim LogNormal(\mu = -4, \sigma = 1)\)</span>, but this did not 
-seem to produce as good of fits to the data.</p>
-<h3>Sensitivity to the Prior</h3>
-<p>Changing the prior to <span class="math">\(\beta \sim HalfNormal(\sigma = 0.2)\)</span> yielded similar 
-results. That's all I looked at because I'm sick of looking at survival curves.</p>
-<h1>Discussion / Conclusions</h1>
-<p><strong>Eating plastic is probably bad.</strong> What a revelation. Really though, I am 
-surprised at the posterior difference in expected survival time, because the 
-experiment was designed to have environmentally relevant exposure levels. 
-Do sand crabs have much shorter lifespans nowadays? Were the control crabs 
-happy to have clean water (but not clean sediment!) for once? Can sand crabs 
-vomit? The 
-unanswered 
-question. I suppose if they all had at least one fiber in them, they at the 
-very least don't always vomit up accidentally ingested non-food. I wish 
-they'd collected the poop.</p>
-<p><strong>Stay tuned for part 2: egg stuff!</strong></p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>"Anaesthesia of decapod crustaceans." de Souza Valente C. 2022.
-https://doi.org/10.1016/j.vas.2022.100252&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:2">
-<p>"Gastric processing and evacuation during emersion in the red rock 
-crab, Cancer productus." Mcgaw IJ. 2007. https://doi.org/10.1080/10236240701393461&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        availableFonts: ['STIX', 'TeX']," +
-        "        preferredFont: 'STIX'," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+stuff for a job I applied to. I had been learning how to use Bayesian …</p>
+                <a class="readmore" href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

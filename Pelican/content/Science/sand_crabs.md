@@ -291,7 +291,12 @@ results. That's all I looked at because I'm sick of looking at survival curves.
 surprised at the posterior difference in expected survival time, because the 
 experiment was designed to have environmentally relevant exposure levels. 
 Do sand crabs have much shorter lifespans nowadays? Were the control crabs 
-happy to have clean water (but not clean sediment!) for once? Can sand crabs 
+happy to have clean water (but not clean sediment!) for once? I wonder if it 
+might be more accurate to think of the control as the effective "treatment", 
+since the experimental treatment *ought* to approximate the sand crabs' actual 
+living conditions more closely.
+
+And can sand crabs 
 vomit? The 
 unanswered 
 question. I suppose if they all had at least one fiber in them, they at the 

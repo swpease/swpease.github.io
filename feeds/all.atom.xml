@@ -1,5 +1,360 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2024-10-15T00:00:00-07:00</updated><entry><title>Sand Crabs Eating Bits of Plastic String</title><link href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html" rel="alternate"></link><published>2024-10-15T00:00:00-07:00</published><updated>2024-10-15T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2024-10-15:/sand-crabs-eating-bits-of-plastic-string.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2024-12-17T00:00:00-08:00</updated><entry><title>Sand Crabs Eating Bits of Plastic String (Part 2)</title><link href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string-part-2.html" rel="alternate"></link><published>2024-12-17T00:00:00-08:00</published><updated>2024-12-17T00:00:00-08:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2024-12-17:/sand-crabs-eating-bits-of-plastic-string-part-2.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In the &lt;a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html"&gt;previous post&lt;/a&gt; on sand crabs, I 
+looked at the mortality of the treatments (exposed to environmentally 
+relevant concentrations of microplastic 
+fibers)
+vs controls. Now, I want to look at another outcome that they looked at: egg 
+development.&lt;/p&gt;
+&lt;p&gt;Specifically, looking at starting vs ending egg development stages. This …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In the &lt;a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html"&gt;previous post&lt;/a&gt; on sand crabs, I 
+looked at the mortality of the treatments (exposed to environmentally 
+relevant concentrations of microplastic 
+fibers)
+vs controls. Now, I want to look at another outcome that they looked at: egg 
+development.&lt;/p&gt;
+&lt;p&gt;Specifically, looking at starting vs ending egg development stages. This 
+endpoint is.. much trickier to think about. For starters,
+it would 
+help 
+if I knew much about sand crab reproduction, or developmental biology in 
+general; it was always a bit of a snooze for me. I mean, I thought the 
+reproductive physiology course I took was interesting, but that's different. &lt;/p&gt;
+&lt;p&gt;The authors explain:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The selected experimental time frame (71 d) allowed for two full embryonic 
+development cycles as E. analoga has an incubation cycle of 29–32 days.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I don't really get how this works. Why is one full cycle insufficient? Are 
+they expecting slower development in the treatment crabs? Is this just my 
+lack of 
+understanding of developmental biology?&lt;/p&gt;
+&lt;p&gt;Adding onto that, there is another observed variable, "# of days with viable 
+eggs", which I don't really understand with respect to the start/end egg 
+development stages. Do the eggs become inviable after completed development? 
+Are there commonly miscarriages (or the egg equivalent)? I guess I should 
+just treat this as an exercise in Bayesian stats. It's not like I'll have 
+any idea on how to make a useful prior, anyway. &lt;/p&gt;
+&lt;h1&gt;Data Discrepancies (Again)&lt;/h1&gt;
+&lt;p&gt;I am using the GitHub data, because the Zenodo data for egg development 
+doesn't make sense. The GitHub data also has several issues, but at least 
+mostly makes sense. For the GitHub data, there are 3 control crabs missing 
+and 4 treatment crabs 
+missing, 
+which yields 29 control crabs and 28 treatment crabs.&lt;/p&gt;
+&lt;p&gt;I made a couple of bar charts as descriptive statistics-type things, which 
+let me notice that Treatment Crab #5 has wrong data for its egg development 
+columns. I was going to just omit it, but I see that there are two other crabs 
+for 
+which the "# of egg stages(start to finish)" column — which should presumably 
+validate the difference between start and end egg stages — is off by one, so 
+I think that Treatment Crab #5's end stage was "Z", not 2, plus its "# of egg 
+stages(start to finish)" is off by two. This supports by "bad handwriting" 
+hypothesis from the previous post. I know I started putting lines through my 
+Z's after doing math where some formula creator (I'm guessing with good 
+handwriting) 
+decided to use Z's and 2's all over the place. Stupid mxn. Stupid ijk. At 
+least I'm &lt;a href="https://betterexplained.
+com/articles/linear-algebra-guide/"&gt;not alone&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Also, there is a column "Reach Larval Stage(9+) Y/N", which has six 
+discrepancies with "Egg Stage end of exp". &lt;/p&gt;
+&lt;p&gt;Also, there are seven cases of "# of days with viable eggs" exceeding "# of 
+days alive".&lt;/p&gt;
+&lt;p&gt;I guess these data discrepancies further support my thinking of, "Don't take 
+the results of my analysis too seriously.".&lt;/p&gt;
+&lt;h1&gt;Descriptive Plots&lt;/h1&gt;
+&lt;p&gt;Here's what the distribution of egg development stages looked like at the 
+start and end of the experiment:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/science/sand_crabs/eggs/starting_stage_hist.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 2" src="https://swpease.github.io/images/science/sand_crabs/eggs/ending_stage_hist.png"&gt;&lt;/p&gt;
+&lt;p&gt;And how many stages were progressed, based on starting stage, and split out 
+by whether the crab died before the end of experiment or not.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 3" src="https://swpease.github.io/images/science/sand_crabs/eggs/stages_progressed.png"&gt;&lt;/p&gt;
+&lt;p&gt;I was on the fence about splitting out the above figure by died/lived. I 
+decided to, because with them combined, my first question was, "Did those 
+starting stage 10 treatment crabs with no development progression die early?
+". I suppose I could've coded died/lived by shape, too.&lt;/p&gt;
+&lt;h1&gt;The Modeling&lt;/h1&gt;
+&lt;p&gt;Firstly, an explanatory note re what follows. I did the modeling months 
+ago, but had wanted to extend the model to incorporate censoring. Censored 
+discrete distributions were(/are) not implemented in PyMC, as I discovered. 
+One of the maintainers (Ricardo) fixed that problem within a couple of days 
+of my bringing it up. However, said fix has been &lt;a href="https://github.com/pymc-devs/pymc/pull/7662"&gt;sitting in pull request 
+purgatory&lt;/a&gt; for months now. Oh well. The point is, I'm revisiting this 
+analysis months after having done it, so I am probably forgetting some 
+nuances of decisions/explanations.&lt;/p&gt;
+&lt;p&gt;So just looking at the above plots, I was expecting the model output to show 
+minimal differences between treatments and controls, for whichever model I 
+decided to use.&lt;/p&gt;
+&lt;p&gt;I opted to use a proportional odds (ordered logit) model. I don't think it's 
+entirely 
+appropriate, and looking for an alternative model for ordinal data led me to 
+discover the &lt;a href="https://www3.nd.
+edu/~rwilliam/gologit2/UnderStandingGologit2016.pdf"&gt;generalized ordered logit model&lt;/a&gt;, but it seemed like the best 
+option of any model options I could find. As it is, I don't really think 
+that the appropriateness of a proportional odds model is 
+assessable by humans without using the Brant Test. Or maybe I just haven't 
+become one with the log-odds yet.&lt;/p&gt;
+&lt;p&gt;The DAG of this model made me go "Woof!". On paper, its description is 
+pretty simple: an ordered categorical outcome with an ordered categorical 
+predictor and a categorical predictor. That is: final egg stage outcome with 
+starting egg stage and treatment group predictors. Well, everything 
+right/down of beta_trt is derived stuff (Stan's "generated quantities" block),
+so 
+I guess you can ignore that part.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 4" src="https://swpease.github.io/images/science/sand_crabs/eggs/DAG.png"&gt;&lt;/p&gt;
+&lt;p&gt;And here is the PyMC model that produced that thing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;N_cutpoints&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Egg Stage end of exp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;categories&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;N_deltas&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Egg Stage at Beginning of exp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;categories&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;coords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;grp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;c&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;t&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;end_stage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Egg Stage end of exp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;categories&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;start_stage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Egg Stage at Beginning of exp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;categories&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;cutpoint&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N_cutpoints&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;model4&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="c1"&gt;# Data&lt;/span&gt;
+    &lt;span class="n"&gt;y_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;y_data&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Egg Stage end of exp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;obs_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;start_stage_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;start_stage_data&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Egg Stage at Beginning of exp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;obs_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;grp_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;grp_data&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;c_or_t_grp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;obs_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# Priors&lt;/span&gt;
+    &lt;span class="n"&gt;cutpoints&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Normal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;cutpoints&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                        &lt;span class="n"&gt;mu&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N_cutpoints&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;2.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                        &lt;span class="n"&gt;sigma&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                    &lt;span class="c1"&gt;#   initval=(np.arange(N_cutpoints) / 2) - 2.5,&lt;/span&gt;
+                        &lt;span class="n"&gt;transform&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;distributions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;transforms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ordered&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                        &lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;N_cutpoints&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;beta_trt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Normal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;beta_trt&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mu&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sigma&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;beta_start&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Normal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;beta_start&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mu&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sigma&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dirichlet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;delta&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repeat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;N_deltas&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;N_deltas&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;delta_j&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;delta_j&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concatenate&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;delta&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+    &lt;span class="n"&gt;delta_j_cumulative&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;delta_j_cumulative&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumsum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_j&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# params&lt;/span&gt;
+    &lt;span class="n"&gt;phi&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;phi&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                           &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;beta_start&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;delta_j_cumulative&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;start_stage_data&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
+                            &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;beta_trt&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;grp_data&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                            &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;obs_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# lik&lt;/span&gt;
+    &lt;span class="n"&gt;y_obs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OrderedLogistic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;y_obs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                               &lt;span class="n"&gt;eta&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;phi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                               &lt;span class="n"&gt;cutpoints&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;cutpoints&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                               &lt;span class="n"&gt;observed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;y_data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                               &lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;grp_data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# derived params&lt;/span&gt;
+    &lt;span class="n"&gt;cutpoints_col&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;cutpoints_col&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cutpoints&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+    &lt;span class="n"&gt;bc_delta_j_cumulative&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;bc_delta_j_cumulative&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;broadcast_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_j_cumulative&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N_cutpoints&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;N_deltas&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+    &lt;span class="n"&gt;cutpoints_by_grp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;cutpoints_by_grp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stack&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;
+                                            &lt;span class="n"&gt;cutpoints_col&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bc_delta_j_cumulative&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;beta_start&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  &lt;span class="c1"&gt;# phi = 0&lt;/span&gt;
+                                            &lt;span class="n"&gt;cutpoints_col&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bc_delta_j_cumulative&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;beta_start&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;beta_trt&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  &lt;span class="c1"&gt;# phi = beta_trt&lt;/span&gt;
+                                        &lt;span class="p"&gt;],&lt;/span&gt;
+                                        &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                                        &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;cutpoint&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;start_stage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;grp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# derived vars&lt;/span&gt;
+    &lt;span class="n"&gt;cum_probs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;cum_probs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;invlogit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cutpoints_by_grp&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;cutpoint&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;start_stage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;grp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;probs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Deterministic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;probs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concatenate&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;cum_probs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))])&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;
+                             &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concatenate&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;cum_probs&lt;/span&gt;&lt;span class="p"&gt;])),&lt;/span&gt;
+                             &lt;span class="n"&gt;dims&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;end_stage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;start_stage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;grp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I had quite a time making myself confident that the indexing tetris required 
+for &lt;code&gt;probs&lt;/code&gt; wound up correct.&lt;/p&gt;
+&lt;h2&gt;Output&lt;/h2&gt;
+&lt;p&gt;Assessing the output of this model was a bit of a chore. I looked at it from 
+a couple of different perspectives:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Posterior predictions&lt;/li&gt;
+&lt;li&gt;The distributions of the &lt;code&gt;probs&lt;/code&gt; in a forest plot.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The first view looks neater, while the second provides HDI's.&lt;/p&gt;
+&lt;p&gt;First, the posterior predictions. This graph could be cleaner, but the lack 
+of any apparent difference between treatments and controls kind of took the 
+wind out of my sails, at least to the extent of fixing the 
+indexing and re-looking-up how to 
+customize legends in seaborn/matplotlib. The bins are split by control = 0 
+and treatment = 1 (as if it matters), and ordered by ending stage (0 = stage 
+1, ..., 9 = stage 10, 10 = stage Z). I suppose the main wrong thing with 
+this model is how the probability of final stages earlier than starting 
+stages is non-zero.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_preds.png"&gt;&lt;/p&gt;
+&lt;p&gt;Second, the posterior probabilities arranged as ["end_stage", "start_stage", 
+"grp"]. I think it's a bit interesting how the &lt;code&gt;end_stage&lt;/code&gt; of zygote 
+monotonically increases with &lt;code&gt;start_stage&lt;/code&gt;, and non-zygote end stages kind 
+of do a wave pattern indicating the most highly expected development of maybe 
+5-ish stages (e.g. the [9, x, x] portion of the graph):&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_probs.png"&gt;&lt;/p&gt;
+&lt;p&gt;When it comes down to it, there's not a lot of data to go off of, though, 
+and I don't think all this modeling work does a whole lot more than what 
+could be eyeballed based on the descriptive stats/plots. &lt;/p&gt;
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+&lt;p&gt;Keeping in mind the caveats of "not my experiment" and "I'm not an invert 
+zoologist", I think that this experiment doesn't show any meaningful 
+difference between treatments and controls in terms of egg development.&lt;/p&gt;
+&lt;p&gt;Probably the most valuable thing to come out of this exercise was the 
+(pending) enhancement to PyMC's capabilities. I figure that even if I'd 
+gotten to incorporate censoring into the model, all it would've done 
+would've been to make the HDI's wider and maybe push some point estimates 
+around.&lt;/p&gt;
+&lt;h1&gt;Discussion (but not what you're expecting)&lt;/h1&gt;
+&lt;p&gt;I was thinking about the survival analysis from part 1, and it occurred to 
+me that these "environmentally relevant concentrations" are if anything 
+&lt;em&gt;low&lt;/em&gt;, because in the wild, there is a continuously replenishing supply of 
+microplastics for the crabs to eat, while this experiment capped their 
+exposure: if one of the three plastics was eaten, then the ambient 
+concentration was now two per jar, until the new batch was introduced. So 
+the crabs in the wild should be hurting even more than this experiment 
+suggests. Have people noticed sand crab population shifts? I feel like as a 
+kid there were tons around at the beach, but even just a decade later they 
+were much rarer, though that's a pretty flimsy bit of anecdotal evidence 
+(for instance, I 
+certainly went to the shore much less often as I got older).&lt;/p&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>Randomized Quantile Residuals</title><link href="https://swpease.github.io/randomized-quantile-residuals.html" rel="alternate"></link><published>2024-12-11T00:00:00-08:00</published><updated>2024-12-11T00:00:00-08:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2024-12-11:/randomized-quantile-residuals.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post should hopefully be helpful for people like me who aren't 
+statisticians, but can work with R decently.&lt;/p&gt;
+&lt;p&gt;While working with count data, I encountered a new type of residual 
+(apparently there's different types) 
+called the "randomized quantile residual" (RQR).
+RQRs essentially convert your residuals such that you …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post should hopefully be helpful for people like me who aren't 
+statisticians, but can work with R decently.&lt;/p&gt;
+&lt;p&gt;While working with count data, I encountered a new type of residual 
+(apparently there's different types) 
+called the "randomized quantile residual" (RQR).
+RQRs essentially convert your residuals such that you can interpret them 
+just like plain old residuals from a regular old linear model.&lt;/p&gt;
+&lt;p&gt;I tried reading the &lt;a href="https://www.researchgate.
+net/publication/2647151_Randomized_Quantile_Residuals"&gt;original paper&lt;/a&gt; and was left confused 
+by the math notation. So I found a &lt;a href="https://pubmed.ncbi.nlm.
+nih.gov/32611379/"&gt;second paper&lt;/a&gt; yet remained unenlightened. So I finally just looked at 
+the &lt;a href="https://rdrr.io/cran/statmod/src/R/qres.R"&gt;implementation&lt;/a&gt; and thought, 
+"That's it?" So I understood how it worked, but not &lt;em&gt;why&lt;/em&gt; it worked. Until 
+now (I think), when I played around with distributions in R some.&lt;/p&gt;
+&lt;h1&gt;The Underlying Principle&lt;/h1&gt;
+&lt;p&gt;What percent of the time do you expect to see something in the bottom 0-10th 
+percentile? The 80-90th percentile? The 30-60th percentile? If you answered 
+"10. 10. 30.", congratulations, you understand the underlying principle. Put 
+another way, &lt;strong&gt;if you bin your data into &lt;a href="https://en.wikipedia.
+org/wiki/Quantile"&gt;quantiles&lt;/a&gt;, 
+each quantile should have about the same number of observations in it.&lt;/strong&gt; In 
+retrospect, this is basic stats, but it's the type of thing you forget about 
+after years of it never coming up. &lt;/p&gt;
+&lt;p&gt;In 
+small enough bins and infinite data, you should wind up with a &lt;strong&gt;Uniform 
+distribution.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;Converting to Uniform&lt;/h2&gt;
+&lt;p&gt;Here are a couple of examples of going from some continuous distribution to 
+these equal bins.&lt;/p&gt;
+&lt;p&gt;First, simulated Exponentially distributed data, binned into however many bins 
+&lt;code&gt;hist&lt;/code&gt; uses by default. If you forget / don't know &lt;code&gt;rexp&lt;/code&gt; vs &lt;code&gt;pexp&lt;/code&gt; vs 
+&lt;code&gt;qexp&lt;/code&gt;, etc., &lt;a href="https://www.reddit.
+com/r/RStudio/comments/1bwthox/can_anyone_please_explain_to_me_the_difference
+/"&gt;here&lt;/a&gt; is a useful explanation.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;simdat = rexp(n=10000, rate = 3)
+hist(pexp(simdat, rate = 3))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/statistics/rqrs/basic_uniform_ex.png"&gt;&lt;/p&gt;
+&lt;p&gt;Second, simulated Beta distributed data:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;simdat = rbeta(n=10000, 8, 13)
+hist(pbeta(simdat, 8, 13))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Figure 2" src="https://swpease.github.io/images/statistics/rqrs/basic_uniform_ex2.png"&gt;&lt;/p&gt;
+&lt;h2&gt;Converting Back&lt;/h2&gt;
+&lt;p&gt;Once you're at the uniform distribution, you can go back to your starting 
+distribution, or any other continuous distribution (it's not like 
+the uniform distribution knows where it came from). &lt;strong&gt;The second option is 
+used in RQRs: they're converted to Normal from some unfriendly distribution 
+(e.g. Poisson) via the Uniform.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;These two histograms are equal (not shown):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;simdat = rbeta(n=10000, 8, 3)
+hist(simdat)
+hist(qbeta(pbeta(simdat, 8, 3), 8, 3))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Going to a different distribution:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;simdat = rbeta(n=10000, 8, 3)
+simdat2 = rexp(n=10000, rate = 3)
+hist(simdat2)
+hist(qexp(pbeta(simdat, 8, 3), rate = 3))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Figure 3" src="https://swpease.github.io/images/statistics/rqrs/exp_rate_3.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 4" src="https://swpease.github.io/images/statistics/rqrs/beta_to_exp.png"&gt;&lt;/p&gt;
+&lt;h1&gt;Misspecification&lt;/h1&gt;
+&lt;p&gt;This uniformness only happens if your data is accurately represented by the 
+CDF you choose (i.e. the &lt;code&gt;p&lt;/code&gt; functions in R). For instance, in the first 
+example, my data came from an Exponential distribution with a rate of 3, and 
+the CDF I used just copied over that knowledge. But what if it was different?&lt;/p&gt;
+&lt;p&gt;What if our CDF was off?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;simdat = rexp(n=10000, rate = 3)
+hist(pexp(simdat, rate = 4))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Figure 5" src="https://swpease.github.io/images/statistics/rqrs/exp_misspec1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Not so good.&lt;/p&gt;
+&lt;p&gt;What if we picked an entire wrong distribution?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;simdat = rexp(n=10000, rate = 3)
+hist(pnorm(simdat))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Figure 6" src="https://swpease.github.io/images/statistics/rqrs/exp_misspec2.png"&gt;&lt;/p&gt;
+&lt;p&gt;Woof.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The RQRs pick up this non-uniformity so your residuals will look off when 
+you convert them to Normal.&lt;/strong&gt;&lt;/p&gt;
+&lt;h1&gt;What About Discrete Data?&lt;/h1&gt;
+&lt;p&gt;The main purpose of using RQRs! Let's see what happens when we do that CDF 
+conversion with Poisson data:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ggplot2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nx"&gt;simdat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;rpois&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ppois&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;simdat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;plot_dat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//stackoverflow.com/questions/3418128/how-to-convert-a-factor-to-integer-numeric-without-loss-of-information&lt;/span&gt;
+&lt;span class="nx"&gt;plot_dat&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;plot_dat&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="nx"&gt;ggplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;plot_dat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;y&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;Freq&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;geom_point&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;geom_segment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;xend&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;cdf_dat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;y&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;yend&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;Freq&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Figure 7" src="https://swpease.github.io/images/statistics/rqrs/pois_cdf_hist.png"&gt;&lt;/p&gt;
+&lt;p&gt;That's not flat. But, the counts of each bin are proportional to the 
+proportion of the [0,1] range they encompass. &lt;strong&gt;RQRs work around this by 
+taking a random number between the CDF at the observed value and CDF at one 
+less than the 
+observed value.&lt;/strong&gt; For instance, if you observe 1 (corresponding to the line at 
+~0.2), which should happen about (0.2 - 0.05) proportion of the time (note 
+the count (Freq) is 1500, i.e. 15% of the total 10,000 samples drawn. Also, 
+0.05 
+is roughly the CDF value for observed = 0, the leftmost line), you get a random 
+number between 
+roughly 0.05-0.2. So, ~15% of the time you get randomly selected values in this 
+~15% range.&lt;/p&gt;
+&lt;p&gt;Again, this is predicated on a Poisson distribution being appropriate for 
+your data, and deviations will show up via non-Normal looking RQRs.&lt;/p&gt;
+&lt;p&gt;Here is some code that might help to play around with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;tibble&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;100000&lt;/span&gt;
+&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;
+
+&lt;span class="nx"&gt;simdat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;tibble&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;draw&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;rpois&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;quantile&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ppois&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;quantile_q_minus_1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ppois&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;draw&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;quantile_diff&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;quantile&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;quantile_q_minus_1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;random_quantile&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;runif&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;quantile_q_minus_1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;quantile&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;corresponding_normal_val&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;qnorm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;random_quantile&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Statistics"></category><category term="statistics"></category></entry><entry><title>Sand Crabs Eating Bits of Plastic String</title><link href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html" rel="alternate"></link><published>2024-10-15T00:00:00-07:00</published><updated>2024-10-15T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2024-10-15:/sand-crabs-eating-bits-of-plastic-string.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;I read a paper, &lt;a href="https://aslopubs.
 onlinelibrary.wiley.com/doi/10.1002/lol2.10137"&gt;"Effects of environmentally relevant concentrations of 
 microplastic fibers on Pacific mole crab (Emerita analoga) mortality and
@@ -321,7 +676,11 @@ results. That's all I looked at because I'm sick of looking at survival curves.&
 surprised at the posterior difference in expected survival time, because the 
 experiment was designed to have environmentally relevant exposure levels. 
 Do sand crabs have much shorter lifespans nowadays? Were the control crabs 
-happy to have clean water (but not clean sediment!) for once? Can sand crabs 
+happy to have clean water (but not clean sediment!) for once? I wonder if it 
+might be more accurate to think of the control as the effective "treatment", 
+since the experimental treatment &lt;em&gt;ought&lt;/em&gt; to approximate the sand crabs' actual 
+living conditions more closely.&lt;/p&gt;
+&lt;p&gt;And can sand crabs 
 vomit? The 
 unanswered 
 question. I suppose if they all had at least one fiber in them, they at the 

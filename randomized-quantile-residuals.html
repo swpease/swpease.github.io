@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Randomized Quantile Residuals</title>
+        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
+        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
+        <meta name="description" content="Introduction This post should hopefully be helpful for people like me who aren't statisticians, but can work with R decently. While working with..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://swpease.github.io/">Scott's Stuff</a></h1>
+                <nav><ul>
+                    <li><a href="https://swpease.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
+                    <li><a href="https://swpease.github.io/category/science.html">Science</a></li>
+                    <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li class="active"><a href="https://swpease.github.io/category/statistics.html">Statistics</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://swpease.github.io/randomized-quantile-residuals.html" rel="bookmark"
+           title="Permalink to Randomized Quantile Residuals">Randomized Quantile Residuals</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2024-12-11T00:00:00-08:00">
+                Published: Wed 11 December 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/statistics.html">Statistics</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/statistics.html">statistics</a> </p>
+</footer><!-- /.post-info -->      <h1>Introduction</h1>
+<p>This post should hopefully be helpful for people like me who aren't 
+statisticians, but can work with R decently.</p>
+<p>While working with count data, I encountered a new type of residual 
+(apparently there's different types) 
+called the "randomized quantile residual" (RQR).
+RQRs essentially convert your residuals such that you can interpret them 
+just like plain old residuals from a regular old linear model.</p>
+<p>I tried reading the <a href="https://www.researchgate.
+net/publication/2647151_Randomized_Quantile_Residuals">original paper</a> and was left confused 
+by the math notation. So I found a <a href="https://pubmed.ncbi.nlm.
+nih.gov/32611379/">second paper</a> yet remained unenlightened. So I finally just looked at 
+the <a href="https://rdrr.io/cran/statmod/src/R/qres.R">implementation</a> and thought, 
+"That's it?" So I understood how it worked, but not <em>why</em> it worked. Until 
+now (I think), when I played around with distributions in R some.</p>
+<h1>The Underlying Principle</h1>
+<p>What percent of the time do you expect to see something in the bottom 0-10th 
+percentile? The 80-90th percentile? The 30-60th percentile? If you answered 
+"10. 10. 30.", congratulations, you understand the underlying principle. Put 
+another way, <strong>if you bin your data into <a href="https://en.wikipedia.
+org/wiki/Quantile">quantiles</a>, 
+each quantile should have about the same number of observations in it.</strong> In 
+retrospect, this is basic stats, but it's the type of thing you forget about 
+after years of it never coming up. </p>
+<p>In 
+small enough bins and infinite data, you should wind up with a <strong>Uniform 
+distribution.</strong></p>
+<h2>Converting to Uniform</h2>
+<p>Here are a couple of examples of going from some continuous distribution to 
+these equal bins.</p>
+<p>First, simulated Exponentially distributed data, binned into however many bins 
+<code>hist</code> uses by default. If you forget / don't know <code>rexp</code> vs <code>pexp</code> vs 
+<code>qexp</code>, etc., <a href="https://www.reddit.
+com/r/RStudio/comments/1bwthox/can_anyone_please_explain_to_me_the_difference
+/">here</a> is a useful explanation.</p>
+<div class="highlight"><pre><span></span><code>simdat = rexp(n=10000, rate = 3)
+hist(pexp(simdat, rate = 3))
+</code></pre></div>
+
+<p><img alt="Figure 1" src="https://swpease.github.io/images/statistics/rqrs/basic_uniform_ex.png"></p>
+<p>Second, simulated Beta distributed data:</p>
+<div class="highlight"><pre><span></span><code>simdat = rbeta(n=10000, 8, 13)
+hist(pbeta(simdat, 8, 13))
+</code></pre></div>
+
+<p><img alt="Figure 2" src="https://swpease.github.io/images/statistics/rqrs/basic_uniform_ex2.png"></p>
+<h2>Converting Back</h2>
+<p>Once you're at the uniform distribution, you can go back to your starting 
+distribution, or any other continuous distribution (it's not like 
+the uniform distribution knows where it came from). <strong>The second option is 
+used in RQRs: they're converted to Normal from some unfriendly distribution 
+(e.g. Poisson) via the Uniform.</strong></p>
+<p>These two histograms are equal (not shown):</p>
+<div class="highlight"><pre><span></span><code>simdat = rbeta(n=10000, 8, 3)
+hist(simdat)
+hist(qbeta(pbeta(simdat, 8, 3), 8, 3))
+</code></pre></div>
+
+<p>Going to a different distribution:</p>
+<div class="highlight"><pre><span></span><code>simdat = rbeta(n=10000, 8, 3)
+simdat2 = rexp(n=10000, rate = 3)
+hist(simdat2)
+hist(qexp(pbeta(simdat, 8, 3), rate = 3))
+</code></pre></div>
+
+<p><img alt="Figure 3" src="https://swpease.github.io/images/statistics/rqrs/exp_rate_3.png"></p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/statistics/rqrs/beta_to_exp.png"></p>
+<h1>Misspecification</h1>
+<p>This uniformness only happens if your data is accurately represented by the 
+CDF you choose (i.e. the <code>p</code> functions in R). For instance, in the first 
+example, my data came from an Exponential distribution with a rate of 3, and 
+the CDF I used just copied over that knowledge. But what if it was different?</p>
+<p>What if our CDF was off?</p>
+<div class="highlight"><pre><span></span><code>simdat = rexp(n=10000, rate = 3)
+hist(pexp(simdat, rate = 4))
+</code></pre></div>
+
+<p><img alt="Figure 5" src="https://swpease.github.io/images/statistics/rqrs/exp_misspec1.png"></p>
+<p>Not so good.</p>
+<p>What if we picked an entire wrong distribution?</p>
+<div class="highlight"><pre><span></span><code>simdat = rexp(n=10000, rate = 3)
+hist(pnorm(simdat))
+</code></pre></div>
+
+<p><img alt="Figure 6" src="https://swpease.github.io/images/statistics/rqrs/exp_misspec2.png"></p>
+<p>Woof.</p>
+<p><strong>The RQRs pick up this non-uniformity so your residuals will look off when 
+you convert them to Normal.</strong></p>
+<h1>What About Discrete Data?</h1>
+<p>The main purpose of using RQRs! Let's see what happens when we do that CDF 
+conversion with Poisson data:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">library</span><span class="p">(</span><span class="nx">ggplot2</span><span class="p">)</span>
+
+<span class="nx">simdat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">rpois</span><span class="p">(</span><span class="nx">n</span><span class="p">=</span><span class="mi">10000</span><span class="p">,</span><span class="w"> </span><span class="nx">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nx">cdf_dat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">ppois</span><span class="p">(</span><span class="nx">simdat</span><span class="p">,</span><span class="w"> </span><span class="nx">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nx">plot_dat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">frame</span><span class="p">(</span><span class="nx">table</span><span class="p">(</span><span class="nx">cdf_dat</span><span class="p">))</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">https</span><span class="p">:</span><span class="c1">//stackoverflow.com/questions/3418128/how-to-convert-a-factor-to-integer-numeric-without-loss-of-information</span>
+<span class="nx">plot_dat</span><span class="err">$</span><span class="nx">cdf_dat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">as</span><span class="p">.</span><span class="nx">numeric</span><span class="p">(</span><span class="k">as</span><span class="p">.</span><span class="nx">character</span><span class="p">(</span><span class="nx">plot_dat</span><span class="err">$</span><span class="nx">cdf_dat</span><span class="p">))</span>
+
+<span class="nx">ggplot</span><span class="p">(</span><span class="nx">plot_dat</span><span class="p">,</span><span class="w"> </span><span class="nx">aes</span><span class="p">(</span><span class="nx">x</span><span class="p">=</span><span class="nx">cdf_dat</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">=</span><span class="nx">Freq</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nx">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nx">geom_segment</span><span class="p">(</span><span class="nx">aes</span><span class="p">(</span><span class="nx">x</span><span class="p">=</span><span class="nx">cdf_dat</span><span class="p">,</span><span class="w"> </span><span class="nx">xend</span><span class="p">=</span><span class="nx">cdf_dat</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nx">yend</span><span class="p">=</span><span class="nx">Freq</span><span class="p">))</span>
+</code></pre></div>
+
+<p><img alt="Figure 7" src="https://swpease.github.io/images/statistics/rqrs/pois_cdf_hist.png"></p>
+<p>That's not flat. But, the counts of each bin are proportional to the 
+proportion of the [0,1] range they encompass. <strong>RQRs work around this by 
+taking a random number between the CDF at the observed value and CDF at one 
+less than the 
+observed value.</strong> For instance, if you observe 1 (corresponding to the line at 
+~0.2), which should happen about (0.2 - 0.05) proportion of the time (note 
+the count (Freq) is 1500, i.e. 15% of the total 10,000 samples drawn. Also, 
+0.05 
+is roughly the CDF value for observed = 0, the leftmost line), you get a random 
+number between 
+roughly 0.05-0.2. So, ~15% of the time you get randomly selected values in this 
+~15% range.</p>
+<p>Again, this is predicated on a Poisson distribution being appropriate for 
+your data, and deviations will show up via non-Normal looking RQRs.</p>
+<p>Here is some code that might help to play around with:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">library</span><span class="p">(</span><span class="nx">tibble</span><span class="p">)</span>
+
+<span class="nx">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100000</span>
+<span class="nx">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span>
+
+<span class="nx">simdat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">tibble</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">draw</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">rpois</span><span class="p">(</span><span class="nx">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">n</span><span class="p">,</span><span class="w"> </span><span class="nx">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">lambda</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">quantile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">ppois</span><span class="p">(</span><span class="nx">draw</span><span class="p">,</span><span class="w"> </span><span class="nx">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">lambda</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">quantile_q_minus_1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">ppois</span><span class="p">(</span><span class="nx">draw</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nx">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">lambda</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">quantile_diff</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">quantile</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">quantile_q_minus_1</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">random_quantile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">runif</span><span class="p">(</span><span class="nx">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">n</span><span class="p">,</span><span class="w"> </span><span class="nx">quantile_q_minus_1</span><span class="p">,</span><span class="w"> </span><span class="nx">quantile</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">corresponding_normal_val</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">qnorm</span><span class="p">(</span><span class="nx">random_quantile</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://github.com/swpease">github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Sand Crabs Eating Bits of Plastic String (Part 2)</title>
+        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
+        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
+        <meta name="description" content="Introduction In the previous post on sand crabs, I looked at the mortality of the treatments (exposed to environmentally relevant concentrations..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://swpease.github.io/">Scott's Stuff</a></h1>
+                <nav><ul>
+                    <li><a href="https://swpease.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
+                    <li class="active"><a href="https://swpease.github.io/category/science.html">Science</a></li>
+                    <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li><a href="https://swpease.github.io/category/statistics.html">Statistics</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string-part-2.html" rel="bookmark"
+           title="Permalink to Sand Crabs Eating Bits of Plastic String (Part 2)">Sand Crabs Eating Bits of Plastic String (Part 2)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2024-12-17T00:00:00-08:00">
+                Published: Tue 17 December 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info -->      <h1>Introduction</h1>
+<p>In the <a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html">previous post</a> on sand crabs, I 
+looked at the mortality of the treatments (exposed to environmentally 
+relevant concentrations of microplastic 
+fibers)
+vs controls. Now, I want to look at another outcome that they looked at: egg 
+development.</p>
+<p>Specifically, looking at starting vs ending egg development stages. This 
+endpoint is.. much trickier to think about. For starters,
+it would 
+help 
+if I knew much about sand crab reproduction, or developmental biology in 
+general; it was always a bit of a snooze for me. I mean, I thought the 
+reproductive physiology course I took was interesting, but that's different. </p>
+<p>The authors explain:</p>
+<blockquote>
+<p>The selected experimental time frame (71 d) allowed for two full embryonic 
+development cycles as E. analoga has an incubation cycle of 29–32 days.</p>
+</blockquote>
+<p>I don't really get how this works. Why is one full cycle insufficient? Are 
+they expecting slower development in the treatment crabs? Is this just my 
+lack of 
+understanding of developmental biology?</p>
+<p>Adding onto that, there is another observed variable, "# of days with viable 
+eggs", which I don't really understand with respect to the start/end egg 
+development stages. Do the eggs become inviable after completed development? 
+Are there commonly miscarriages (or the egg equivalent)? I guess I should 
+just treat this as an exercise in Bayesian stats. It's not like I'll have 
+any idea on how to make a useful prior, anyway. </p>
+<h1>Data Discrepancies (Again)</h1>
+<p>I am using the GitHub data, because the Zenodo data for egg development 
+doesn't make sense. The GitHub data also has several issues, but at least 
+mostly makes sense. For the GitHub data, there are 3 control crabs missing 
+and 4 treatment crabs 
+missing, 
+which yields 29 control crabs and 28 treatment crabs.</p>
+<p>I made a couple of bar charts as descriptive statistics-type things, which 
+let me notice that Treatment Crab #5 has wrong data for its egg development 
+columns. I was going to just omit it, but I see that there are two other crabs 
+for 
+which the "# of egg stages(start to finish)" column — which should presumably 
+validate the difference between start and end egg stages — is off by one, so 
+I think that Treatment Crab #5's end stage was "Z", not 2, plus its "# of egg 
+stages(start to finish)" is off by two. This supports by "bad handwriting" 
+hypothesis from the previous post. I know I started putting lines through my 
+Z's after doing math where some formula creator (I'm guessing with good 
+handwriting) 
+decided to use Z's and 2's all over the place. Stupid mxn. Stupid ijk. At 
+least I'm <a href="https://betterexplained.
+com/articles/linear-algebra-guide/">not alone</a>.</p>
+<p>Also, there is a column "Reach Larval Stage(9+) Y/N", which has six 
+discrepancies with "Egg Stage end of exp". </p>
+<p>Also, there are seven cases of "# of days with viable eggs" exceeding "# of 
+days alive".</p>
+<p>I guess these data discrepancies further support my thinking of, "Don't take 
+the results of my analysis too seriously.".</p>
+<h1>Descriptive Plots</h1>
+<p>Here's what the distribution of egg development stages looked like at the 
+start and end of the experiment:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/sand_crabs/eggs/starting_stage_hist.png"></p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/sand_crabs/eggs/ending_stage_hist.png"></p>
+<p>And how many stages were progressed, based on starting stage, and split out 
+by whether the crab died before the end of experiment or not.</p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/science/sand_crabs/eggs/stages_progressed.png"></p>
+<p>I was on the fence about splitting out the above figure by died/lived. I 
+decided to, because with them combined, my first question was, "Did those 
+starting stage 10 treatment crabs with no development progression die early?
+". I suppose I could've coded died/lived by shape, too.</p>
+<h1>The Modeling</h1>
+<p>Firstly, an explanatory note re what follows. I did the modeling months 
+ago, but had wanted to extend the model to incorporate censoring. Censored 
+discrete distributions were(/are) not implemented in PyMC, as I discovered. 
+One of the maintainers (Ricardo) fixed that problem within a couple of days 
+of my bringing it up. However, said fix has been <a href="https://github.com/pymc-devs/pymc/pull/7662">sitting in pull request 
+purgatory</a> for months now. Oh well. The point is, I'm revisiting this 
+analysis months after having done it, so I am probably forgetting some 
+nuances of decisions/explanations.</p>
+<p>So just looking at the above plots, I was expecting the model output to show 
+minimal differences between treatments and controls, for whichever model I 
+decided to use.</p>
+<p>I opted to use a proportional odds (ordered logit) model. I don't think it's 
+entirely 
+appropriate, and looking for an alternative model for ordinal data led me to 
+discover the <a href="https://www3.nd.
+edu/~rwilliam/gologit2/UnderStandingGologit2016.pdf">generalized ordered logit model</a>, but it seemed like the best 
+option of any model options I could find. As it is, I don't really think 
+that the appropriateness of a proportional odds model is 
+assessable by humans without using the Brant Test. Or maybe I just haven't 
+become one with the log-odds yet.</p>
+<p>The DAG of this model made me go "Woof!". On paper, its description is 
+pretty simple: an ordered categorical outcome with an ordered categorical 
+predictor and a categorical predictor. That is: final egg stage outcome with 
+starting egg stage and treatment group predictors. Well, everything 
+right/down of beta_trt is derived stuff (Stan's "generated quantities" block),
+so 
+I guess you can ignore that part.</p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/science/sand_crabs/eggs/DAG.png"></p>
+<p>And here is the PyMC model that produced that thing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">N_cutpoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">N_deltas</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;end_stage&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
+    <span class="s2">&quot;start_stage&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
+    <span class="s2">&quot;cutpoint&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_cutpoints</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">model4</span><span class="p">:</span>
+    <span class="c1"># Data</span>
+    <span class="n">y_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;y_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+    <span class="n">start_stage_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;start_stage_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+    <span class="n">grp_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;grp_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;c_or_t_grp&quot;</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Priors</span>
+    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span> 
+                        <span class="n">mu</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_cutpoints</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">,</span> 
+                        <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                    <span class="c1">#   initval=(np.arange(N_cutpoints) / 2) - 2.5,</span>
+                        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+                        <span class="n">shape</span><span class="o">=</span><span class="n">N_cutpoints</span><span class="p">)</span>
+    <span class="n">beta_trt</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_trt&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">beta_start</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_start&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Dirichlet</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">N_deltas</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">N_deltas</span><span class="p">)</span>
+    <span class="n">delta_j</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;delta_j&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">delta</span><span class="p">]))</span>
+    <span class="n">delta_j_cumulative</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;delta_j_cumulative&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">delta_j</span><span class="p">))</span>
+
+    <span class="c1"># params</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> 
+                           <span class="p">(</span><span class="n">beta_start</span> <span class="o">*</span> <span class="n">delta_j_cumulative</span><span class="p">[</span><span class="n">start_stage_data</span><span class="p">]</span> 
+                            <span class="o">+</span> <span class="n">beta_trt</span> <span class="o">*</span> <span class="n">grp_data</span><span class="p">),</span>
+                            <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+
+    <span class="c1"># lik</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">OrderedLogistic</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> 
+                               <span class="n">eta</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> 
+                               <span class="n">cutpoints</span><span class="o">=</span><span class="n">cutpoints</span><span class="p">,</span> 
+                               <span class="n">observed</span><span class="o">=</span><span class="n">y_data</span><span class="p">,</span>
+                               <span class="n">shape</span><span class="o">=</span><span class="n">grp_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># derived params</span>
+    <span class="n">cutpoints_col</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cutpoints_col&quot;</span><span class="p">,</span> <span class="n">cutpoints</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">bc_delta_j_cumulative</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;bc_delta_j_cumulative&quot;</span><span class="p">,</span>
+                                        <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">delta_j_cumulative</span><span class="p">,</span> <span class="p">(</span><span class="n">N_cutpoints</span><span class="p">,</span> <span class="n">N_deltas</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">cutpoints_by_grp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cutpoints_by_grp&quot;</span><span class="p">,</span>
+                                        <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span>
+                                            <span class="n">cutpoints_col</span> <span class="o">-</span> <span class="p">(</span><span class="n">bc_delta_j_cumulative</span> <span class="o">*</span> <span class="n">beta_start</span><span class="p">),</span>  <span class="c1"># phi = 0</span>
+                                            <span class="n">cutpoints_col</span> <span class="o">-</span> <span class="p">((</span><span class="n">bc_delta_j_cumulative</span> <span class="o">*</span> <span class="n">beta_start</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta_trt</span><span class="p">),</span>  <span class="c1"># phi = beta_trt</span>
+                                        <span class="p">],</span>
+                                        <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                                        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cutpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
+
+    <span class="c1"># derived vars</span>
+    <span class="n">cum_probs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cum_probs&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">invlogit</span><span class="p">(</span><span class="n">cutpoints_by_grp</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cutpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;probs&quot;</span><span class="p">,</span> 
+                             <span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">cum_probs</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))])</span> <span class="o">-</span>
+                             <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">cum_probs</span><span class="p">])),</span>
+                             <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;end_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
+</code></pre></div>
+
+<p>I had quite a time making myself confident that the indexing tetris required 
+for <code>probs</code> wound up correct.</p>
+<h2>Output</h2>
+<p>Assessing the output of this model was a bit of a chore. I looked at it from 
+a couple of different perspectives:</p>
+<ol>
+<li>Posterior predictions</li>
+<li>The distributions of the <code>probs</code> in a forest plot.</li>
+</ol>
+<p>The first view looks neater, while the second provides HDI's.</p>
+<p>First, the posterior predictions. This graph could be cleaner, but the lack 
+of any apparent difference between treatments and controls kind of took the 
+wind out of my sails, at least to the extent of fixing the 
+indexing and re-looking-up how to 
+customize legends in seaborn/matplotlib. The bins are split by control = 0 
+and treatment = 1 (as if it matters), and ordered by ending stage (0 = stage 
+1, ..., 9 = stage 10, 10 = stage Z). I suppose the main wrong thing with 
+this model is how the probability of final stages earlier than starting 
+stages is non-zero.</p>
+<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_preds.png"></p>
+<p>Second, the posterior probabilities arranged as ["end_stage", "start_stage", 
+"grp"]. I think it's a bit interesting how the <code>end_stage</code> of zygote 
+monotonically increases with <code>start_stage</code>, and non-zygote end stages kind 
+of do a wave pattern indicating the most highly expected development of maybe 
+5-ish stages (e.g. the [9, x, x] portion of the graph):</p>
+<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_probs.png"></p>
+<p>When it comes down to it, there's not a lot of data to go off of, though, 
+and I don't think all this modeling work does a whole lot more than what 
+could be eyeballed based on the descriptive stats/plots. </p>
+<h1>Conclusions</h1>
+<p>Keeping in mind the caveats of "not my experiment" and "I'm not an invert 
+zoologist", I think that this experiment doesn't show any meaningful 
+difference between treatments and controls in terms of egg development.</p>
+<p>Probably the most valuable thing to come out of this exercise was the 
+(pending) enhancement to PyMC's capabilities. I figure that even if I'd 
+gotten to incorporate censoring into the model, all it would've done 
+would've been to make the HDI's wider and maybe push some point estimates 
+around.</p>
+<h1>Discussion (but not what you're expecting)</h1>
+<p>I was thinking about the survival analysis from part 1, and it occurred to 
+me that these "environmentally relevant concentrations" are if anything 
+<em>low</em>, because in the wild, there is a continuously replenishing supply of 
+microplastics for the crabs to eat, while this experiment capped their 
+exposure: if one of the three plastics was eaten, then the ambient 
+concentration was now two per jar, until the new batch was introduced. So 
+the crabs in the wild should be hurting even more than this experiment 
+suggests. Have people noticed sand crab population shifts? I feel like as a 
+kid there were tons around at the beach, but even just a decade later they 
+were much rarer, though that's a pretty flimsy bit of anecdotal evidence 
+(for instance, I 
+certainly went to the shore much less often as I got older).</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://github.com/swpease">github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
