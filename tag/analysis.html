@@ -23,7 +23,179 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string-part-2.html">Sand Crabs Eating Bits of Plastic String (Part 2)</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-1.html">PA Well Water, Part 1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2025-05-29T00:00:00-07:00">
+                Published: Thu 29 May 2025
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>I found a paper on PLOS Water:</p>
+<p>Wamsley M, Coker ES, Wilson RT, Henry K, Murphy HM (2024) Social 
+vulnerability and exposure to private well water. PLOS Water 3(12): e0000303.
+<a href="https://doi.org/10.1371/journal.pwat.0000303">https://doi.org/10.1371/journal.pwat.0000303</a></p>
+<p>I can't do a better job than the authors of summarizing the purpose, so 
+here's the first few sentences of the abstract:</p>
+<blockquote>
+<p>One quarter of the population of Pennsylvania relies on private domestic well water: two-fold greater than the US average. Private well owners are responsible for the maintenance and treatment of their water supply. Targeted interventions are needed to support these well owners to ensure they have access to safe drinking water, free of contaminants. To develop appropriate interventions, an understanding of the characteristics and social vulnerability of communities with high well water use is needed. The purpose of this study was to determine the spatial patterning of social vulnerability in Pennsylvania and assess the association between social vulnerability and private domestic wells using profile regression.</p>
+</blockquote>
+<p>I think the paper is interesting, but I found a few issues with it that I 
+wanted to go over. This has largely served as a great learning resource for 
+me in a number of respects: mapping, Bayesian stats, epidemiology, stats in 
+general, demographics... I'll go over the different issues I had over 
+several posts. But first, what is "social vulnerability"?</p>
+<h1>Social Vulnerability / Social Vulnerability Index (SVI)</h1>
+<p>"Social vulnerability" has a few definitions that try to get at the same 
+meaning, to varying success. I think that the Vermont public health 
+department does the best job of explaining social vulnerability and the SVI: 
+<a href="https://www.healthvermont.
+gov/sites/default/files/documents/2016/12/ENV_EPHT_SocialVulnerabilityIndex.
+pdf">ref</a>. The <a href="https://www.atsdr.cdc.gov/place-health/php/svi/index.
+html">ATSDR site</a> has a definition that made me go, "What?", but its definition within 
+its detailed <a href="https://www.atsdr.cdc.
+gov/place-health/php/svi/svi-data-documentation-download.html">documentation</a> is much 
+more sensible in my view. Vermont's 
+definition is: </p>
+<blockquote>
+<p>Social vulnerability refers to the resilience of communities when
+responding to or recovering from threats to public health.</p>
+</blockquote>
+<p>The ATSDR documentation's is:</p>
+<blockquote>
+<p>Every community must prepare for and respond to hazardous events, whether a natural disaster like a tornado or a disease outbreak, or an anthropogenic event such as a harmful chemical spill. The degree to which a community exhibits certain social conditions, including high poverty, low percentage of vehicle access, or crowded households, among others, may affect that community’s ability to prevent human suffering and financial loss in the event of a disaster. These factors describe a community’s social vulnerability.</p>
+</blockquote>
+<p>Similarly, Social Vulnerability Index (SVI) per Vermont is:</p>
+<blockquote>
+<p>a planning tool to evaluate the relative social vulnerability across the 
+state. It can be used if there is a disease outbreak or in the event of an 
+emergency—either natural or human-caused—to identify populations that may 
+need more help.</p>
+</blockquote>
+<p>And for ATSDR is:</p>
+<blockquote>
+<p>to help public health officials and emergency response planners identify 
+and map the communities that will most likely need support before, during, 
+and after a hazardous event.</p>
+</blockquote>
+<p>In general, I thought the Vermont reference was the best, both for being 
+concise, and importantly for highlighting the SVI's limitations. I'd read 
+that if I were you.</p>
+<h2>A Brief Aside</h2>
+<p>Going to the ATSDR website shows a banner:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/ATSDR_site.png"></p>
+<p>I don't really go on government sites much, so I was astounded.</p>
+<h1>My Issues With This Paper</h1>
+<h2>Re Its Premise</h2>
+<p>I'm actually fine with its premise. A few relevant excerpts:</p>
+<blockquote>
+<p>Since upkeep of private water supplies falls completely on the well-owner, community-level and individual-level social deprivation/vulnerability is likely to be an important determinant of whether well-owners can keep up with the requirements to ensure safe drinking water.</p>
+<p>the socioeconomic and demographic characteristics of the population using domestic wells (that are excluded from public water supplies) are not well described.</p>
+</blockquote>
+<p>However, I do wonder if in a real situation you might not just ask the 
+regional/local government for information on the local well users, giving 
+better information than this study could? The aforementioned Vermont user's 
+guide seems to agree, referring to the SVI as a "first step" in screening 
+populations and adding:</p>
+<blockquote>
+<p>Local information might be more accurate than these
+estimates and should always be considered if it is available.</p>
+</blockquote>
+<p>If you want to know more, just read the paper's intro.</p>
+<h2>Re Its Conclusions</h2>
+<p>Their analysis indicated that well users were across the gamut of SVI, 
+yielding a fairly broad conclusion. Some groups had high SVI (well, I'll argue 
+that point later), some low. They say that the high SVI groups comprised a 
+large population (1.1 million, ~1/3 of PA well users), but do not provide a 
+list of populations for each group, which would have been nice.</p>
+<p>A few instances of trying to work around this nebulousness:</p>
+<blockquote>
+<p>it seems reasonable to focus education interventions on all high private well use areas</p>
+</blockquote>
+<p>Well I could've told you that.</p>
+<blockquote>
+<p>The knowledge gained from our analysis in PA informs us that interventions and education campaigns need to be targeted towards homeowners (and some renters), and populations that are more socially vulnerable (have a low level of education, with an annual income less than $30k, are elderly or have children) as well as those that are less socially vulnerable (those with higher levels of education, an annual income over $30k, and are not a sensitive age).</p>
+</blockquote>
+<p>Again, that's a pretty wide net.</p>
+<h2>Re Its Methods</h2>
+<p>This is where problems arose, I think. I want to be clear that I am not 
+trying to be mean, that I might be wrong in some respects in my criticisms, 
+and that I've been there as a grad student.</p>
+<p>My first doubts arose when looking at the regression formula in the section 
+"Multilevel risk model". It is a mess. The indexing is wrong and there is a 
+dummy variable trap. I think there might be other issues, but it could just 
+be unfamiliar notation.</p>
+<p>I have three primary issues:</p>
+<ol>
+<li>They z-scored by county.</li>
+<li>They didn't include a good "rurality" covariate. </li>
+<li>They didn't actually do Bayesian Profile Regression.</li>
+</ol>
+<p>I'll go over each of these in separate posts. I think it's good to have a 
+grasp on the "units" in this study: census tracts.</p>
+<h1>Census Tracts</h1>
+<p>This paper references a data source as the US Census Bureau's TIGER/Line 
+Shapefiles <a href="https://www.census.
+gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">here</a>. If you 
+download a Shapefile, the dataset's abstract reads in part (emphasis mine):</p>
+<blockquote>
+<p>Census tracts are small, relatively permanent statistical subdivisions of 
+a county or equivalent entity, and were defined by local participants as 
+part of the Census 2000 Participant Statistical Areas Program (PSAP). The 
+Census Bureau delineated the census tracts in situations where no local 
+participant existed or where all the potential participants declined to participate. The primary purpose of census tracts is to provide a stable set of geographic units for the presentation of census data and comparison back to previous decennial censuses. Census tracts generally have a population size between 1,500 and 8,000 people, with an optimum size of 4,000 people. <strong>When first delineated, census tracts were designed to be homogeneous with respect to population characteristics, economic status, and living conditions</strong>. The spatial size of census tracts varies widely depending on the density of settlement. Physical changes in street patterns caused by highway construction, new development, etc. may require boundary revisions before a census. In addition, census tracts occasionally are split due to population growth, or combined as a result of substantial population decline. Census tract boundaries generally follow visible and identifiable features. They may follow legal boundaries such as minor civil division (MCD) or incorporated place boundaries in some States and situations to allow for census tract-to-governmental unit relationships where the governmental boundaries tend to remain unchanged between censuses. State and county boundaries are always census tract boundaries in the standard census geographic hierarchy. In a few rare instances, a census tract may consist of noncontiguous areas. These noncontiguous areas may occur where the census tracts are coextensive with all or parts of legal entities that are themselves noncontiguous. </p>
+</blockquote>
+<p>Also, looking at the <a href="https://www.census.
+gov/programs-surveys/geography/technical-documentation/complete-technical
+-documentation/tiger-geo-line.html">technical documentation</a> I feel is helpful. For instance, the 
+<a href="https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2010/TGRSHP10SF1.pdf">2010 documentation</a> 
+provides a visual hierarchy of census entities in its Figure 1.</p>
+<h1>Simple Issues</h1>
+<h2>Classification</h2>
+<h3>Cluster 14</h3>
+<p>Cluster 14 was classified by the author as having "suggested social 
+vulnerability". However, per Fig 5, for the 10 social vulnerability 
+covariates, the median quartiles for Cluster 14 were comprised of 5 in 
+quartile 2 and 5 in quartile 3, which should indicate a remarkably 
+middle-of-the-road social vulnerability level. You might be thinking, "well, 
+you have to see the full distributions to know for sure." Well, that's what 
+I thought, too. The odd thing is, full distributions are a built-in 
+visualization function provided by the R package that I'm guessing they used 
+for their analysis.</p>
+<h2>Nitpicks</h2>
+<p>Beyond the aforementioned formula confusion, I found some other errors.</p>
+<h3>Table 1</h3>
+<ol>
+<li>Columns are mis-aligned.</li>
+<li>Cluster 1's Poisson model estimate should be 0.28, not 1.28.</li>
+<li>Cluster 12's mean # households should be 1140 or 1149 I'm guessing. They 
+   probably fat-fingered 90.</li>
+</ol>
+<h3>Fig 6</h3>
+<ol>
+<li>The y-axis is cut-off.</li>
+<li>"The random effects due to county are shown in Fig 6." No, they aren't.</li>
+</ol>
+<h1>Future Writing</h1>
+<p>I'll write separate posts at least on each of my 3 beefs(?) with this paper, 
+and want to write some more about Bayesian Profile Regression afterwards.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string-part-2.html" rel="bookmark"
+                           title="Permalink to Sand Crabs Eating Bits of Plastic String (Part 2)">Sand Crabs Eating Bits of Plastic String (Part 2)</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2024-12-17T00:00:00-08:00">
                 Published: Tue 17 December 2024
@@ -34,221 +206,17 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>In the <a href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html">previous post</a> on sand crabs, I 
 looked at the mortality of the treatments (exposed to environmentally 
 relevant concentrations of microplastic 
 fibers)
 vs controls. Now, I want to look at another outcome that they looked at: egg 
 development.</p>
-<p>Specifically, looking at starting vs ending egg development stages. This 
-endpoint is.. much trickier to think about. For starters,
-it would 
-help 
-if I knew much about sand crab reproduction, or developmental biology in 
-general; it was always a bit of a snooze for me. I mean, I thought the 
-reproductive physiology course I took was interesting, but that's different. </p>
-<p>The authors explain:</p>
-<blockquote>
-<p>The selected experimental time frame (71 d) allowed for two full embryonic 
-development cycles as E. analoga has an incubation cycle of 29–32 days.</p>
-</blockquote>
-<p>I don't really get how this works. Why is one full cycle insufficient? Are 
-they expecting slower development in the treatment crabs? Is this just my 
-lack of 
-understanding of developmental biology?</p>
-<p>Adding onto that, there is another observed variable, "# of days with viable 
-eggs", which I don't really understand with respect to the start/end egg 
-development stages. Do the eggs become inviable after completed development? 
-Are there commonly miscarriages (or the egg equivalent)? I guess I should 
-just treat this as an exercise in Bayesian stats. It's not like I'll have 
-any idea on how to make a useful prior, anyway. </p>
-<h1>Data Discrepancies (Again)</h1>
-<p>I am using the GitHub data, because the Zenodo data for egg development 
-doesn't make sense. The GitHub data also has several issues, but at least 
-mostly makes sense. For the GitHub data, there are 3 control crabs missing 
-and 4 treatment crabs 
-missing, 
-which yields 29 control crabs and 28 treatment crabs.</p>
-<p>I made a couple of bar charts as descriptive statistics-type things, which 
-let me notice that Treatment Crab #5 has wrong data for its egg development 
-columns. I was going to just omit it, but I see that there are two other crabs 
-for 
-which the "# of egg stages(start to finish)" column — which should presumably 
-validate the difference between start and end egg stages — is off by one, so 
-I think that Treatment Crab #5's end stage was "Z", not 2, plus its "# of egg 
-stages(start to finish)" is off by two. This supports by "bad handwriting" 
-hypothesis from the previous post. I know I started putting lines through my 
-Z's after doing math where some formula creator (I'm guessing with good 
-handwriting) 
-decided to use Z's and 2's all over the place. Stupid mxn. Stupid ijk. At 
-least I'm <a href="https://betterexplained.
-com/articles/linear-algebra-guide/">not alone</a>.</p>
-<p>Also, there is a column "Reach Larval Stage(9+) Y/N", which has six 
-discrepancies with "Egg Stage end of exp". </p>
-<p>Also, there are seven cases of "# of days with viable eggs" exceeding "# of 
-days alive".</p>
-<p>I guess these data discrepancies further support my thinking of, "Don't take 
-the results of my analysis too seriously.".</p>
-<h1>Descriptive Plots</h1>
-<p>Here's what the distribution of egg development stages looked like at the 
-start and end of the experiment:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/science/sand_crabs/eggs/starting_stage_hist.png"></p>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/science/sand_crabs/eggs/ending_stage_hist.png"></p>
-<p>And how many stages were progressed, based on starting stage, and split out 
-by whether the crab died before the end of experiment or not.</p>
-<p><img alt="Figure 3" src="https://swpease.github.io/images/science/sand_crabs/eggs/stages_progressed.png"></p>
-<p>I was on the fence about splitting out the above figure by died/lived. I 
-decided to, because with them combined, my first question was, "Did those 
-starting stage 10 treatment crabs with no development progression die early?
-". I suppose I could've coded died/lived by shape, too.</p>
-<h1>The Modeling</h1>
-<p>Firstly, an explanatory note re what follows. I did the modeling months 
-ago, but had wanted to extend the model to incorporate censoring. Censored 
-discrete distributions were(/are) not implemented in PyMC, as I discovered. 
-One of the maintainers (Ricardo) fixed that problem within a couple of days 
-of my bringing it up. However, said fix has been <a href="https://github.com/pymc-devs/pymc/pull/7662">sitting in pull request 
-purgatory</a> for months now. Oh well. The point is, I'm revisiting this 
-analysis months after having done it, so I am probably forgetting some 
-nuances of decisions/explanations.</p>
-<p>So just looking at the above plots, I was expecting the model output to show 
-minimal differences between treatments and controls, for whichever model I 
-decided to use.</p>
-<p>I opted to use a proportional odds (ordered logit) model. I don't think it's 
-entirely 
-appropriate, and looking for an alternative model for ordinal data led me to 
-discover the <a href="https://www3.nd.
-edu/~rwilliam/gologit2/UnderStandingGologit2016.pdf">generalized ordered logit model</a>, but it seemed like the best 
-option of any model options I could find. As it is, I don't really think 
-that the appropriateness of a proportional odds model is 
-assessable by humans without using the Brant Test. Or maybe I just haven't 
-become one with the log-odds yet.</p>
-<p>The DAG of this model made me go "Woof!". On paper, its description is 
-pretty simple: an ordered categorical outcome with an ordered categorical 
-predictor and a categorical predictor. That is: final egg stage outcome with 
-starting egg stage and treatment group predictors. Well, everything 
-right/down of beta_trt is derived stuff (Stan's "generated quantities" block),
-so 
-I guess you can ignore that part.</p>
-<p><img alt="Figure 4" src="https://swpease.github.io/images/science/sand_crabs/eggs/DAG.png"></p>
-<p>And here is the PyMC model that produced that thing:</p>
-<div class="highlight"><pre><span></span><code><span class="n">N_cutpoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="n">N_deltas</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;end_stage&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
-    <span class="s2">&quot;start_stage&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
-    <span class="s2">&quot;cutpoint&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_cutpoints</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">model4</span><span class="p">:</span>
-    <span class="c1"># Data</span>
-    <span class="n">y_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;y_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage end of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
-    <span class="n">start_stage_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;start_stage_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Egg Stage at Beginning of exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
-    <span class="n">grp_data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;grp_data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;c_or_t_grp&quot;</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Priors</span>
-    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span> 
-                        <span class="n">mu</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_cutpoints</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.5</span><span class="p">,</span> 
-                        <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
-                    <span class="c1">#   initval=(np.arange(N_cutpoints) / 2) - 2.5,</span>
-                        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
-                        <span class="n">shape</span><span class="o">=</span><span class="n">N_cutpoints</span><span class="p">)</span>
-    <span class="n">beta_trt</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_trt&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">beta_start</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_start&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Dirichlet</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">N_deltas</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">N_deltas</span><span class="p">)</span>
-    <span class="n">delta_j</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;delta_j&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">delta</span><span class="p">]))</span>
-    <span class="n">delta_j_cumulative</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;delta_j_cumulative&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">delta_j</span><span class="p">))</span>
-
-    <span class="c1"># params</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> 
-                           <span class="p">(</span><span class="n">beta_start</span> <span class="o">*</span> <span class="n">delta_j_cumulative</span><span class="p">[</span><span class="n">start_stage_data</span><span class="p">]</span> 
-                            <span class="o">+</span> <span class="n">beta_trt</span> <span class="o">*</span> <span class="n">grp_data</span><span class="p">),</span>
-                            <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
-
-    <span class="c1"># lik</span>
-    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">OrderedLogistic</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> 
-                               <span class="n">eta</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> 
-                               <span class="n">cutpoints</span><span class="o">=</span><span class="n">cutpoints</span><span class="p">,</span> 
-                               <span class="n">observed</span><span class="o">=</span><span class="n">y_data</span><span class="p">,</span>
-                               <span class="n">shape</span><span class="o">=</span><span class="n">grp_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="c1"># derived params</span>
-    <span class="n">cutpoints_col</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cutpoints_col&quot;</span><span class="p">,</span> <span class="n">cutpoints</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
-    <span class="n">bc_delta_j_cumulative</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;bc_delta_j_cumulative&quot;</span><span class="p">,</span>
-                                        <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">delta_j_cumulative</span><span class="p">,</span> <span class="p">(</span><span class="n">N_cutpoints</span><span class="p">,</span> <span class="n">N_deltas</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
-    <span class="n">cutpoints_by_grp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cutpoints_by_grp&quot;</span><span class="p">,</span>
-                                        <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span>
-                                            <span class="n">cutpoints_col</span> <span class="o">-</span> <span class="p">(</span><span class="n">bc_delta_j_cumulative</span> <span class="o">*</span> <span class="n">beta_start</span><span class="p">),</span>  <span class="c1"># phi = 0</span>
-                                            <span class="n">cutpoints_col</span> <span class="o">-</span> <span class="p">((</span><span class="n">bc_delta_j_cumulative</span> <span class="o">*</span> <span class="n">beta_start</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta_trt</span><span class="p">),</span>  <span class="c1"># phi = beta_trt</span>
-                                        <span class="p">],</span>
-                                        <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
-                                        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cutpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
-
-    <span class="c1"># derived vars</span>
-    <span class="n">cum_probs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;cum_probs&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">invlogit</span><span class="p">(</span><span class="n">cutpoints_by_grp</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cutpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;probs&quot;</span><span class="p">,</span> 
-                             <span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">cum_probs</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))])</span> <span class="o">-</span>
-                             <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">cum_probs</span><span class="p">])),</span>
-                             <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;end_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;start_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">))</span>
-</code></pre></div>
-
-<p>I had quite a time making myself confident that the indexing tetris required 
-for <code>probs</code> wound up correct.</p>
-<h2>Output</h2>
-<p>Assessing the output of this model was a bit of a chore. I looked at it from 
-a couple of different perspectives:</p>
-<ol>
-<li>Posterior predictions</li>
-<li>The distributions of the <code>probs</code> in a forest plot.</li>
-</ol>
-<p>The first view looks neater, while the second provides HDI's.</p>
-<p>First, the posterior predictions. This graph could be cleaner, but the lack 
-of any apparent difference between treatments and controls kind of took the 
-wind out of my sails, at least to the extent of fixing the 
-indexing and re-looking-up how to 
-customize legends in seaborn/matplotlib. The bins are split by control = 0 
-and treatment = 1 (as if it matters), and ordered by ending stage (0 = stage 
-1, ..., 9 = stage 10, 10 = stage Z). I suppose the main wrong thing with 
-this model is how the probability of final stages earlier than starting 
-stages is non-zero.</p>
-<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_preds.png"></p>
-<p>Second, the posterior probabilities arranged as ["end_stage", "start_stage", 
-"grp"]. I think it's a bit interesting how the <code>end_stage</code> of zygote 
-monotonically increases with <code>start_stage</code>, and non-zygote end stages kind 
-of do a wave pattern indicating the most highly expected development of maybe 
-5-ish stages (e.g. the [9, x, x] portion of the graph):</p>
-<p><img alt="Figure 5" src="https://swpease.github.io/images/science/sand_crabs/eggs/posterior_probs.png"></p>
-<p>When it comes down to it, there's not a lot of data to go off of, though, 
-and I don't think all this modeling work does a whole lot more than what 
-could be eyeballed based on the descriptive stats/plots. </p>
-<h1>Conclusions</h1>
-<p>Keeping in mind the caveats of "not my experiment" and "I'm not an invert 
-zoologist", I think that this experiment doesn't show any meaningful 
-difference between treatments and controls in terms of egg development.</p>
-<p>Probably the most valuable thing to come out of this exercise was the 
-(pending) enhancement to PyMC's capabilities. I figure that even if I'd 
-gotten to incorporate censoring into the model, all it would've done 
-would've been to make the HDI's wider and maybe push some point estimates 
-around.</p>
-<h1>Discussion (but not what you're expecting)</h1>
-<p>I was thinking about the survival analysis from part 1, and it occurred to 
-me that these "environmentally relevant concentrations" are if anything 
-<em>low</em>, because in the wild, there is a continuously replenishing supply of 
-microplastics for the crabs to eat, while this experiment capped their 
-exposure: if one of the three plastics was eaten, then the ambient 
-concentration was now two per jar, until the new batch was introduced. So 
-the crabs in the wild should be hurting even more than this experiment 
-suggests. Have people noticed sand crab population shifts? I feel like as a 
-kid there were tons around at the beach, but even just a decade later they 
-were much rarer, though that's a pretty flimsy bit of anecdotal evidence 
-(for instance, I 
-certainly went to the shore much less often as I got older).</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Specifically, looking at starting vs ending egg development stages. This …</p>
+                <a class="readmore" href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string-part-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
