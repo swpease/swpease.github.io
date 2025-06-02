@@ -23,7 +23,180 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-1.html">PA Well Water, Part 1</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-2.html">PA Well Water, Part 2</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2025-06-01T00:00:00-07:00">
+                Published: Sun 01 June 2025
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-1.html">Part 1</a> and covers the 
+standardization of the 
+covariates used for the 
+clustering part of their model.</p>
+<p>I think it'll wind up pretty short. I had initially created some maps to 
+show off, but decided that they didn't add anything substantial to the 
+explanation.</p>
+<h1>My Gripe</h1>
+<p>The paper reads:</p>
+<blockquote>
+<p>All values were rescaled into county-specific z-scores before being fit in 
+the Bayesian Profile Regression model. This normalization of indicator 
+data was done because each county has its own baseline level of values for 
+the social vulnerability indicators. Additionally, these indicators vary 
+not only between census tracts but within and between counties. If raw, unscaled values had been used, it would obscure actual inequalities between clusters that are occurring between counties. This similar rescaling was used by Coker et al. (2023) in assessing the spatial relationship between environmental exposure profiles and excess mortality risk due to COVID-19 in Lombardy, Italy.</p>
+</blockquote>
+<p>I don't understand the logic for county-specific z-scores. What is special 
+about these values on the county-relative scale? If a county has overall 
+(for the state) low values, why does it make sense to have the largest value 
+from that county pushed up to be with the overall (statewide) high values. 
+The converse as well: a county with overall high values would have its 
+smallest value pushed down to be with the overall low values.</p>
+<p>They say the rescaling is similar to Coker et al. (2023), but that paper 
+doesn't mention any sort of grouping prior to z-scoring, stating:</p>
+<blockquote>
+<p>We rescaled the respective values into Z-scores before fitting the Bayesian Profile Regression analysis</p>
+</blockquote>
+<h1>A Specific Case</h1>
+<p>Data source: <a href="https://www.atsdr.cdc.
+gov/place-health/php/svi/svi-data-documentation-download.html">PA Census Tracts SVI 2018</a>.</p>
+<p>I arbitrarily picked EP_UNEMP (The SVI's unemployment rate estimate) to 
+examine. The table below shows Snyder County, the county most impacted by 
+the z-scoring (i.e. standardization) for this 
+variable. The county 
+has 8 census tracts, hence 8 rows. The table has crap names because I needed to fit the table 
+within my blog's margins. To specify the column definitions:</p>
+<ul>
+<li>EP_UNEMP: unemployment rate estimate. Note if you're following 
+    along that I replaced -999's with NA's.</li>
+<li>std_cnty: EP_UNEMP, standardized by county.<ul>
+<li>dplyr code: <code>svi_unemp |&gt; group_by(STCNTY) |&gt; mutate(std_by_county = 
+  as.vector(scale(EP_UNEMP))) |&gt; ungroup()</code></li>
+</ul>
+</li>
+<li>std_PA: EP_UNEMP, standardized by across all of PA<ul>
+<li>dplyr code: <code>svi_unemp |&gt; mutate(std_PA = as.vector(scale(EP_UNEMP)))</code></li>
+</ul>
+</li>
+<li>cnty_qntl: Empirical quantile of std_cnty<ul>
+<li>dplyr code: <code>svi_unemp |&gt; mutate(cnty_qntl = min_rank(std_cnty) / n())</code></li>
+</ul>
+</li>
+<li>PA_qntl: Empirical quantile of std_PA<ul>
+<li>dplyr code: <code>svi_unemp |&gt; mutate(PA_qntl = min_rank(std_PA) / n())</code></li>
+</ul>
+</li>
+<li>qntl_abs_diff: Absolute difference between PA_qntl and cnty_qntl</li>
+</ul>
+<p>I'm not sure if there's a standard way to compute empirical quantiles, so 
+maybe my numbers there are off.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">EP_UNEMP</th>
+<th style="text-align: right;">std_cnty</th>
+<th style="text-align: right;">std_PA</th>
+<th style="text-align: right;">cnty_qntl</th>
+<th style="text-align: right;">PA_qntl</th>
+<th style="text-align: right;">qntl_abs_diff</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">-1.11</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.9</td>
+<td style="text-align: right;">-0.82</td>
+<td style="text-align: right;">-0.91</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">-0.73</td>
+<td style="text-align: right;">-0.89</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.14</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.1</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">-0.87</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.18</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.9</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr>
+<td style="text-align: right;">4.6</td>
+<td style="text-align: right;">1.75</td>
+<td style="text-align: right;">-0.36</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.52</td>
+</tr>
+<tr>
+<td style="text-align: right;">3.3</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr>
+<td style="text-align: right;">3.7</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.56</td>
+</tr>
+</tbody>
+</table>
+<p>To me, the important thing to see is how the census tracts with unemployment 
+rates that are high for Snyder County are still below the median for the 
+state. This yields quite large differences in where they wind up, 
+relative to 
+the census tracts across all of PA, when you do county-specific 
+standardization vs PA-wide standardization (where standardization = z-scoring).</p>
+<h1>Conclusion</h1>
+<p>That's about it. I could go on, but I think the idea is presented well 
+enough. The researcher obviously thought about this and made the 
+decision and effort to 
+do this z-scoring, so maybe I'm just missing something and am the wrong one. </p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/pa-well-water-part-1.html" rel="bookmark"
+                           title="Permalink to PA Well Water, Part 1">PA Well Water, Part 1</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2025-05-29T00:00:00-07:00">
                 Published: Thu 29 May 2025
@@ -34,160 +207,15 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>I found a paper on PLOS Water:</p>
 <p>Wamsley M, Coker ES, Wilson RT, Henry K, Murphy HM (2024) Social 
 vulnerability and exposure to private well water. PLOS Water 3(12): e0000303.
 <a href="https://doi.org/10.1371/journal.pwat.0000303">https://doi.org/10.1371/journal.pwat.0000303</a></p>
-<p>I can't do a better job than the authors of summarizing the purpose, so 
-here's the first few sentences of the abstract:</p>
-<blockquote>
-<p>One quarter of the population of Pennsylvania relies on private domestic well water: two-fold greater than the US average. Private well owners are responsible for the maintenance and treatment of their water supply. Targeted interventions are needed to support these well owners to ensure they have access to safe drinking water, free of contaminants. To develop appropriate interventions, an understanding of the characteristics and social vulnerability of communities with high well water use is needed. The purpose of this study was to determine the spatial patterning of social vulnerability in Pennsylvania and assess the association between social vulnerability and private domestic wells using profile regression.</p>
-</blockquote>
-<p>I think the paper is interesting, but I found a few issues with it that I 
-wanted to go over. This has largely served as a great learning resource for 
-me in a number of respects: mapping, Bayesian stats, epidemiology, stats in 
-general, demographics... I'll go over the different issues I had over 
-several posts. But first, what is "social vulnerability"?</p>
-<h1>Social Vulnerability / Social Vulnerability Index (SVI)</h1>
-<p>"Social vulnerability" has a few definitions that try to get at the same 
-meaning, to varying success. I think that the Vermont public health 
-department does the best job of explaining social vulnerability and the SVI: 
-<a href="https://www.healthvermont.
-gov/sites/default/files/documents/2016/12/ENV_EPHT_SocialVulnerabilityIndex.
-pdf">ref</a>. The <a href="https://www.atsdr.cdc.gov/place-health/php/svi/index.
-html">ATSDR site</a> has a definition that made me go, "What?", but its definition within 
-its detailed <a href="https://www.atsdr.cdc.
-gov/place-health/php/svi/svi-data-documentation-download.html">documentation</a> is much 
-more sensible in my view. Vermont's 
-definition is: </p>
-<blockquote>
-<p>Social vulnerability refers to the resilience of communities when
-responding to or recovering from threats to public health.</p>
-</blockquote>
-<p>The ATSDR documentation's is:</p>
-<blockquote>
-<p>Every community must prepare for and respond to hazardous events, whether a natural disaster like a tornado or a disease outbreak, or an anthropogenic event such as a harmful chemical spill. The degree to which a community exhibits certain social conditions, including high poverty, low percentage of vehicle access, or crowded households, among others, may affect that community’s ability to prevent human suffering and financial loss in the event of a disaster. These factors describe a community’s social vulnerability.</p>
-</blockquote>
-<p>Similarly, Social Vulnerability Index (SVI) per Vermont is:</p>
-<blockquote>
-<p>a planning tool to evaluate the relative social vulnerability across the 
-state. It can be used if there is a disease outbreak or in the event of an 
-emergency—either natural or human-caused—to identify populations that may 
-need more help.</p>
-</blockquote>
-<p>And for ATSDR is:</p>
-<blockquote>
-<p>to help public health officials and emergency response planners identify 
-and map the communities that will most likely need support before, during, 
-and after a hazardous event.</p>
-</blockquote>
-<p>In general, I thought the Vermont reference was the best, both for being 
-concise, and importantly for highlighting the SVI's limitations. I'd read 
-that if I were you.</p>
-<h2>A Brief Aside</h2>
-<p>Going to the ATSDR website shows a banner:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/ATSDR_site.png"></p>
-<p>I don't really go on government sites much, so I was astounded.</p>
-<h1>My Issues With This Paper</h1>
-<h2>Re Its Premise</h2>
-<p>I'm actually fine with its premise. A few relevant excerpts:</p>
-<blockquote>
-<p>Since upkeep of private water supplies falls completely on the well-owner, community-level and individual-level social deprivation/vulnerability is likely to be an important determinant of whether well-owners can keep up with the requirements to ensure safe drinking water.</p>
-<p>the socioeconomic and demographic characteristics of the population using domestic wells (that are excluded from public water supplies) are not well described.</p>
-</blockquote>
-<p>However, I do wonder if in a real situation you might not just ask the 
-regional/local government for information on the local well users, giving 
-better information than this study could? The aforementioned Vermont user's 
-guide seems to agree, referring to the SVI as a "first step" in screening 
-populations and adding:</p>
-<blockquote>
-<p>Local information might be more accurate than these
-estimates and should always be considered if it is available.</p>
-</blockquote>
-<p>If you want to know more, just read the paper's intro.</p>
-<h2>Re Its Conclusions</h2>
-<p>Their analysis indicated that well users were across the gamut of SVI, 
-yielding a fairly broad conclusion. Some groups had high SVI (well, I'll argue 
-that point later), some low. They say that the high SVI groups comprised a 
-large population (1.1 million, ~1/3 of PA well users), but do not provide a 
-list of populations for each group, which would have been nice.</p>
-<p>A few instances of trying to work around this nebulousness:</p>
-<blockquote>
-<p>it seems reasonable to focus education interventions on all high private well use areas</p>
-</blockquote>
-<p>Well I could've told you that.</p>
-<blockquote>
-<p>The knowledge gained from our analysis in PA informs us that interventions and education campaigns need to be targeted towards homeowners (and some renters), and populations that are more socially vulnerable (have a low level of education, with an annual income less than $30k, are elderly or have children) as well as those that are less socially vulnerable (those with higher levels of education, an annual income over $30k, and are not a sensitive age).</p>
-</blockquote>
-<p>Again, that's a pretty wide net.</p>
-<h2>Re Its Methods</h2>
-<p>This is where problems arose, I think. I want to be clear that I am not 
-trying to be mean, that I might be wrong in some respects in my criticisms, 
-and that I've been there as a grad student.</p>
-<p>My first doubts arose when looking at the regression formula in the section 
-"Multilevel risk model". It is a mess. The indexing is wrong and there is a 
-dummy variable trap. I think there might be other issues, but it could just 
-be unfamiliar notation.</p>
-<p>I have three primary issues:</p>
-<ol>
-<li>They z-scored by county.</li>
-<li>They didn't include a good "rurality" covariate. </li>
-<li>They didn't actually do Bayesian Profile Regression.</li>
-</ol>
-<p>I'll go over each of these in separate posts. I think it's good to have a 
-grasp on the "units" in this study: census tracts.</p>
-<h1>Census Tracts</h1>
-<p>This paper references a data source as the US Census Bureau's TIGER/Line 
-Shapefiles <a href="https://www.census.
-gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">here</a>. If you 
-download a Shapefile, the dataset's abstract reads in part (emphasis mine):</p>
-<blockquote>
-<p>Census tracts are small, relatively permanent statistical subdivisions of 
-a county or equivalent entity, and were defined by local participants as 
-part of the Census 2000 Participant Statistical Areas Program (PSAP). The 
-Census Bureau delineated the census tracts in situations where no local 
-participant existed or where all the potential participants declined to participate. The primary purpose of census tracts is to provide a stable set of geographic units for the presentation of census data and comparison back to previous decennial censuses. Census tracts generally have a population size between 1,500 and 8,000 people, with an optimum size of 4,000 people. <strong>When first delineated, census tracts were designed to be homogeneous with respect to population characteristics, economic status, and living conditions</strong>. The spatial size of census tracts varies widely depending on the density of settlement. Physical changes in street patterns caused by highway construction, new development, etc. may require boundary revisions before a census. In addition, census tracts occasionally are split due to population growth, or combined as a result of substantial population decline. Census tract boundaries generally follow visible and identifiable features. They may follow legal boundaries such as minor civil division (MCD) or incorporated place boundaries in some States and situations to allow for census tract-to-governmental unit relationships where the governmental boundaries tend to remain unchanged between censuses. State and county boundaries are always census tract boundaries in the standard census geographic hierarchy. In a few rare instances, a census tract may consist of noncontiguous areas. These noncontiguous areas may occur where the census tracts are coextensive with all or parts of legal entities that are themselves noncontiguous. </p>
-</blockquote>
-<p>Also, looking at the <a href="https://www.census.
-gov/programs-surveys/geography/technical-documentation/complete-technical
--documentation/tiger-geo-line.html">technical documentation</a> I feel is helpful. For instance, the 
-<a href="https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2010/TGRSHP10SF1.pdf">2010 documentation</a> 
-provides a visual hierarchy of census entities in its Figure 1.</p>
-<h1>Simple Issues</h1>
-<h2>Classification</h2>
-<h3>Cluster 14</h3>
-<p>Cluster 14 was classified by the author as having "suggested social 
-vulnerability". However, per Fig 5, for the 10 social vulnerability 
-covariates, the median quartiles for Cluster 14 were comprised of 5 in 
-quartile 2 and 5 in quartile 3, which should indicate a remarkably 
-middle-of-the-road social vulnerability level. You might be thinking, "well, 
-you have to see the full distributions to know for sure." Well, that's what 
-I thought, too. The odd thing is, full distributions are a built-in 
-visualization function provided by the R package that I'm guessing they used 
-for their analysis.</p>
-<h2>Nitpicks</h2>
-<p>Beyond the aforementioned formula confusion, I found some other errors.</p>
-<h3>Table 1</h3>
-<ol>
-<li>Columns are mis-aligned.</li>
-<li>Cluster 1's Poisson model estimate should be 0.28, not 1.28.</li>
-<li>Cluster 12's mean # households should be 1140 or 1149 I'm guessing. They 
-   probably fat-fingered 90.</li>
-</ol>
-<h3>Fig 6</h3>
-<ol>
-<li>The y-axis is cut-off.</li>
-<li>"The random effects due to county are shown in Fig 6." No, they aren't.</li>
-</ol>
-<h1>Future Writing</h1>
-<p>I'll write separate posts at least on each of my 3 beefs(?) with this paper, 
-and want to write some more about Bayesian Profile Regression afterwards.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>I can't do a better job than the authors of …</p>
+                <a class="readmore" href="https://swpease.github.io/pa-well-water-part-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

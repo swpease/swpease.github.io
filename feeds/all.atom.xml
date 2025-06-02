@@ -1,5 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-05-29T00:00:00-07:00</updated><entry><title>PA Well Water, Part 1</title><link href="https://swpease.github.io/pa-well-water-part-1.html" rel="alternate"></link><published>2025-05-29T00:00:00-07:00</published><updated>2025-05-29T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-05-29:/pa-well-water-part-1.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-01T00:00:00-07:00</updated><entry><title>PA Well Water, Part 2</title><link href="https://swpease.github.io/pa-well-water-part-2.html" rel="alternate"></link><published>2025-06-01T00:00:00-07:00</published><updated>2025-06-01T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-01:/pa-well-water-part-2.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-1.html"&gt;Part 1&lt;/a&gt; and covers the 
+standardization of the 
+covariates used for the 
+clustering part of their model.&lt;/p&gt;
+&lt;p&gt;I think it'll wind up pretty short. I had initially created some maps to 
+show off, but decided that they didn't add anything substantial to the 
+explanation.&lt;/p&gt;
+&lt;h1&gt;My …&lt;/h1&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-1.html"&gt;Part 1&lt;/a&gt; and covers the 
+standardization of the 
+covariates used for the 
+clustering part of their model.&lt;/p&gt;
+&lt;p&gt;I think it'll wind up pretty short. I had initially created some maps to 
+show off, but decided that they didn't add anything substantial to the 
+explanation.&lt;/p&gt;
+&lt;h1&gt;My Gripe&lt;/h1&gt;
+&lt;p&gt;The paper reads:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;All values were rescaled into county-specific z-scores before being fit in 
+the Bayesian Profile Regression model. This normalization of indicator 
+data was done because each county has its own baseline level of values for 
+the social vulnerability indicators. Additionally, these indicators vary 
+not only between census tracts but within and between counties. If raw, unscaled values had been used, it would obscure actual inequalities between clusters that are occurring between counties. This similar rescaling was used by Coker et al. (2023) in assessing the spatial relationship between environmental exposure profiles and excess mortality risk due to COVID-19 in Lombardy, Italy.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I don't understand the logic for county-specific z-scores. What is special 
+about these values on the county-relative scale? If a county has overall 
+(for the state) low values, why does it make sense to have the largest value 
+from that county pushed up to be with the overall (statewide) high values. 
+The converse as well: a county with overall high values would have its 
+smallest value pushed down to be with the overall low values.&lt;/p&gt;
+&lt;p&gt;They say the rescaling is similar to Coker et al. (2023), but that paper 
+doesn't mention any sort of grouping prior to z-scoring, stating:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We rescaled the respective values into Z-scores before fitting the Bayesian Profile Regression analysis&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;A Specific Case&lt;/h1&gt;
+&lt;p&gt;Data source: &lt;a href="https://www.atsdr.cdc.
+gov/place-health/php/svi/svi-data-documentation-download.html"&gt;PA Census Tracts SVI 2018&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I arbitrarily picked EP_UNEMP (The SVI's unemployment rate estimate) to 
+examine. The table below shows Snyder County, the county most impacted by 
+the z-scoring (i.e. standardization) for this 
+variable. The county 
+has 8 census tracts, hence 8 rows. The table has crap names because I needed to fit the table 
+within my blog's margins. To specify the column definitions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EP_UNEMP: unemployment rate estimate. Note if you're following 
+    along that I replaced -999's with NA's.&lt;/li&gt;
+&lt;li&gt;std_cnty: EP_UNEMP, standardized by county.&lt;ul&gt;
+&lt;li&gt;dplyr code: &lt;code&gt;svi_unemp |&amp;gt; group_by(STCNTY) |&amp;gt; mutate(std_by_county = 
+  as.vector(scale(EP_UNEMP))) |&amp;gt; ungroup()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;std_PA: EP_UNEMP, standardized by across all of PA&lt;ul&gt;
+&lt;li&gt;dplyr code: &lt;code&gt;svi_unemp |&amp;gt; mutate(std_PA = as.vector(scale(EP_UNEMP)))&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cnty_qntl: Empirical quantile of std_cnty&lt;ul&gt;
+&lt;li&gt;dplyr code: &lt;code&gt;svi_unemp |&amp;gt; mutate(cnty_qntl = min_rank(std_cnty) / n())&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;PA_qntl: Empirical quantile of std_PA&lt;ul&gt;
+&lt;li&gt;dplyr code: &lt;code&gt;svi_unemp |&amp;gt; mutate(PA_qntl = min_rank(std_PA) / n())&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;qntl_abs_diff: Absolute difference between PA_qntl and cnty_qntl&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I'm not sure if there's a standard way to compute empirical quantiles, so 
+maybe my numbers there are off.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: right;"&gt;EP_UNEMP&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;std_cnty&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;std_PA&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;cnty_qntl&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;PA_qntl&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;qntl_abs_diff&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;1.6&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-1.11&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.97&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.06&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.04&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.02&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;1.9&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.82&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.91&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.17&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.06&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;2.0&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.73&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.89&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.21&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.07&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;2.1&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.63&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.87&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.26&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.08&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;2.9&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.13&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.70&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.65&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.16&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.49&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;4.6&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;1.75&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.36&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.94&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.42&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.52&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;3.3&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.51&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.62&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.77&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.22&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.55&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right;"&gt;3.7&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.90&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;-0.54&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.84&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.28&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.56&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To me, the important thing to see is how the census tracts with unemployment 
+rates that are high for Snyder County are still below the median for the 
+state. This yields quite large differences in where they wind up, 
+relative to 
+the census tracts across all of PA, when you do county-specific 
+standardization vs PA-wide standardization (where standardization = z-scoring).&lt;/p&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;That's about it. I could go on, but I think the idea is presented well 
+enough. The researcher obviously thought about this and made the 
+decision and effort to 
+do this z-scoring, so maybe I'm just missing something and am the wrong one. &lt;/p&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 1</title><link href="https://swpease.github.io/pa-well-water-part-1.html" rel="alternate"></link><published>2025-05-29T00:00:00-07:00</published><updated>2025-05-29T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-05-29:/pa-well-water-part-1.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;I found a paper on PLOS Water:&lt;/p&gt;
 &lt;p&gt;Wamsley M, Coker ES, Wilson RT, Henry K, Murphy HM (2024) Social 
 vulnerability and exposure to private well water. PLOS Water 3(12): e0000303.
