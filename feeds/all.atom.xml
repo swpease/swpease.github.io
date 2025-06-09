@@ -1,5 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-01T00:00:00-07:00</updated><entry><title>PA Well Water, Part 2</title><link href="https://swpease.github.io/pa-well-water-part-2.html" rel="alternate"></link><published>2025-06-01T00:00:00-07:00</published><updated>2025-06-01T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-01:/pa-well-water-part-2.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-09T00:00:00-07:00</updated><entry><title>PA Well Water, Part 3</title><link href="https://swpease.github.io/pa-well-water-part-3.html" rel="alternate"></link><published>2025-06-09T00:00:00-07:00</published><updated>2025-06-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-09:/pa-well-water-part-3.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-2.html"&gt;Part 2&lt;/a&gt; and covers the 
+model's accounting for rurality.&lt;/p&gt;
+&lt;p&gt;The authors write:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rural areas will have more domestic wells.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Which makes sense and is what I would presume, but their citation for said 
+claim doesn't seem to say that(? I just did a search for …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-2.html"&gt;Part 2&lt;/a&gt; and covers the 
+model's accounting for rurality.&lt;/p&gt;
+&lt;p&gt;The authors write:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rural areas will have more domestic wells.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Which makes sense and is what I would presume, but their citation for said 
+claim doesn't seem to say that(? I just did a search for "rural" and "well" 
+in the reference and didn't see anything). In any case, the &lt;a href="https://www.cdc.gov/environmental-health-services/php/water/private-water-public-health.html"&gt;CDC says so&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;With that in mind, the authors don't seem to account for rurality as a 
+confounder. They use county, which I suppose is related to rurality. I'll go 
+over their model, and propose adding a rurality covariate in the form of 
+census tract population density. I'll also discuss population density with 
+respect to their chosen outcome, count of houses using domestic wells by 
+census tract.&lt;/p&gt;
+&lt;p&gt;At this point I think I should make it clear that I haven't read up on and 
+am mostly unfamiliar with 
+spatial data regression, so I may be doing obviously dumb things.&lt;/p&gt;
+&lt;h2&gt;What is rurality?&lt;/h2&gt;
+&lt;p&gt;It's a word we all know the meaning of, but there is a rather detailed set of 
+criteria for 
+what constitutes an "urban 
+area", per the &lt;a href="https://www.govinfo.
+gov/content/pkg/FR-2022-03-24/pdf/2022-06180.pdf"&gt;US Census Bureau&lt;/a&gt;. There are a lot of 
+details, but the gist is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The Census Bureau’s urban areas represent densely developed territory, and 
+encompass residential, commercial, and other non-residential urban land 
+uses. The boundaries of this urban footprint have been defined using 
+measures based primarily on population counts and residential population 
+density, and also on criteria that account for non-residential urban land 
+uses, such as commercial, industrial, transportation, and open space that 
+are part of the urban landscape.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;DAGs&lt;/h1&gt;
+&lt;p&gt;I think it's worthwhile to explicitly make some DAGs (using &lt;a href="https://www.dagitty.net"&gt;daggity&lt;/a&gt;) to 
+get an 
+idea of 
+causality and confounding possibilities. For an introduction on the subject, 
+the &lt;a href="https://github.
+com/rmcelreath/stat_rethinking_2024/tree/main?tab=readme-ov-file"&gt;Statistical Rethinking&lt;/a&gt; lectures 
+go over it (especially lectures 5 and 6). I'll build up from the simplest 
+ones, piece by piece.&lt;/p&gt;
+&lt;p&gt;As a reminder, the primary aim of the statistical analysis in this paper is 
+to find "profiles" of SVI (as determined by clustering in a Bayesian profile 
+regression) that are used to predict reliance on well water, and to 
+characterize those profiles.&lt;/p&gt;
+&lt;h2&gt;DAG 1: Adding County&lt;/h2&gt;
+&lt;p&gt;The first DAG is just the predictor of interest (SVI cluster), the outcome 
+(well water), and the confounder "county" that they use in the paper:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/dag1.png"&gt;&lt;/p&gt;
+&lt;p&gt;To be explicit about some possible causal mechanisms, I'll propose that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;County =&amp;gt; SVI: characteristics of a county (e.g. laws) 
+    can alter demographic profiles.&lt;/li&gt;
+&lt;li&gt;County =&amp;gt; Well water: counties may have different regulations on water 
+    rights.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;DAG 2: Adding Spatial Correlation&lt;/h2&gt;
+&lt;p&gt;The second DAG adds in a spatial autocorellation term, as they did in the 
+paper. See &lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; and &lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt;. Per &lt;sup id="fnref2:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;, the purpose of such a term is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;space is used as a proxy for any unmeasured variable; the common 
+assumption is that areas which are close to each other are more similar 
+than those further apart, suggesting that an additional source of 
+correlation, namely spatial correlation needs to be accommodated in the models.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In this case, I'm thinking of underlying geology (aquifers, aquitards, etc.).
+The DAG might look like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/dag2.png"&gt;&lt;/p&gt;
+&lt;p&gt;Again, to be explicit about some possible causal mechanisms, I'll propose that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Location =&amp;gt; SVI: location, location, location. It can alter demographic profiles.&lt;/li&gt;
+&lt;li&gt;Location =&amp;gt; Well water: The aforementioned geology issues (e.g. aquifers, 
+  are you in a desert?).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;DAG 3 (Proposal): Adding Population Density&lt;/h2&gt;
+&lt;p&gt;I propose adding in census tract population density as another confounder 
+for which to 
+control, acting as a measure of rurality. It probably correlates with 
+county, but I think should do a 
+better job of addressing rurality. I wonder how a model with both, one with 
+only population density, and one with only county would compare.&lt;/p&gt;
+&lt;p&gt;The DAG might look like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/dag3.png"&gt;&lt;/p&gt;
+&lt;p&gt;Again, to be explicit about some possible causal mechanisms, I'll propose that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pop density =&amp;gt; SVI: People may move to/from urban/rural areas, yielding 
+  distinct demographics. e.g. young people may want to move to the big city, 
+  or old people may want a quiet retirement.&lt;/li&gt;
+&lt;li&gt;Pop density =&amp;gt; Well water: As mentioned in the CDC reference. I suppose 
+  less densely populated areas can more likely support well users. Though my 
+  brother gets well water for watering his garden (but is on municipal 
+  drinking water) in a Florida suburb.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Outcome Approximations&lt;/h1&gt;
+&lt;p&gt;Some census tracts are fully or not at all served by municipal water sources.
+Some are partially served by them. For these partial cases, we need to 
+estimate values for their chosen outcome, count of houses using domestic wells by 
+census tract. The authors state:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;For each census tract we estimated the proportion of the population using 
+a domestic well using the following assumptions: 1) census tracks without publicly supplied water
+rely on domestic wells, 2) the proportional area served by a public water supply is the same as the
+proportion of homes served by a PWS. To verify whether our assumptions were valid, we compared our
+maps of proportion of homes served by private well water to population density maps of the state of
+PA (S1 Fig).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;However, given the relationship between rurality and well water usage, this 
+area-based approximation will likely overestimate well reliance. A reviewer 
+of the manuscript notes this:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I realize this is a pragmatic assumption and you later note that the areas with the public water supply may have a higher population density (whereas as the analysis assumes equal population density). I expect there would be a way to ‘weight’ the population in the areas inside and outside the public water supply so as to overcome this potential source of bias. e.g. I imagine there are reasonable shape files of population density that would enable this.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I'll discuss it in more detail later, but thanks to &lt;sup id="fnref2:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt;, I was able to find 
+such population density maps thanks to &lt;a href="https://dataforgood.facebook.com/dfg/tools/high-resolution-population-density-maps"&gt;Facebook and CIESIN&lt;/a&gt;. I'm not sure why 
+this information wasn't incorporated, given that Coker is an author on this 
+paper. I guess it was considered a good enough approximation as per S1 Fig.&lt;/p&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I've argued that population density should be included in their model as a 
+rurality metric, acting to account for this potential confounding. I also am 
+interested in seeing what, if any, difference using population density in 
+estimating well usage might have.&lt;/p&gt;
+&lt;p&gt;In the next post, I'll go over my main issue with the analysis: the (non)
+use of Bayesian profile regression.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;Liverani, S, Lavigne, A, Blangiardo, M, 2016. Modelling collinear and spatially
+correlated data. Spatial and Spatio-temporal Epidemiology 18, 63–73. https://doi.org/10.1016/j.sste.2016.04.003.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 2</title><link href="https://swpease.github.io/pa-well-water-part-2.html" rel="alternate"></link><published>2025-06-01T00:00:00-07:00</published><updated>2025-06-01T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-01:/pa-well-water-part-2.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-1.html"&gt;Part 1&lt;/a&gt; and covers the 
 standardization of the 
 covariates used for the 

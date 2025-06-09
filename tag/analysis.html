@@ -23,7 +23,168 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-2.html">PA Well Water, Part 2</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-3.html">PA Well Water, Part 3</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2025-06-09T00:00:00-07:00">
+                Published: Mon 09 June 2025
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-2.html">Part 2</a> and covers the 
+model's accounting for rurality.</p>
+<p>The authors write:</p>
+<blockquote>
+<p>rural areas will have more domestic wells.</p>
+</blockquote>
+<p>Which makes sense and is what I would presume, but their citation for said 
+claim doesn't seem to say that(? I just did a search for "rural" and "well" 
+in the reference and didn't see anything). In any case, the <a href="https://www.cdc.gov/environmental-health-services/php/water/private-water-public-health.html">CDC says so</a>.</p>
+<p>With that in mind, the authors don't seem to account for rurality as a 
+confounder. They use county, which I suppose is related to rurality. I'll go 
+over their model, and propose adding a rurality covariate in the form of 
+census tract population density. I'll also discuss population density with 
+respect to their chosen outcome, count of houses using domestic wells by 
+census tract.</p>
+<p>At this point I think I should make it clear that I haven't read up on and 
+am mostly unfamiliar with 
+spatial data regression, so I may be doing obviously dumb things.</p>
+<h2>What is rurality?</h2>
+<p>It's a word we all know the meaning of, but there is a rather detailed set of 
+criteria for 
+what constitutes an "urban 
+area", per the <a href="https://www.govinfo.
+gov/content/pkg/FR-2022-03-24/pdf/2022-06180.pdf">US Census Bureau</a>. There are a lot of 
+details, but the gist is:</p>
+<blockquote>
+<p>The Census Bureau’s urban areas represent densely developed territory, and 
+encompass residential, commercial, and other non-residential urban land 
+uses. The boundaries of this urban footprint have been defined using 
+measures based primarily on population counts and residential population 
+density, and also on criteria that account for non-residential urban land 
+uses, such as commercial, industrial, transportation, and open space that 
+are part of the urban landscape.</p>
+</blockquote>
+<h1>DAGs</h1>
+<p>I think it's worthwhile to explicitly make some DAGs (using <a href="https://www.dagitty.net">daggity</a>) to 
+get an 
+idea of 
+causality and confounding possibilities. For an introduction on the subject, 
+the <a href="https://github.
+com/rmcelreath/stat_rethinking_2024/tree/main?tab=readme-ov-file">Statistical Rethinking</a> lectures 
+go over it (especially lectures 5 and 6). I'll build up from the simplest 
+ones, piece by piece.</p>
+<p>As a reminder, the primary aim of the statistical analysis in this paper is 
+to find "profiles" of SVI (as determined by clustering in a Bayesian profile 
+regression) that are used to predict reliance on well water, and to 
+characterize those profiles.</p>
+<h2>DAG 1: Adding County</h2>
+<p>The first DAG is just the predictor of interest (SVI cluster), the outcome 
+(well water), and the confounder "county" that they use in the paper:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/dag1.png"></p>
+<p>To be explicit about some possible causal mechanisms, I'll propose that:</p>
+<ul>
+<li>County =&gt; SVI: characteristics of a county (e.g. laws) 
+    can alter demographic profiles.</li>
+<li>County =&gt; Well water: counties may have different regulations on water 
+    rights.</li>
+</ul>
+<h2>DAG 2: Adding Spatial Correlation</h2>
+<p>The second DAG adds in a spatial autocorellation term, as they did in the 
+paper. See <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> and <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>. Per <sup id="fnref2:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, the purpose of such a term is:</p>
+<blockquote>
+<p>space is used as a proxy for any unmeasured variable; the common 
+assumption is that areas which are close to each other are more similar 
+than those further apart, suggesting that an additional source of 
+correlation, namely spatial correlation needs to be accommodated in the models.</p>
+</blockquote>
+<p>In this case, I'm thinking of underlying geology (aquifers, aquitards, etc.).
+The DAG might look like:</p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/dag2.png"></p>
+<p>Again, to be explicit about some possible causal mechanisms, I'll propose that:</p>
+<ul>
+<li>Location =&gt; SVI: location, location, location. It can alter demographic profiles.</li>
+<li>Location =&gt; Well water: The aforementioned geology issues (e.g. aquifers, 
+  are you in a desert?).</li>
+</ul>
+<h2>DAG 3 (Proposal): Adding Population Density</h2>
+<p>I propose adding in census tract population density as another confounder 
+for which to 
+control, acting as a measure of rurality. It probably correlates with 
+county, but I think should do a 
+better job of addressing rurality. I wonder how a model with both, one with 
+only population density, and one with only county would compare.</p>
+<p>The DAG might look like:</p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/dag3.png"></p>
+<p>Again, to be explicit about some possible causal mechanisms, I'll propose that:</p>
+<ul>
+<li>Pop density =&gt; SVI: People may move to/from urban/rural areas, yielding 
+  distinct demographics. e.g. young people may want to move to the big city, 
+  or old people may want a quiet retirement.</li>
+<li>Pop density =&gt; Well water: As mentioned in the CDC reference. I suppose 
+  less densely populated areas can more likely support well users. Though my 
+  brother gets well water for watering his garden (but is on municipal 
+  drinking water) in a Florida suburb.</li>
+</ul>
+<h1>Outcome Approximations</h1>
+<p>Some census tracts are fully or not at all served by municipal water sources.
+Some are partially served by them. For these partial cases, we need to 
+estimate values for their chosen outcome, count of houses using domestic wells by 
+census tract. The authors state:</p>
+<blockquote>
+<p>For each census tract we estimated the proportion of the population using 
+a domestic well using the following assumptions: 1) census tracks without publicly supplied water
+rely on domestic wells, 2) the proportional area served by a public water supply is the same as the
+proportion of homes served by a PWS. To verify whether our assumptions were valid, we compared our
+maps of proportion of homes served by private well water to population density maps of the state of
+PA (S1 Fig).</p>
+</blockquote>
+<p>However, given the relationship between rurality and well water usage, this 
+area-based approximation will likely overestimate well reliance. A reviewer 
+of the manuscript notes this:</p>
+<blockquote>
+<p>I realize this is a pragmatic assumption and you later note that the areas with the public water supply may have a higher population density (whereas as the analysis assumes equal population density). I expect there would be a way to ‘weight’ the population in the areas inside and outside the public water supply so as to overcome this potential source of bias. e.g. I imagine there are reasonable shape files of population density that would enable this.</p>
+</blockquote>
+<p>I'll discuss it in more detail later, but thanks to <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup>, I was able to find 
+such population density maps thanks to <a href="https://dataforgood.facebook.com/dfg/tools/high-resolution-population-density-maps">Facebook and CIESIN</a>. I'm not sure why 
+this information wasn't incorporated, given that Coker is an author on this 
+paper. I guess it was considered a good enough approximation as per S1 Fig.</p>
+<h1>Conclusion</h1>
+<p>I've argued that population density should be included in their model as a 
+rurality metric, acting to account for this potential confounding. I also am 
+interested in seeing what, if any, difference using population density in 
+estimating well usage might have.</p>
+<p>In the next post, I'll go over my main issue with the analysis: the (non)
+use of Bayesian profile regression.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Liverani, S, Lavigne, A, Blangiardo, M, 2016. Modelling collinear and spatially
+correlated data. Spatial and Spatio-temporal Epidemiology 18, 63–73. https://doi.org/10.1016/j.sste.2016.04.003.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/pa-well-water-part-2.html" rel="bookmark"
+                           title="Permalink to PA Well Water, Part 2">PA Well Water, Part 2</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2025-06-01T00:00:00-07:00">
                 Published: Sun 01 June 2025
@@ -34,7 +195,7 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-1.html">Part 1</a> and covers the 
 standardization of the 
 covariates used for the 
@@ -42,153 +203,10 @@ clustering part of their model.</p>
 <p>I think it'll wind up pretty short. I had initially created some maps to 
 show off, but decided that they didn't add anything substantial to the 
 explanation.</p>
-<h1>My Gripe</h1>
-<p>The paper reads:</p>
-<blockquote>
-<p>All values were rescaled into county-specific z-scores before being fit in 
-the Bayesian Profile Regression model. This normalization of indicator 
-data was done because each county has its own baseline level of values for 
-the social vulnerability indicators. Additionally, these indicators vary 
-not only between census tracts but within and between counties. If raw, unscaled values had been used, it would obscure actual inequalities between clusters that are occurring between counties. This similar rescaling was used by Coker et al. (2023) in assessing the spatial relationship between environmental exposure profiles and excess mortality risk due to COVID-19 in Lombardy, Italy.</p>
-</blockquote>
-<p>I don't understand the logic for county-specific z-scores. What is special 
-about these values on the county-relative scale? If a county has overall 
-(for the state) low values, why does it make sense to have the largest value 
-from that county pushed up to be with the overall (statewide) high values. 
-The converse as well: a county with overall high values would have its 
-smallest value pushed down to be with the overall low values.</p>
-<p>They say the rescaling is similar to Coker et al. (2023), but that paper 
-doesn't mention any sort of grouping prior to z-scoring, stating:</p>
-<blockquote>
-<p>We rescaled the respective values into Z-scores before fitting the Bayesian Profile Regression analysis</p>
-</blockquote>
-<h1>A Specific Case</h1>
-<p>Data source: <a href="https://www.atsdr.cdc.
-gov/place-health/php/svi/svi-data-documentation-download.html">PA Census Tracts SVI 2018</a>.</p>
-<p>I arbitrarily picked EP_UNEMP (The SVI's unemployment rate estimate) to 
-examine. The table below shows Snyder County, the county most impacted by 
-the z-scoring (i.e. standardization) for this 
-variable. The county 
-has 8 census tracts, hence 8 rows. The table has crap names because I needed to fit the table 
-within my blog's margins. To specify the column definitions:</p>
-<ul>
-<li>EP_UNEMP: unemployment rate estimate. Note if you're following 
-    along that I replaced -999's with NA's.</li>
-<li>std_cnty: EP_UNEMP, standardized by county.<ul>
-<li>dplyr code: <code>svi_unemp |&gt; group_by(STCNTY) |&gt; mutate(std_by_county = 
-  as.vector(scale(EP_UNEMP))) |&gt; ungroup()</code></li>
-</ul>
-</li>
-<li>std_PA: EP_UNEMP, standardized by across all of PA<ul>
-<li>dplyr code: <code>svi_unemp |&gt; mutate(std_PA = as.vector(scale(EP_UNEMP)))</code></li>
-</ul>
-</li>
-<li>cnty_qntl: Empirical quantile of std_cnty<ul>
-<li>dplyr code: <code>svi_unemp |&gt; mutate(cnty_qntl = min_rank(std_cnty) / n())</code></li>
-</ul>
-</li>
-<li>PA_qntl: Empirical quantile of std_PA<ul>
-<li>dplyr code: <code>svi_unemp |&gt; mutate(PA_qntl = min_rank(std_PA) / n())</code></li>
-</ul>
-</li>
-<li>qntl_abs_diff: Absolute difference between PA_qntl and cnty_qntl</li>
-</ul>
-<p>I'm not sure if there's a standard way to compute empirical quantiles, so 
-maybe my numbers there are off.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">EP_UNEMP</th>
-<th style="text-align: right;">std_cnty</th>
-<th style="text-align: right;">std_PA</th>
-<th style="text-align: right;">cnty_qntl</th>
-<th style="text-align: right;">PA_qntl</th>
-<th style="text-align: right;">qntl_abs_diff</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">1.6</td>
-<td style="text-align: right;">-1.11</td>
-<td style="text-align: right;">-0.97</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.02</td>
-</tr>
-<tr>
-<td style="text-align: right;">1.9</td>
-<td style="text-align: right;">-0.82</td>
-<td style="text-align: right;">-0.91</td>
-<td style="text-align: right;">0.17</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">0.10</td>
-</tr>
-<tr>
-<td style="text-align: right;">2.0</td>
-<td style="text-align: right;">-0.73</td>
-<td style="text-align: right;">-0.89</td>
-<td style="text-align: right;">0.21</td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.14</td>
-</tr>
-<tr>
-<td style="text-align: right;">2.1</td>
-<td style="text-align: right;">-0.63</td>
-<td style="text-align: right;">-0.87</td>
-<td style="text-align: right;">0.26</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.18</td>
-</tr>
-<tr>
-<td style="text-align: right;">2.9</td>
-<td style="text-align: right;">0.13</td>
-<td style="text-align: right;">-0.70</td>
-<td style="text-align: right;">0.65</td>
-<td style="text-align: right;">0.16</td>
-<td style="text-align: right;">0.49</td>
-</tr>
-<tr>
-<td style="text-align: right;">4.6</td>
-<td style="text-align: right;">1.75</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">0.42</td>
-<td style="text-align: right;">0.52</td>
-</tr>
-<tr>
-<td style="text-align: right;">3.3</td>
-<td style="text-align: right;">0.51</td>
-<td style="text-align: right;">-0.62</td>
-<td style="text-align: right;">0.77</td>
-<td style="text-align: right;">0.22</td>
-<td style="text-align: right;">0.55</td>
-</tr>
-<tr>
-<td style="text-align: right;">3.7</td>
-<td style="text-align: right;">0.90</td>
-<td style="text-align: right;">-0.54</td>
-<td style="text-align: right;">0.84</td>
-<td style="text-align: right;">0.28</td>
-<td style="text-align: right;">0.56</td>
-</tr>
-</tbody>
-</table>
-<p>To me, the important thing to see is how the census tracts with unemployment 
-rates that are high for Snyder County are still below the median for the 
-state. This yields quite large differences in where they wind up, 
-relative to 
-the census tracts across all of PA, when you do county-specific 
-standardization vs PA-wide standardization (where standardization = z-scoring).</p>
-<h1>Conclusion</h1>
-<p>That's about it. I could go on, but I think the idea is presented well 
-enough. The researcher obviously thought about this and made the 
-decision and effort to 
-do this z-scoring, so maybe I'm just missing something and am the wrong one. </p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<h1>My …</h1>
+                <a class="readmore" href="https://swpease.github.io/pa-well-water-part-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
