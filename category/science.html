@@ -23,7 +23,253 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-3.html">PA Well Water, Part 3</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-4.html">PA Well Water, Part 4</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2025-06-10T00:00:00-07:00">
+                Published: Tue 10 June 2025
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-3.html">Part 3</a> and covers the
+Bayesian profile regression model.</p>
+<h1>Bayesian Profile Regression</h1>
+<h2>What Is It?</h2>
+<p>There were several resources I used to get a grasp on the method. Molitor et 
+al. <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> present kind of the founding proposal of the method, and this is a 
+surprisingly readable paper. <sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> and <sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> were helpful in my understanding 
+the spatial component that can be added to these models. <sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup> was helpful as 
+yet another writeup of the method, and especially for including a DAG of the 
+full model.</p>
+<p>There is an R package for this method, called PReMiuM, which I will
+henceforth call Premium, because fuck that. </p>
+<p>It took me a little while to understand how this method works. The gist is
+that you fit a joint model of a clustering component and a regression
+component. For each observation, its cluster assignment acts as a
+categorical predictor<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> for the regression on your outcome variable. The
+joint nature of the model means that the outcome variable influences 
+clustering. I know that's confusing to read. Just read through those sources I 
+listed. </p>
+<p>Molitor lists four benefits of the method, which I will summarize/combine:</p>
+<ul>
+<li>The benefits of Bayesian methods re uncertainty and posterior analyses.</li>
+<li>The clustering method that it uses lets the model figure out how many 
+    there should be, rather than requiring you to pre-specify<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>.</li>
+<li>"the outcome and the clusters mutually inform each other".</li>
+</ul>
+<p>That last point is the crux of my issue with this SVI paper.</p>
+<h2>Why Use It?</h2>
+<p>Molitor proposes it as a complement/alternative to standard regression:</p>
+<blockquote>
+<p>Standard regression analyses are often plagued with problems encountered when one tries to make meaningful inference going beyond main effects, using datasets that contain dozens of variables that are potentially correlated.</p>
+</blockquote>
+<p>I guess one might say that the world isn't made up of convenient little 
+lines. This method works around this problem by:</p>
+<blockquote>
+<p>adopt a more global point of view, where inference is based on clusters representing covariate patterns as opposed to individual risk factors.</p>
+</blockquote>
+<p>Re regression vs profile regression, Molitor concludes with:</p>
+<blockquote>
+<p>Since the two approaches address different characteristics of association, both should be used in a complementary fashion to progress our understanding of the association between an outcome and a set of correlated covariates.</p>
+</blockquote>
+<p>Another nice explanation is the Introduction in Belloni<sup id="fnref2:5"><a class="footnote-ref" href="#fn:5">5</a></sup>, which also 
+(briefly) compares it to other methods that might do a similar thing, such 
+as random forests or principal component regression. </p>
+<h2>Comments</h2>
+<p>It doesn't seem to be a super popular analysis method. I noticed a lot of 
+repeat names on the papers I looked at. I suspect a lot of people are 
+reaching for machine learning methods.</p>
+<h1>The Problem</h1>
+<p>Per Wamsley:</p>
+<blockquote>
+<p>we did not include the response model when determining clusters because domestic well prevalence is clustered by county, and the BPR does not allow for such spatial clustering effects modeling. Instead, the clusters of exposure profiles were fit in a second-stage multilevel regression model to estimate the relationship between social vulnerability profiles with domestic well prevalence</p>
+</blockquote>
+<p>I take this to mean that there were two steps, the clustering and the 
+regression, but importantly, they were separate things entirely, meaning the 
+regression model had zero influence on the clustering. However, Bayesian 
+profile regression is 
+supposed to fit these components jointly. Per Molitor:</p>
+<blockquote>
+<p>[it] fits the model as a unit, allowing an individual’s outcome to 
+potentially influence cluster membership</p>
+</blockquote>
+<p>And to hear it from another source <sup id="fnref3:5"><a class="footnote-ref" href="#fn:5">5</a></sup>:</p>
+<blockquote>
+<p>one of the principal motivations for PRM models is that the disease outcome influences cluster membership so that they can inform each other.</p>
+</blockquote>
+<p>And to hear it from yet another source <sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup> (the middle two intro paragraphs 
+might be good to read):</p>
+<blockquote>
+<p>it may be desirable to make use of (potentially highly informative) 
+outcome information directly, in order to guide inference toward the most 
+relevant clustering structures. That is, we may wish to use the outcome 
+information during the clustering analysis itself, rather than during post-analysis validation. This
+is one of the principal motivations for Bayesian profile regression</p>
+</blockquote>
+<p>This change can cause radically different clustering.</p>
+<h2>Toy Example</h2>
+<p>I'll fit two models: one as a standard Bayesian profile regression, the 
+second just the covariate clustering aspect as might happen in a two-phase 
+modeling approach as I think Wamsley used. </p>
+<p>Here is some simulated data of a 
+Poisson outcome with a couple of correlated predictors:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">set.seed</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
+
+<span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">700</span>
+<span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<span class="c1"># get a second distinct cluster</span>
+<span class="n">x2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">.</span><span class="m">5</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="nf">rbinom</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">x1</span><span class="o">&gt;</span><span class="w"> </span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">0.8</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rpois</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x2</span><span class="p">)</span>
+<span class="n">dummy_col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w">  </span><span class="c1"># for &quot;offset&quot; (+ log(dummy_col) as pred ==&gt; + log(1) == + 0 on rhs of glm)</span>
+<span class="n">obs_dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">dummy_col</span><span class="p">)</span>
+</code></pre></div>
+
+<p>You can see how it looks with <code>pairs(obs_dat[,1:3])</code>:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/pairs_plot.png"></p>
+<h3>Standard Bayesian Profile Regression Usage</h3>
+<p>Fitting it with Premium:</p>
+<div class="highlight"><pre><span></span><code><span class="n">mod_includeY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PReMiuM</span><span class="o">::</span><span class="nf">profRegr</span><span class="p">(</span>
+<span class="w">  </span><span class="n">yModel</span><span class="o">=</span><span class="s">&quot;Poisson&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">xModel</span><span class="o">=</span><span class="s">&quot;Normal&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">outcomeT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dummy_col&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">nClusInit</span><span class="o">=</span><span class="m">5</span><span class="p">,</span>
+<span class="w">  </span><span class="c1"># excludeY = TRUE,</span>
+<span class="w">  </span><span class="n">data</span><span class="o">=</span><span class="n">obs_dat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">output</span><span class="o">=</span><span class="s">&quot;pois_includeY&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">covNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="n">outcome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">seed</span><span class="o">=</span><span class="m">12345</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>The clustering looks like so:</p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/include_y_1.png">
+<img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/include_y_2.png"></p>
+<p>This output shows the two main things about this method:</p>
+<ol>
+<li>The separate purple cluster in the x1 vs x2 plot shows that if the 
+     covariate profiles are distinct, they will be clustered separately even 
+     if the outcomes are similar (see how purple and blue/green are mixed in 
+     the plot of x1 vs y).</li>
+<li>The regression component (<code>yModel="Poisson"</code>), <em>NOT</em> the y data per 
+     se!,
+     splits up the oblong 
+     cluster into roundish 
+     blobs. The 
+     red/green/blue section is obviously one big cluster as viewed on x1 vs 
+     x2's plot, 
+     but using it as a 
+     predictor for y would yield terribly wide predictions. The y data as 
+     part of the linear model
+     provides evidence that this one big cluster might be better off split 
+     up, as happens here. </li>
+</ol>
+<h3>Excluding the y Linear Model Component</h3>
+<p>Now we use the <code>excludeY</code> argument to essentially just cluster via the 
+covariates (<a href="https://github.com/silvialiverani/PReMiuM-R-package/issues/13">I think</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="n">mod_excludeY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PReMiuM</span><span class="o">::</span><span class="nf">profRegr</span><span class="p">(</span>
+<span class="w">   </span><span class="n">yModel</span><span class="o">=</span><span class="s">&quot;Poisson&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">xModel</span><span class="o">=</span><span class="s">&quot;Normal&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">outcomeT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dummy_col&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">nClusInit</span><span class="o">=</span><span class="m">5</span><span class="p">,</span>
+<span class="w">   </span><span class="n">excludeY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">data</span><span class="o">=</span><span class="n">obs_dat</span><span class="p">,</span>
+<span class="w">   </span><span class="n">output</span><span class="o">=</span><span class="s">&quot;pois_excludeY&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">covNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2&quot;</span><span class="p">),</span>
+<span class="w">   </span><span class="n">outcome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">seed</span><span class="o">=</span><span class="m">12345</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Which yields:</p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/exclude_y_1.png">
+<img alt="Figure 5" src="https://swpease.github.io/images/science/well_water/exclude_y_2.png"></p>
+<p>So now we see that the big oblong cluster stays in one piece. y's linear model 
+isn't there 
+to influence it to split up. Note that this clustering remains (in this case)
+even if we add y into <code>covNames</code> like <code>covNames = c("x1", "x2", "y")</code>: the clustering just says "yep, that's a 
+cluster", because it doesn't have the linear model to tell it that this 
+clustering yields poor predictions. I didn't include that output because it 
+looks the same as this.</p>
+<h2>So.. What's the Issue in This Case?</h2>
+<p>Cluster 15.</p>
+<p>Cluster 15 winds up having the highest expected users of well water per 
+their model. However,
+empirically it is comprised of census tracts with:</p>
+<ul>
+<li>A median of 0 houses with wells.</li>
+<li>A 3rd quartile of 12 houses with wells.</li>
+</ul>
+<p>In Bayesian profile regression, those census tracts in Cluster 15 with high 
+well usage (which is at most a 
+quarter of said tracts) ought to be a separate cluster, and would be under a 
+joint model as Bayesian profile regression implements. They might have 
+similar covariate profiles, but the clustering would be (probably quite) 
+different.</p>
+<p>I think that the adjustment for county must have done some heavy lifting to 
+get Cluster 15 into the top spot. Maybe something like the tracts with lots 
+of well users were in counties with generally low well usage? </p>
+<h1>Conclusion</h1>
+<p>I think I've made a good argument for there being a mistake in the analysis. 
+At least, for them not yielding results that Bayesian profile regression 
+should yield (not that profile regression is "the truth").
+Perhaps I've misread/misinterpreted their methods, but the wonkiness of 
+Cluster 15 matches with what would go differently in a joint vs 2-phase model.</p>
+<p>Next I suppose I ought to try and do the analysis with a joint model. See 
+how that goes.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Well, Molitor in <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup> says "The previously described assignment model 
+clusters individuals into groups and these cluster assignments can be 
+simultaneously used as categorical predictors of an outcome.", however when 
+I said this to <em>the</em> Liverani of Premium fame, she said <a href="https://github.com/silvialiverani/PReMiuM-R-package/issues/13#issuecomment-2838078844">that I was wrong</a>. I'm sticking with Molitor on this one.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Molitor, J., Papathomas, M., Jerrett, M., Richardson, S., 2010. 
+Bayesian profile
+regression with an application to the National survey of children’s health.
+Biostatistics 11, 484–498. https://doi.org/10.1093/biostatistics/kxq013.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Silvia Liverani, Aurore Lavigne, Marta Blangiardo, Modelling collinear and spatially correlated data, Spatial and Spatio-temporal Epidemiology, Volume 18, 2016, Pages 63-73, ISSN 1877-5845, https://doi.org/10.1016/j.sste.2016.04.003. (https://www.sciencedirect.com/science/article/pii/S1877584515300411)&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>Belloni M, Laurent O, Guihenneuc C and Ancelet S (2020) Bayesian 
+Profile Regression to Deal With Multiple Highly Correlated Exposures and a Censored Survival Outcome. First Application in Ionizing Radiation Epidemiology. Front. Public Health 8:557006. doi: 10.3389/fpubh.2020.557006&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>The Dirichlet process mixture model (DPMM), which you can learn about 
+on <a href="https://www.pymc.io/projects/examples/en/latest/mixture_models
+/dp_mix.html">PyMC</a> or see a detailed mathematical walkthrough for the 
+non-statistician <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6583910/">here</a>. 
+Those resources helped me, at least.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p>Anaïs Rouanet, Rob Johnson, Magdalena Strauss, Sylvia Richardson, Brian D Tom, Simon R White, Paul D W Kirk, Bayesian profile regression for clustering analysis involving a longitudinal response and explanatory variables, Journal of the Royal Statistical Society Series C: Applied Statistics, Volume 73, Issue 2, March 2024, Pages 314–339, https://doi.org/10.1093/jrsssc/qlad097&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/pa-well-water-part-3.html" rel="bookmark"
+                           title="Permalink to PA Well Water, Part 3">PA Well Water, Part 3</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2025-06-09T00:00:00-07:00">
                 Published: Mon 09 June 2025
@@ -34,7 +280,7 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-2.html">Part 2</a> and covers the 
 model's accounting for rurality.</p>
 <p>The authors write:</p>
@@ -42,141 +288,10 @@ model's accounting for rurality.</p>
 <p>rural areas will have more domestic wells.</p>
 </blockquote>
 <p>Which makes sense and is what I would presume, but their citation for said 
-claim doesn't seem to say that(? I just did a search for "rural" and "well" 
-in the reference and didn't see anything). In any case, the <a href="https://www.cdc.gov/environmental-health-services/php/water/private-water-public-health.html">CDC says so</a>.</p>
-<p>With that in mind, the authors don't seem to account for rurality as a 
-confounder. They use county, which I suppose is related to rurality. I'll go 
-over their model, and propose adding a rurality covariate in the form of 
-census tract population density. I'll also discuss population density with 
-respect to their chosen outcome, count of houses using domestic wells by 
-census tract.</p>
-<p>At this point I think I should make it clear that I haven't read up on and 
-am mostly unfamiliar with 
-spatial data regression, so I may be doing obviously dumb things.</p>
-<h2>What is rurality?</h2>
-<p>It's a word we all know the meaning of, but there is a rather detailed set of 
-criteria for 
-what constitutes an "urban 
-area", per the <a href="https://www.govinfo.
-gov/content/pkg/FR-2022-03-24/pdf/2022-06180.pdf">US Census Bureau</a>. There are a lot of 
-details, but the gist is:</p>
-<blockquote>
-<p>The Census Bureau’s urban areas represent densely developed territory, and 
-encompass residential, commercial, and other non-residential urban land 
-uses. The boundaries of this urban footprint have been defined using 
-measures based primarily on population counts and residential population 
-density, and also on criteria that account for non-residential urban land 
-uses, such as commercial, industrial, transportation, and open space that 
-are part of the urban landscape.</p>
-</blockquote>
-<h1>DAGs</h1>
-<p>I think it's worthwhile to explicitly make some DAGs (using <a href="https://www.dagitty.net">daggity</a>) to 
-get an 
-idea of 
-causality and confounding possibilities. For an introduction on the subject, 
-the <a href="https://github.
-com/rmcelreath/stat_rethinking_2024/tree/main?tab=readme-ov-file">Statistical Rethinking</a> lectures 
-go over it (especially lectures 5 and 6). I'll build up from the simplest 
-ones, piece by piece.</p>
-<p>As a reminder, the primary aim of the statistical analysis in this paper is 
-to find "profiles" of SVI (as determined by clustering in a Bayesian profile 
-regression) that are used to predict reliance on well water, and to 
-characterize those profiles.</p>
-<h2>DAG 1: Adding County</h2>
-<p>The first DAG is just the predictor of interest (SVI cluster), the outcome 
-(well water), and the confounder "county" that they use in the paper:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/dag1.png"></p>
-<p>To be explicit about some possible causal mechanisms, I'll propose that:</p>
-<ul>
-<li>County =&gt; SVI: characteristics of a county (e.g. laws) 
-    can alter demographic profiles.</li>
-<li>County =&gt; Well water: counties may have different regulations on water 
-    rights.</li>
-</ul>
-<h2>DAG 2: Adding Spatial Correlation</h2>
-<p>The second DAG adds in a spatial autocorellation term, as they did in the 
-paper. See <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> and <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>. Per <sup id="fnref2:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, the purpose of such a term is:</p>
-<blockquote>
-<p>space is used as a proxy for any unmeasured variable; the common 
-assumption is that areas which are close to each other are more similar 
-than those further apart, suggesting that an additional source of 
-correlation, namely spatial correlation needs to be accommodated in the models.</p>
-</blockquote>
-<p>In this case, I'm thinking of underlying geology (aquifers, aquitards, etc.).
-The DAG might look like:</p>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/dag2.png"></p>
-<p>Again, to be explicit about some possible causal mechanisms, I'll propose that:</p>
-<ul>
-<li>Location =&gt; SVI: location, location, location. It can alter demographic profiles.</li>
-<li>Location =&gt; Well water: The aforementioned geology issues (e.g. aquifers, 
-  are you in a desert?).</li>
-</ul>
-<h2>DAG 3 (Proposal): Adding Population Density</h2>
-<p>I propose adding in census tract population density as another confounder 
-for which to 
-control, acting as a measure of rurality. It probably correlates with 
-county, but I think should do a 
-better job of addressing rurality. I wonder how a model with both, one with 
-only population density, and one with only county would compare.</p>
-<p>The DAG might look like:</p>
-<p><img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/dag3.png"></p>
-<p>Again, to be explicit about some possible causal mechanisms, I'll propose that:</p>
-<ul>
-<li>Pop density =&gt; SVI: People may move to/from urban/rural areas, yielding 
-  distinct demographics. e.g. young people may want to move to the big city, 
-  or old people may want a quiet retirement.</li>
-<li>Pop density =&gt; Well water: As mentioned in the CDC reference. I suppose 
-  less densely populated areas can more likely support well users. Though my 
-  brother gets well water for watering his garden (but is on municipal 
-  drinking water) in a Florida suburb.</li>
-</ul>
-<h1>Outcome Approximations</h1>
-<p>Some census tracts are fully or not at all served by municipal water sources.
-Some are partially served by them. For these partial cases, we need to 
-estimate values for their chosen outcome, count of houses using domestic wells by 
-census tract. The authors state:</p>
-<blockquote>
-<p>For each census tract we estimated the proportion of the population using 
-a domestic well using the following assumptions: 1) census tracks without publicly supplied water
-rely on domestic wells, 2) the proportional area served by a public water supply is the same as the
-proportion of homes served by a PWS. To verify whether our assumptions were valid, we compared our
-maps of proportion of homes served by private well water to population density maps of the state of
-PA (S1 Fig).</p>
-</blockquote>
-<p>However, given the relationship between rurality and well water usage, this 
-area-based approximation will likely overestimate well reliance. A reviewer 
-of the manuscript notes this:</p>
-<blockquote>
-<p>I realize this is a pragmatic assumption and you later note that the areas with the public water supply may have a higher population density (whereas as the analysis assumes equal population density). I expect there would be a way to ‘weight’ the population in the areas inside and outside the public water supply so as to overcome this potential source of bias. e.g. I imagine there are reasonable shape files of population density that would enable this.</p>
-</blockquote>
-<p>I'll discuss it in more detail later, but thanks to <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup>, I was able to find 
-such population density maps thanks to <a href="https://dataforgood.facebook.com/dfg/tools/high-resolution-population-density-maps">Facebook and CIESIN</a>. I'm not sure why 
-this information wasn't incorporated, given that Coker is an author on this 
-paper. I guess it was considered a good enough approximation as per S1 Fig.</p>
-<h1>Conclusion</h1>
-<p>I've argued that population density should be included in their model as a 
-rurality metric, acting to account for this potential confounding. I also am 
-interested in seeing what, if any, difference using population density in 
-estimating well usage might have.</p>
-<p>In the next post, I'll go over my main issue with the analysis: the (non)
-use of Bayesian profile regression.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Liverani, S, Lavigne, A, Blangiardo, M, 2016. Modelling collinear and spatially
-correlated data. Spatial and Spatio-temporal Epidemiology 18, 63–73. https://doi.org/10.1016/j.sste.2016.04.003.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:2">
-<p>Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+claim doesn't seem to say that(? I just did a search for …</p>
+                <a class="readmore" href="https://swpease.github.io/pa-well-water-part-3.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

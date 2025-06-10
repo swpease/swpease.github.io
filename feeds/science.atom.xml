@@ -1,5 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Science</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/science.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-09T00:00:00-07:00</updated><entry><title>PA Well Water, Part 3</title><link href="https://swpease.github.io/pa-well-water-part-3.html" rel="alternate"></link><published>2025-06-09T00:00:00-07:00</published><updated>2025-06-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-09:/pa-well-water-part-3.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Science</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/science.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-10T00:00:00-07:00</updated><entry><title>PA Well Water, Part 4</title><link href="https://swpease.github.io/pa-well-water-part-4.html" rel="alternate"></link><published>2025-06-10T00:00:00-07:00</published><updated>2025-06-10T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-10:/pa-well-water-part-4.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; and covers the
+Bayesian profile regression model.&lt;/p&gt;
+&lt;h1&gt;Bayesian Profile Regression&lt;/h1&gt;
+&lt;h2&gt;What Is It?&lt;/h2&gt;
+&lt;p&gt;There were several resources I used to get a grasp on the method. Molitor et 
+al. &lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; present kind of the founding proposal of the method, and this is a …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; and covers the
+Bayesian profile regression model.&lt;/p&gt;
+&lt;h1&gt;Bayesian Profile Regression&lt;/h1&gt;
+&lt;h2&gt;What Is It?&lt;/h2&gt;
+&lt;p&gt;There were several resources I used to get a grasp on the method. Molitor et 
+al. &lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; present kind of the founding proposal of the method, and this is a 
+surprisingly readable paper. &lt;sup id="fnref:3"&gt;&lt;a class="footnote-ref" href="#fn:3"&gt;3&lt;/a&gt;&lt;/sup&gt; and &lt;sup id="fnref:4"&gt;&lt;a class="footnote-ref" href="#fn:4"&gt;4&lt;/a&gt;&lt;/sup&gt; were helpful in my understanding 
+the spatial component that can be added to these models. &lt;sup id="fnref:5"&gt;&lt;a class="footnote-ref" href="#fn:5"&gt;5&lt;/a&gt;&lt;/sup&gt; was helpful as 
+yet another writeup of the method, and especially for including a DAG of the 
+full model.&lt;/p&gt;
+&lt;p&gt;There is an R package for this method, called PReMiuM, which I will
+henceforth call Premium, because fuck that. &lt;/p&gt;
+&lt;p&gt;It took me a little while to understand how this method works. The gist is
+that you fit a joint model of a clustering component and a regression
+component. For each observation, its cluster assignment acts as a
+categorical predictor&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; for the regression on your outcome variable. The
+joint nature of the model means that the outcome variable influences 
+clustering. I know that's confusing to read. Just read through those sources I 
+listed. &lt;/p&gt;
+&lt;p&gt;Molitor lists four benefits of the method, which I will summarize/combine:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The benefits of Bayesian methods re uncertainty and posterior analyses.&lt;/li&gt;
+&lt;li&gt;The clustering method that it uses lets the model figure out how many 
+    there should be, rather than requiring you to pre-specify&lt;sup id="fnref:6"&gt;&lt;a class="footnote-ref" href="#fn:6"&gt;6&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;li&gt;"the outcome and the clusters mutually inform each other".&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That last point is the crux of my issue with this SVI paper.&lt;/p&gt;
+&lt;h2&gt;Why Use It?&lt;/h2&gt;
+&lt;p&gt;Molitor proposes it as a complement/alternative to standard regression:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Standard regression analyses are often plagued with problems encountered when one tries to make meaningful inference going beyond main effects, using datasets that contain dozens of variables that are potentially correlated.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I guess one might say that the world isn't made up of convenient little 
+lines. This method works around this problem by:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;adopt a more global point of view, where inference is based on clusters representing covariate patterns as opposed to individual risk factors.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Re regression vs profile regression, Molitor concludes with:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Since the two approaches address different characteristics of association, both should be used in a complementary fashion to progress our understanding of the association between an outcome and a set of correlated covariates.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Another nice explanation is the Introduction in Belloni&lt;sup id="fnref2:5"&gt;&lt;a class="footnote-ref" href="#fn:5"&gt;5&lt;/a&gt;&lt;/sup&gt;, which also 
+(briefly) compares it to other methods that might do a similar thing, such 
+as random forests or principal component regression. &lt;/p&gt;
+&lt;h2&gt;Comments&lt;/h2&gt;
+&lt;p&gt;It doesn't seem to be a super popular analysis method. I noticed a lot of 
+repeat names on the papers I looked at. I suspect a lot of people are 
+reaching for machine learning methods.&lt;/p&gt;
+&lt;h1&gt;The Problem&lt;/h1&gt;
+&lt;p&gt;Per Wamsley:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;we did not include the response model when determining clusters because domestic well prevalence is clustered by county, and the BPR does not allow for such spatial clustering effects modeling. Instead, the clusters of exposure profiles were fit in a second-stage multilevel regression model to estimate the relationship between social vulnerability profiles with domestic well prevalence&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I take this to mean that there were two steps, the clustering and the 
+regression, but importantly, they were separate things entirely, meaning the 
+regression model had zero influence on the clustering. However, Bayesian 
+profile regression is 
+supposed to fit these components jointly. Per Molitor:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[it] fits the model as a unit, allowing an individual’s outcome to 
+potentially influence cluster membership&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And to hear it from another source &lt;sup id="fnref3:5"&gt;&lt;a class="footnote-ref" href="#fn:5"&gt;5&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;one of the principal motivations for PRM models is that the disease outcome influences cluster membership so that they can inform each other.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And to hear it from yet another source &lt;sup id="fnref:7"&gt;&lt;a class="footnote-ref" href="#fn:7"&gt;7&lt;/a&gt;&lt;/sup&gt; (the middle two intro paragraphs 
+might be good to read):&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;it may be desirable to make use of (potentially highly informative) 
+outcome information directly, in order to guide inference toward the most 
+relevant clustering structures. That is, we may wish to use the outcome 
+information during the clustering analysis itself, rather than during post-analysis validation. This
+is one of the principal motivations for Bayesian profile regression&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This change can cause radically different clustering.&lt;/p&gt;
+&lt;h2&gt;Toy Example&lt;/h2&gt;
+&lt;p&gt;I'll fit two models: one as a standard Bayesian profile regression, the 
+second just the covariate clustering aspect as might happen in a two-phase 
+modeling approach as I think Wamsley used. &lt;/p&gt;
+&lt;p&gt;Here is some simulated data of a 
+Poisson outcome with a couple of correlated predictors:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;700&lt;/span&gt;
+&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;rnorm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# get a second distinct cluster&lt;/span&gt;
+&lt;span class="n"&gt;x2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;rnorm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;.&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;ifelse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;rbinom&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;ifelse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;rpois&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;dummy_col&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# for &amp;quot;offset&amp;quot; (+ log(dummy_col) as pred ==&amp;gt; + log(1) == + 0 on rhs of glm)&lt;/span&gt;
+&lt;span class="n"&gt;obs_dat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dummy_col&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can see how it looks with &lt;code&gt;pairs(obs_dat[,1:3])&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/pairs_plot.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Standard Bayesian Profile Regression Usage&lt;/h3&gt;
+&lt;p&gt;Fitting it with Premium:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;mod_includeY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PReMiuM&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="nf"&gt;profRegr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;yModel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Poisson&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;xModel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Normal&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;outcomeT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dummy_col&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;nClusInit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# excludeY = TRUE,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;obs_dat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;pois_includeY&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;covNames&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;x1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;x2&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;outcome&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;y&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The clustering looks like so:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/include_y_1.png"&gt;
+&lt;img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/include_y_2.png"&gt;&lt;/p&gt;
+&lt;p&gt;This output shows the two main things about this method:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The separate purple cluster in the x1 vs x2 plot shows that if the 
+     covariate profiles are distinct, they will be clustered separately even 
+     if the outcomes are similar (see how purple and blue/green are mixed in 
+     the plot of x1 vs y).&lt;/li&gt;
+&lt;li&gt;The regression component (&lt;code&gt;yModel="Poisson"&lt;/code&gt;), &lt;em&gt;NOT&lt;/em&gt; the y data per 
+     se!,
+     splits up the oblong 
+     cluster into roundish 
+     blobs. The 
+     red/green/blue section is obviously one big cluster as viewed on x1 vs 
+     x2's plot, 
+     but using it as a 
+     predictor for y would yield terribly wide predictions. The y data as 
+     part of the linear model
+     provides evidence that this one big cluster might be better off split 
+     up, as happens here. &lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Excluding the y Linear Model Component&lt;/h3&gt;
+&lt;p&gt;Now we use the &lt;code&gt;excludeY&lt;/code&gt; argument to essentially just cluster via the 
+covariates (&lt;a href="https://github.com/silvialiverani/PReMiuM-R-package/issues/13"&gt;I think&lt;/a&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mod_excludeY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PReMiuM&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="nf"&gt;profRegr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;yModel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Poisson&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;xModel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Normal&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;outcomeT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dummy_col&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;nClusInit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;excludeY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;obs_dat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;pois_excludeY&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;covNames&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;x1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;x2&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;outcome&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;y&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which yields:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/exclude_y_1.png"&gt;
+&lt;img alt="Figure 5" src="https://swpease.github.io/images/science/well_water/exclude_y_2.png"&gt;&lt;/p&gt;
+&lt;p&gt;So now we see that the big oblong cluster stays in one piece. y's linear model 
+isn't there 
+to influence it to split up. Note that this clustering remains (in this case)
+even if we add y into &lt;code&gt;covNames&lt;/code&gt; like &lt;code&gt;covNames = c("x1", "x2", "y")&lt;/code&gt;: the clustering just says "yep, that's a 
+cluster", because it doesn't have the linear model to tell it that this 
+clustering yields poor predictions. I didn't include that output because it 
+looks the same as this.&lt;/p&gt;
+&lt;h2&gt;So.. What's the Issue in This Case?&lt;/h2&gt;
+&lt;p&gt;Cluster 15.&lt;/p&gt;
+&lt;p&gt;Cluster 15 winds up having the highest expected users of well water per 
+their model. However,
+empirically it is comprised of census tracts with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A median of 0 houses with wells.&lt;/li&gt;
+&lt;li&gt;A 3rd quartile of 12 houses with wells.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In Bayesian profile regression, those census tracts in Cluster 15 with high 
+well usage (which is at most a 
+quarter of said tracts) ought to be a separate cluster, and would be under a 
+joint model as Bayesian profile regression implements. They might have 
+similar covariate profiles, but the clustering would be (probably quite) 
+different.&lt;/p&gt;
+&lt;p&gt;I think that the adjustment for county must have done some heavy lifting to 
+get Cluster 15 into the top spot. Maybe something like the tracts with lots 
+of well users were in counties with generally low well usage? &lt;/p&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I think I've made a good argument for there being a mistake in the analysis. 
+At least, for them not yielding results that Bayesian profile regression 
+should yield (not that profile regression is "the truth").
+Perhaps I've misread/misinterpreted their methods, but the wonkiness of 
+Cluster 15 matches with what would go differently in a joint vs 2-phase model.&lt;/p&gt;
+&lt;p&gt;Next I suppose I ought to try and do the analysis with a joint model. See 
+how that goes.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;Well, Molitor in &lt;sup id="fnref2:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; says "The previously described assignment model 
+clusters individuals into groups and these cluster assignments can be 
+simultaneously used as categorical predictors of an outcome.", however when 
+I said this to &lt;em&gt;the&lt;/em&gt; Liverani of Premium fame, she said &lt;a href="https://github.com/silvialiverani/PReMiuM-R-package/issues/13#issuecomment-2838078844"&gt;that I was wrong&lt;/a&gt;. I'm sticking with Molitor on this one.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Molitor, J., Papathomas, M., Jerrett, M., Richardson, S., 2010. 
+Bayesian profile
+regression with an application to the National survey of children’s health.
+Biostatistics 11, 484–498. https://doi.org/10.1093/biostatistics/kxq013.&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:3"&gt;
+&lt;p&gt;Silvia Liverani, Aurore Lavigne, Marta Blangiardo, Modelling collinear and spatially correlated data, Spatial and Spatio-temporal Epidemiology, Volume 18, 2016, Pages 63-73, ISSN 1877-5845, https://doi.org/10.1016/j.sste.2016.04.003. (https://www.sciencedirect.com/science/article/pii/S1877584515300411)&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:4"&gt;
+&lt;p&gt;Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446&amp;#160;&lt;a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:5"&gt;
+&lt;p&gt;Belloni M, Laurent O, Guihenneuc C and Ancelet S (2020) Bayesian 
+Profile Regression to Deal With Multiple Highly Correlated Exposures and a Censored Survival Outcome. First Application in Ionizing Radiation Epidemiology. Front. Public Health 8:557006. doi: 10.3389/fpubh.2020.557006&amp;#160;&lt;a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref3:5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:6"&gt;
+&lt;p&gt;The Dirichlet process mixture model (DPMM), which you can learn about 
+on &lt;a href="https://www.pymc.io/projects/examples/en/latest/mixture_models
+/dp_mix.html"&gt;PyMC&lt;/a&gt; or see a detailed mathematical walkthrough for the 
+non-statistician &lt;a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6583910/"&gt;here&lt;/a&gt;. 
+Those resources helped me, at least.&amp;#160;&lt;a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:7"&gt;
+&lt;p&gt;Anaïs Rouanet, Rob Johnson, Magdalena Strauss, Sylvia Richardson, Brian D Tom, Simon R White, Paul D W Kirk, Bayesian profile regression for clustering analysis involving a longitudinal response and explanatory variables, Journal of the Royal Statistical Society Series C: Applied Statistics, Volume 73, Issue 2, March 2024, Pages 314–339, https://doi.org/10.1093/jrsssc/qlad097&amp;#160;&lt;a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 3</title><link href="https://swpease.github.io/pa-well-water-part-3.html" rel="alternate"></link><published>2025-06-09T00:00:00-07:00</published><updated>2025-06-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-09:/pa-well-water-part-3.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-2.html"&gt;Part 2&lt;/a&gt; and covers the 
 model's accounting for rurality.&lt;/p&gt;
 &lt;p&gt;The authors write:&lt;/p&gt;
