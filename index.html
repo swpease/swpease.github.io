@@ -23,7 +23,286 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-4.html">PA Well Water, Part 4</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html">PA Well Water, Part 5: Estimating the Outcome Variable</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2025-06-16T00:00:00-07:00">
+                Published: Mon 16 June 2025
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>This post expands on <a href="https://swpease.github.io/pa-well-water-part-3.html">Part 3</a> -- specifically the 
+section concerning Outcome Approximations -- and begins preparing data for 
+analysis.</p>
+<p>In this post, I will compare the estimation method used in the paper vs an 
+alternative, and then look at a few other published methods. The estimation is 
+for <strong>the 
+outcome variable, which 
+is: the number 
+of people who rely on domestic well water, i.e. who do not have coverage by 
+a public water system (PWS) at their residence</strong>. In the paper, they use 
+number of 
+households for some reason. I don't see what the practical difference to 
+individuals vs households might be, so I'll just leave it as individuals.</p>
+<h2>The Two Estimation Methods</h2>
+<p>Comparing their method (1) vs an alternate (2):</p>
+<ol>
+<li>Area-based estimation: The proportion of the census tract's area that is not 
+   covered by a PWS 
+   equals the proportion of the census tract's population that relies on domestic 
+   well water. The census tract's population is provided by the SVI data 
+   (which is taken from the ACS).</li>
+<li>Population density-based estimation: Use high-resolution population density 
+   estimates to 
+   directly count the 
+   estimated number of people who rely on domestic well water, again based 
+   on PWS coverage. This value 
+   can be used in two ways:<ol>
+<li>Directly.</li>
+<li>Use the same population density estimate data to determine the 
+   estimated population for the whole census tract, take the proportion of 
+   that total that is on domestic well water, and apply said proportion to 
+   the ACS population estimate. This might be better, as it would -- 
+   assuming the population ratio of PWS/well-water remains consistent -- 
+   let us apply this proportion to what should be a better 
+   population estimate: the ACS estimate. ACS data is more recent (2022 
+   vs 2019).</li>
+</ol>
+</li>
+</ol>
+<h1>Methods (in the Paper-y Sense)</h1>
+<p>Getting these estimates of population relying on well water required working 
+with several map datasets (Shapefiles, GeoTIFF...). I initially conducted 
+much of the data processing in QGIS. I want to translate it to scripting (in 
+Python) for reproducibility/defensibility/recall, but only have a part of it 
+in Python so far.</p>
+<h2>Data Sources</h2>
+<p>Firstly, the four data sources I collected:</p>
+<h3>SVI Data</h3>
+<ul>
+<li>src: https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html</li>
+<li>params:<ul>
+<li>Year = 2022</li>
+<li>Geography = Pennsylvania</li>
+<li>Geography Type = Census Tracts</li>
+</ul>
+</li>
+</ul>
+<h3>PA Public Water Systems (PA PWS)</h3>
+<ul>
+<li>src: https://newdata-padep-1.opendata.arcgis.com/datasets/PADEP-1::public-water-systems-public-water-supplier-service-areas/about</li>
+</ul>
+<h3>TIGER/Line Shapefile (T/L)</h3>
+<ul>
+<li>src: https://www.census.gov/cgi-bin/geo/shapefiles/index.php</li>
+<li>params:<ul>
+<li>Year = 2022</li>
+<li>Layer Type = Census Tracts</li>
+<li>State = Pennsylvania</li>
+</ul>
+</li>
+</ul>
+<h3>Population Density Data</h3>
+<ul>
+<li>src: https://data.humdata.org/dataset/united-states-high-resolution-population-density-maps-demographic-estimates#</li>
+<li>refs: <ul>
+<li>https://dataforgood.facebook.com/dfg/tools/high-resolution-population-density-maps</li>
+<li>https://ciesin.climate.columbia.edu/programs#!#cu_card_group_media-400</li>
+</ul>
+</li>
+<li>files:<ul>
+<li>population_usa38_-80.tif.zipGeoTIFF</li>
+<li>population_usa38_-90.tif.zipGeoTIFF</li>
+</ul>
+</li>
+<li>citation:<ul>
+<li>Facebook Connectivity Lab and Center for International Earth Science 
+ Information 
+Network - CIESIN - Columbia University. 2016. High Resolution Settlement 
+Layer (HRSL). Source imagery for HRSL © 2016 DigitalGlobe. Accessed 01 
+06 2025. </li>
+<li>Please note that as of 2024, Meta’s high resolution population 
+density maps are no longer being updated.</li>
+</ul>
+</li>
+</ul>
+<h2>Processing Outline</h2>
+<p>I did some of the processing in QGIS, and some in Python. I'll link to the 
+Python file, and outline the QGIS steps:</p>
+<ul>
+<li>Join SVI and T/L by census tract ID</li>
+<li>Fix geometries on PA PWS</li>
+<li>Reproject PA PWS to match T/L-SVI join</li>
+<li>Difference T/L-SVI using PA PWS overlay<ul>
+<li>Yields well water region (WWR) layer</li>
+</ul>
+</li>
+<li>Create virtual raster from Pop Dens GeoTIFFs</li>
+<li>Reproject T/L-SVI and WWR to match Pop Dens</li>
+<li>Zonal stats (sum) using Pop Dens virtual raster and<ul>
+<li>T/L-SVI  =&gt; pop est of the census tract</li>
+<li>WWR  =&gt; pop est of the well water reliant parts of the census tract</li>
+</ul>
+</li>
+</ul>
+<p>From there, I used Python (see the <a href="https://github. com/swpease/well_water/tree/master/python">repository</a>).</p>
+<h1>Results</h1>
+<p>Note that I am comparing method 1 to method 2.2 (above).</p>
+<h2>Total Well Water Population</h2>
+<p>Firstly, what do these methods say the total PA well water population is?</p>
+<ul>
+<li>Area based: 3.92 million</li>
+<li>Pop density based: 2.42 million<ul>
+<li>Note: the two alternative methods I outlined above were within 50k of 
+  each other (~2%), as method 2.1 (direct usage of pop #) was 2.38M.</li>
+</ul>
+</li>
+</ul>
+<p>These are way different! Are either of these more likely to be accurate? Is 
+there a third party? (Yes). It didn't occur to me to see if someone had 
+already estimated these values until just now, so I'll have to see what they 
+say after I finish this next part.</p>
+<p>Continuing on this specific comparison...</p>
+<h2>Comparative Plots</h2>
+<p>We've already established that these estimates are way different. Is there 
+any patten to the difference?</p>
+<p>First, let's see the numbers at the census tract level as proportions of the 
+total population:</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_prop.png"></p>
+<p>And second, as total population estimates:</p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_popul.png"></p>
+<p>We already knew the area-based values were going to generally exceed the 
+population-density-based values. I was just kind of hoping there might be a 
+pattern to it.</p>
+<h1>Discussion</h1>
+<h2>Total Well Water Population (Now with 3rd Parties)</h2>
+<p>The PA Dept of 
+Conservation and Natural Resources states that <a href="https://www.pa.gov/agencies/dcnr/conservation/water/groundwater.html">over 1 million</a> homeowners depend on 
+private wells for drinking water. I suppose then the question is: how big is 
+a home? The US Census Bureau's estimate for PA in 2019-2023 is <a href="https://www.census.gov/quickfacts/fact/table/PA/INC110223">2.40 persons 
+per household</a>. 
+So a rough estimate is <strong>2.4 million</strong> well users, though there are factors 
+like 
+rural areas having larger average household sizes.  </p>
+<p>Penn State estimates <a href="https://extension.psu.edu/private-water-systems-faqs">3.5 million</a>, though I don't see 
+their source. Penn State also estimates <a href="https://extension.psu.edu/social-science-of-drinking-water">1-3.5 million</a>, this time with some good sources 
+that I'll look into and discuss later, though I'm wondering if they 
+subconsciously misread "homes" as "people" for the 1M case.</p>
+<p>It turns out that "later" is now.</p>
+<h3>Johnson Papers</h3>
+<p>There were a couple of related papers <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> that estimated the well water 
+reliant population across the entire contiguous US, at a 1km^2 resolution, 
+for 1990, 2000, and 2010. Apparently 1990 is the last time the US Census 
+asked people about their water sources, so they extrapolated from there. 
+I've read through the first only, but it presents some interesting 
+information:</p>
+<blockquote>
+<p>it appears that the number of people supplied by domestic-wells has plateaued and may in fact be dropping.</p>
+</blockquote>
+<p>and</p>
+<blockquote>
+<p>The proportion of the population dependent upon domestic wells (domestic ratio) is slowly decreasing nationally.</p>
+</blockquote>
+<p>Their own estimates for Pennsylvania's well water reliant populations are:</p>
+<ul>
+<li>1990: 2.43 million <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup> (see Table 3)</li>
+<li>2000: 2.29 million (calculated via Zonal statistics (sum) of the PA 
+    TIGER/Line 
+    shapefile, dissolved to all of PA, on their REM 
+    map <sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>)</li>
+<li>2010: <strong>2.20 million</strong> (same calculation)</li>
+</ul>
+<h3>Murray</h3>
+<p>Murray <sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> provides yet another national estimate of well water reliance, 
+but looking at housing units. I haven't even skimmed this one yet, but it 
+estimates that in 2010, <strong>1.25 million housing units</strong> had private wells in PA 
+(Figure 9). This doesn't disagree with the estimate by the PA Dept of 
+Conservation and Natural Resources.</p>
+<p>In trying to compare the population-density-based estimates to this, which was 
+easy 
+enough because ACS (in the SVI) has housing unit estimates as well, I wound 
+up with an estimated 1.75 million housing units. That number seems high, 
+especially considering my population estimate of 2.4 million, but it's what 
+the ACS says, so... </p>
+<h2>So Which Estimate to Use?</h2>
+<p>Given the results by Murray and Johnson, my inclination is that the 
+population-density-based estimates of well water 
+users might be an overestimate, while the area-based estimate is 
+likely a huge overestimate.</p>
+<p>While the population-density-based estimates can be converted to either 
+population or housing units, I am leaning towards population because:</p>
+<ul>
+<li>(I know 
+this is dumb) it's what I first thought of.</li>
+<li>I am interested in people, not housing.</li>
+<li>I'm concerned converting to housing units might lead to some extra 
+    uncertainty, whereas the CEISIN-direct population estimates (method 2.2) 
+    closely 
+    align with the ACS-based ones (method 2.1) (see supplemental graphs <sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>).</li>
+<li>It seems to more closely align with a third party (Johnson).</li>
+</ul>
+<p>How is the alignment exactly? Let's do another scatter plot:</p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_Johnson.png"></p>
+<p>A spot check of some of the largest discrepancies seems to indicate that the 
+population-density-based estimates are better: </p>
+<ul>
+<li>cases with large Johnson 
+estimates and small population-density-based estimates seem to be tracts 
+that are covered by a PWS. </li>
+<li>cases with small Johnson 
+estimates and large population-density-based estimates have little to no PWS 
+    coverage, so I think it's just a question of population estimates, which 
+    I'll go with the recent ACS data for.</li>
+</ul>
+<p>Factoring all of this together, I want to <strong>first just use the 
+population-density-based estimates</strong>. I will want to also try the Johnson 
+numbers, to see how that compares.</p>
+<h1>Conclusion</h1>
+<p>I have some estimates for the outcome variable now. That's good! I think I'm 
+ready to fire up Premium and see what this baby can do.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Johnson, Tyler &amp; Belitz, Kenneth &amp; Lombard, Melissa. (2019). 
+Estimating domestic well locations and populations served in the contiguous 
+U.S. for years 2000 and 2010. Science of The Total Environment. 687. 10.
+1016/j.scitotenv.2019.06.036. <a href="https://www.researchgate.net/publication/333728321_Estimating_domestic_well_locations_and_populations_served_in_the_contiguous_US_for_years_2000_and_2010">open source</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Tyler D. Johnson, Kenneth Belitz, Domestic well locations and 
+populations served in the contiguous U.S.: 1990, Science of The Total 
+Environment, Volumes 607–608, 2017, Pages 658-668, ISSN 0048-9697. https://doi.org/10.1016/j.scitotenv.2017.07.018. <a href="https://www.researchgate.net/publication/318446309_Domestic_well_locations_and_populations_served_in_the_contiguous_US_1990">open source</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Johnson, T.D., and Belitz, K., 2019, Domestic well locations and populations served in the contiguous U.S.: datasets for decadal years 2000 and 2010: U.S. Geological Survey data release, https://doi.org/10.5066/P9FSLU3B.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>Murray, A., A. Hall, J. Weaver, and F. Kremer. 2021. "Methods for Estimating Locations of Housing Units Served by Private Domestic Wells in the United States Applied to 2010." Journal of the American Water Resources Association 57 (5): 828–843. https://doi.org/10.1111/1752-1688.12937.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p><img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_CEISIN_methods.png">
+<img alt="Figure 5" src="https://swpease.github.io/images/science/well_water/ww_CEISIN_HU_vs_pop.png">&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/pa-well-water-part-4.html" rel="bookmark"
+                           title="Permalink to PA Well Water, Part 4">PA Well Water, Part 4</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2025-06-10T00:00:00-07:00">
                 Published: Tue 10 June 2025
@@ -34,234 +313,16 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-3.html">Part 3</a> and covers the
 Bayesian profile regression model.</p>
 <h1>Bayesian Profile Regression</h1>
 <h2>What Is It?</h2>
 <p>There were several resources I used to get a grasp on the method. Molitor et 
-al. <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> present kind of the founding proposal of the method, and this is a 
-surprisingly readable paper. <sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> and <sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> were helpful in my understanding 
-the spatial component that can be added to these models. <sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup> was helpful as 
-yet another writeup of the method, and especially for including a DAG of the 
-full model.</p>
-<p>There is an R package for this method, called PReMiuM, which I will
-henceforth call Premium, because fuck that. </p>
-<p>It took me a little while to understand how this method works. The gist is
-that you fit a joint model of a clustering component and a regression
-component. For each observation, its cluster assignment acts as a
-categorical predictor<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> for the regression on your outcome variable. The
-joint nature of the model means that the outcome variable influences 
-clustering. I know that's confusing to read. Just read through those sources I 
-listed. </p>
-<p>Molitor lists four benefits of the method, which I will summarize/combine:</p>
-<ul>
-<li>The benefits of Bayesian methods re uncertainty and posterior analyses.</li>
-<li>The clustering method that it uses lets the model figure out how many 
-    there should be, rather than requiring you to pre-specify<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>.</li>
-<li>"the outcome and the clusters mutually inform each other".</li>
-</ul>
-<p>That last point is the crux of my issue with this SVI paper.</p>
-<h2>Why Use It?</h2>
-<p>Molitor proposes it as a complement/alternative to standard regression:</p>
-<blockquote>
-<p>Standard regression analyses are often plagued with problems encountered when one tries to make meaningful inference going beyond main effects, using datasets that contain dozens of variables that are potentially correlated.</p>
-</blockquote>
-<p>I guess one might say that the world isn't made up of convenient little 
-lines. This method works around this problem by:</p>
-<blockquote>
-<p>adopt a more global point of view, where inference is based on clusters representing covariate patterns as opposed to individual risk factors.</p>
-</blockquote>
-<p>Re regression vs profile regression, Molitor concludes with:</p>
-<blockquote>
-<p>Since the two approaches address different characteristics of association, both should be used in a complementary fashion to progress our understanding of the association between an outcome and a set of correlated covariates.</p>
-</blockquote>
-<p>Another nice explanation is the Introduction in Belloni<sup id="fnref2:5"><a class="footnote-ref" href="#fn:5">5</a></sup>, which also 
-(briefly) compares it to other methods that might do a similar thing, such 
-as random forests or principal component regression. </p>
-<h2>Comments</h2>
-<p>It doesn't seem to be a super popular analysis method. I noticed a lot of 
-repeat names on the papers I looked at. I suspect a lot of people are 
-reaching for machine learning methods.</p>
-<h1>The Problem</h1>
-<p>Per Wamsley:</p>
-<blockquote>
-<p>we did not include the response model when determining clusters because domestic well prevalence is clustered by county, and the BPR does not allow for such spatial clustering effects modeling. Instead, the clusters of exposure profiles were fit in a second-stage multilevel regression model to estimate the relationship between social vulnerability profiles with domestic well prevalence</p>
-</blockquote>
-<p>I take this to mean that there were two steps, the clustering and the 
-regression, but importantly, they were separate things entirely, meaning the 
-regression model had zero influence on the clustering. However, Bayesian 
-profile regression is 
-supposed to fit these components jointly. Per Molitor:</p>
-<blockquote>
-<p>[it] fits the model as a unit, allowing an individual’s outcome to 
-potentially influence cluster membership</p>
-</blockquote>
-<p>And to hear it from another source <sup id="fnref3:5"><a class="footnote-ref" href="#fn:5">5</a></sup>:</p>
-<blockquote>
-<p>one of the principal motivations for PRM models is that the disease outcome influences cluster membership so that they can inform each other.</p>
-</blockquote>
-<p>And to hear it from yet another source <sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup> (the middle two intro paragraphs 
-might be good to read):</p>
-<blockquote>
-<p>it may be desirable to make use of (potentially highly informative) 
-outcome information directly, in order to guide inference toward the most 
-relevant clustering structures. That is, we may wish to use the outcome 
-information during the clustering analysis itself, rather than during post-analysis validation. This
-is one of the principal motivations for Bayesian profile regression</p>
-</blockquote>
-<p>This change can cause radically different clustering.</p>
-<h2>Toy Example</h2>
-<p>I'll fit two models: one as a standard Bayesian profile regression, the 
-second just the covariate clustering aspect as might happen in a two-phase 
-modeling approach as I think Wamsley used. </p>
-<p>Here is some simulated data of a 
-Poisson outcome with a couple of correlated predictors:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">set.seed</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
-
-<span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">700</span>
-<span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
-<span class="c1"># get a second distinct cluster</span>
-<span class="n">x2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">.</span><span class="m">5</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="nf">rbinom</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">x1</span><span class="o">&gt;</span><span class="w"> </span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">0.8</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
-<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rpois</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x2</span><span class="p">)</span>
-<span class="n">dummy_col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w">  </span><span class="c1"># for &quot;offset&quot; (+ log(dummy_col) as pred ==&gt; + log(1) == + 0 on rhs of glm)</span>
-<span class="n">obs_dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">dummy_col</span><span class="p">)</span>
-</code></pre></div>
-
-<p>You can see how it looks with <code>pairs(obs_dat[,1:3])</code>:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/pairs_plot.png"></p>
-<h3>Standard Bayesian Profile Regression Usage</h3>
-<p>Fitting it with Premium:</p>
-<div class="highlight"><pre><span></span><code><span class="n">mod_includeY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PReMiuM</span><span class="o">::</span><span class="nf">profRegr</span><span class="p">(</span>
-<span class="w">  </span><span class="n">yModel</span><span class="o">=</span><span class="s">&quot;Poisson&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">xModel</span><span class="o">=</span><span class="s">&quot;Normal&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">outcomeT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dummy_col&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">nClusInit</span><span class="o">=</span><span class="m">5</span><span class="p">,</span>
-<span class="w">  </span><span class="c1"># excludeY = TRUE,</span>
-<span class="w">  </span><span class="n">data</span><span class="o">=</span><span class="n">obs_dat</span><span class="p">,</span>
-<span class="w">  </span><span class="n">output</span><span class="o">=</span><span class="s">&quot;pois_includeY&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">covNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2&quot;</span><span class="p">),</span>
-<span class="w">  </span><span class="n">outcome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">seed</span><span class="o">=</span><span class="m">12345</span>
-<span class="p">)</span>
-</code></pre></div>
-
-<p>The clustering looks like so:</p>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/include_y_1.png">
-<img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/include_y_2.png"></p>
-<p>This output shows the two main things about this method:</p>
-<ol>
-<li>The separate purple cluster in the x1 vs x2 plot shows that if the 
-     covariate profiles are distinct, they will be clustered separately even 
-     if the outcomes are similar (see how purple and blue/green are mixed in 
-     the plot of x1 vs y).</li>
-<li>The regression component (<code>yModel="Poisson"</code>), <em>NOT</em> the y data per 
-     se!,
-     splits up the oblong 
-     cluster into roundish 
-     blobs. The 
-     red/green/blue section is obviously one big cluster as viewed on x1 vs 
-     x2's plot, 
-     but using it as a 
-     predictor for y would yield terribly wide predictions. The y data as 
-     part of the linear model
-     provides evidence that this one big cluster might be better off split 
-     up, as happens here. </li>
-</ol>
-<h3>Excluding the y Linear Model Component</h3>
-<p>Now we use the <code>excludeY</code> argument to essentially just cluster via the 
-covariates (<a href="https://github.com/silvialiverani/PReMiuM-R-package/issues/13">I think</a>):</p>
-<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="n">mod_excludeY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PReMiuM</span><span class="o">::</span><span class="nf">profRegr</span><span class="p">(</span>
-<span class="w">   </span><span class="n">yModel</span><span class="o">=</span><span class="s">&quot;Poisson&quot;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">xModel</span><span class="o">=</span><span class="s">&quot;Normal&quot;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">outcomeT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dummy_col&quot;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">nClusInit</span><span class="o">=</span><span class="m">5</span><span class="p">,</span>
-<span class="w">   </span><span class="n">excludeY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
-<span class="w">   </span><span class="n">data</span><span class="o">=</span><span class="n">obs_dat</span><span class="p">,</span>
-<span class="w">   </span><span class="n">output</span><span class="o">=</span><span class="s">&quot;pois_excludeY&quot;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">covNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2&quot;</span><span class="p">),</span>
-<span class="w">   </span><span class="n">outcome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">seed</span><span class="o">=</span><span class="m">12345</span><span class="p">)</span>
-</code></pre></div>
-
-<p>Which yields:</p>
-<p><img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/exclude_y_1.png">
-<img alt="Figure 5" src="https://swpease.github.io/images/science/well_water/exclude_y_2.png"></p>
-<p>So now we see that the big oblong cluster stays in one piece. y's linear model 
-isn't there 
-to influence it to split up. Note that this clustering remains (in this case)
-even if we add y into <code>covNames</code> like <code>covNames = c("x1", "x2", "y")</code>: the clustering just says "yep, that's a 
-cluster", because it doesn't have the linear model to tell it that this 
-clustering yields poor predictions. I didn't include that output because it 
-looks the same as this.</p>
-<h2>So.. What's the Issue in This Case?</h2>
-<p>Cluster 15.</p>
-<p>Cluster 15 winds up having the highest expected users of well water per 
-their model. However,
-empirically it is comprised of census tracts with:</p>
-<ul>
-<li>A median of 0 houses with wells.</li>
-<li>A 3rd quartile of 12 houses with wells.</li>
-</ul>
-<p>In Bayesian profile regression, those census tracts in Cluster 15 with high 
-well usage (which is at most a 
-quarter of said tracts) ought to be a separate cluster, and would be under a 
-joint model as Bayesian profile regression implements. They might have 
-similar covariate profiles, but the clustering would be (probably quite) 
-different.</p>
-<p>I think that the adjustment for county must have done some heavy lifting to 
-get Cluster 15 into the top spot. Maybe something like the tracts with lots 
-of well users were in counties with generally low well usage? </p>
-<h1>Conclusion</h1>
-<p>I think I've made a good argument for there being a mistake in the analysis. 
-At least, for them not yielding results that Bayesian profile regression 
-should yield (not that profile regression is "the truth").
-Perhaps I've misread/misinterpreted their methods, but the wonkiness of 
-Cluster 15 matches with what would go differently in a joint vs 2-phase model.</p>
-<p>Next I suppose I ought to try and do the analysis with a joint model. See 
-how that goes.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Well, Molitor in <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup> says "The previously described assignment model 
-clusters individuals into groups and these cluster assignments can be 
-simultaneously used as categorical predictors of an outcome.", however when 
-I said this to <em>the</em> Liverani of Premium fame, she said <a href="https://github.com/silvialiverani/PReMiuM-R-package/issues/13#issuecomment-2838078844">that I was wrong</a>. I'm sticking with Molitor on this one.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:2">
-<p>Molitor, J., Papathomas, M., Jerrett, M., Richardson, S., 2010. 
-Bayesian profile
-regression with an application to the National survey of children’s health.
-Biostatistics 11, 484–498. https://doi.org/10.1093/biostatistics/kxq013.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-<li id="fn:3">
-<p>Silvia Liverani, Aurore Lavigne, Marta Blangiardo, Modelling collinear and spatially correlated data, Spatial and Spatio-temporal Epidemiology, Volume 18, 2016, Pages 63-73, ISSN 1877-5845, https://doi.org/10.1016/j.sste.2016.04.003. (https://www.sciencedirect.com/science/article/pii/S1877584515300411)&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
-</li>
-<li id="fn:4">
-<p>Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
-</li>
-<li id="fn:5">
-<p>Belloni M, Laurent O, Guihenneuc C and Ancelet S (2020) Bayesian 
-Profile Regression to Deal With Multiple Highly Correlated Exposures and a Censored Survival Outcome. First Application in Ionizing Radiation Epidemiology. Front. Public Health 8:557006. doi: 10.3389/fpubh.2020.557006&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
-</li>
-<li id="fn:6">
-<p>The Dirichlet process mixture model (DPMM), which you can learn about 
-on <a href="https://www.pymc.io/projects/examples/en/latest/mixture_models
-/dp_mix.html">PyMC</a> or see a detailed mathematical walkthrough for the 
-non-statistician <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6583910/">here</a>. 
-Those resources helped me, at least.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
-</li>
-<li id="fn:7">
-<p>Anaïs Rouanet, Rob Johnson, Magdalena Strauss, Sylvia Richardson, Brian D Tom, Simon R White, Paul D W Kirk, Bayesian profile regression for clustering analysis involving a longitudinal response and explanatory variables, Journal of the Royal Statistical Society Series C: Applied Statistics, Volume 73, Issue 2, March 2024, Pages 314–339, https://doi.org/10.1093/jrsssc/qlad097&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+al. <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> present kind of the founding proposal of the method, and this is a …</p>
+                <a class="readmore" href="https://swpease.github.io/pa-well-water-part-4.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -493,29 +554,6 @@ stuff for a job I applied to. I had been learning how to use Bayesian …</p>
 <li>Flat draws:<ul>
 <li>Tournaments: UK Championship …</li></ul></li></ol>
                 <a class="readmore" href="https://swpease.github.io/what-does-tournament-structure-matter.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://swpease.github.io/its-a-coin-flip-part-2.html" rel="bookmark"
-                           title="Permalink to It's A Coin Flip! (Part 2)">It's A Coin Flip! (Part 2)</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-05-16T00:00:00-07:00">
-                Published: Tue 16 May 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
-        </address>
-<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info -->                <h1>Intro</h1>
-<p>Continuing my attempts to demonstrate that winning shorter matches in snooker should not be belittled, here I wanted to look at the Championship League. The impetus for this is that John Higgins recently won the tournament for the fourth time, beating Judd Trump (who was also going for his …</p>
-                <a class="readmore" href="https://swpease.github.io/its-a-coin-flip-part-2.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->

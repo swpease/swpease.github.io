@@ -1,5 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-10T00:00:00-07:00</updated><entry><title>PA Well Water, Part 4</title><link href="https://swpease.github.io/pa-well-water-part-4.html" rel="alternate"></link><published>2025-06-10T00:00:00-07:00</published><updated>2025-06-10T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-10:/pa-well-water-part-4.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-16T00:00:00-07:00</updated><entry><title>PA Well Water, Part 5: Estimating the Outcome Variable</title><link href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html" rel="alternate"></link><published>2025-06-16T00:00:00-07:00</published><updated>2025-06-16T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-16:/pa-well-water-part-5-estimating-the-outcome-variable.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post expands on &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; -- specifically the 
+section concerning Outcome Approximations -- and begins preparing data for 
+analysis.&lt;/p&gt;
+&lt;p&gt;In this post, I will compare the estimation method used in the paper vs an 
+alternative, and then look at a few other published methods. The estimation is 
+for &lt;strong&gt;the 
+outcome …&lt;/strong&gt;&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post expands on &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; -- specifically the 
+section concerning Outcome Approximations -- and begins preparing data for 
+analysis.&lt;/p&gt;
+&lt;p&gt;In this post, I will compare the estimation method used in the paper vs an 
+alternative, and then look at a few other published methods. The estimation is 
+for &lt;strong&gt;the 
+outcome variable, which 
+is: the number 
+of people who rely on domestic well water, i.e. who do not have coverage by 
+a public water system (PWS) at their residence&lt;/strong&gt;. In the paper, they use 
+number of 
+households for some reason. I don't see what the practical difference to 
+individuals vs households might be, so I'll just leave it as individuals.&lt;/p&gt;
+&lt;h2&gt;The Two Estimation Methods&lt;/h2&gt;
+&lt;p&gt;Comparing their method (1) vs an alternate (2):&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Area-based estimation: The proportion of the census tract's area that is not 
+   covered by a PWS 
+   equals the proportion of the census tract's population that relies on domestic 
+   well water. The census tract's population is provided by the SVI data 
+   (which is taken from the ACS).&lt;/li&gt;
+&lt;li&gt;Population density-based estimation: Use high-resolution population density 
+   estimates to 
+   directly count the 
+   estimated number of people who rely on domestic well water, again based 
+   on PWS coverage. This value 
+   can be used in two ways:&lt;ol&gt;
+&lt;li&gt;Directly.&lt;/li&gt;
+&lt;li&gt;Use the same population density estimate data to determine the 
+   estimated population for the whole census tract, take the proportion of 
+   that total that is on domestic well water, and apply said proportion to 
+   the ACS population estimate. This might be better, as it would -- 
+   assuming the population ratio of PWS/well-water remains consistent -- 
+   let us apply this proportion to what should be a better 
+   population estimate: the ACS estimate. ACS data is more recent (2022 
+   vs 2019).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;Methods (in the Paper-y Sense)&lt;/h1&gt;
+&lt;p&gt;Getting these estimates of population relying on well water required working 
+with several map datasets (Shapefiles, GeoTIFF...). I initially conducted 
+much of the data processing in QGIS. I want to translate it to scripting (in 
+Python) for reproducibility/defensibility/recall, but only have a part of it 
+in Python so far.&lt;/p&gt;
+&lt;h2&gt;Data Sources&lt;/h2&gt;
+&lt;p&gt;Firstly, the four data sources I collected:&lt;/p&gt;
+&lt;h3&gt;SVI Data&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;src: https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html&lt;/li&gt;
+&lt;li&gt;params:&lt;ul&gt;
+&lt;li&gt;Year = 2022&lt;/li&gt;
+&lt;li&gt;Geography = Pennsylvania&lt;/li&gt;
+&lt;li&gt;Geography Type = Census Tracts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;PA Public Water Systems (PA PWS)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;src: https://newdata-padep-1.opendata.arcgis.com/datasets/PADEP-1::public-water-systems-public-water-supplier-service-areas/about&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;TIGER/Line Shapefile (T/L)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;src: https://www.census.gov/cgi-bin/geo/shapefiles/index.php&lt;/li&gt;
+&lt;li&gt;params:&lt;ul&gt;
+&lt;li&gt;Year = 2022&lt;/li&gt;
+&lt;li&gt;Layer Type = Census Tracts&lt;/li&gt;
+&lt;li&gt;State = Pennsylvania&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Population Density Data&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;src: https://data.humdata.org/dataset/united-states-high-resolution-population-density-maps-demographic-estimates#&lt;/li&gt;
+&lt;li&gt;refs: &lt;ul&gt;
+&lt;li&gt;https://dataforgood.facebook.com/dfg/tools/high-resolution-population-density-maps&lt;/li&gt;
+&lt;li&gt;https://ciesin.climate.columbia.edu/programs#!#cu_card_group_media-400&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;files:&lt;ul&gt;
+&lt;li&gt;population_usa38_-80.tif.zipGeoTIFF&lt;/li&gt;
+&lt;li&gt;population_usa38_-90.tif.zipGeoTIFF&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;citation:&lt;ul&gt;
+&lt;li&gt;Facebook Connectivity Lab and Center for International Earth Science 
+ Information 
+Network - CIESIN - Columbia University. 2016. High Resolution Settlement 
+Layer (HRSL). Source imagery for HRSL © 2016 DigitalGlobe. Accessed 01 
+06 2025. &lt;/li&gt;
+&lt;li&gt;Please note that as of 2024, Meta’s high resolution population 
+density maps are no longer being updated.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Processing Outline&lt;/h2&gt;
+&lt;p&gt;I did some of the processing in QGIS, and some in Python. I'll link to the 
+Python file, and outline the QGIS steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Join SVI and T/L by census tract ID&lt;/li&gt;
+&lt;li&gt;Fix geometries on PA PWS&lt;/li&gt;
+&lt;li&gt;Reproject PA PWS to match T/L-SVI join&lt;/li&gt;
+&lt;li&gt;Difference T/L-SVI using PA PWS overlay&lt;ul&gt;
+&lt;li&gt;Yields well water region (WWR) layer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Create virtual raster from Pop Dens GeoTIFFs&lt;/li&gt;
+&lt;li&gt;Reproject T/L-SVI and WWR to match Pop Dens&lt;/li&gt;
+&lt;li&gt;Zonal stats (sum) using Pop Dens virtual raster and&lt;ul&gt;
+&lt;li&gt;T/L-SVI  =&amp;gt; pop est of the census tract&lt;/li&gt;
+&lt;li&gt;WWR  =&amp;gt; pop est of the well water reliant parts of the census tract&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;From there, I used Python (see the &lt;a href="https://github. com/swpease/well_water/tree/master/python"&gt;repository&lt;/a&gt;).&lt;/p&gt;
+&lt;h1&gt;Results&lt;/h1&gt;
+&lt;p&gt;Note that I am comparing method 1 to method 2.2 (above).&lt;/p&gt;
+&lt;h2&gt;Total Well Water Population&lt;/h2&gt;
+&lt;p&gt;Firstly, what do these methods say the total PA well water population is?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Area based: 3.92 million&lt;/li&gt;
+&lt;li&gt;Pop density based: 2.42 million&lt;ul&gt;
+&lt;li&gt;Note: the two alternative methods I outlined above were within 50k of 
+  each other (~2%), as method 2.1 (direct usage of pop #) was 2.38M.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These are way different! Are either of these more likely to be accurate? Is 
+there a third party? (Yes). It didn't occur to me to see if someone had 
+already estimated these values until just now, so I'll have to see what they 
+say after I finish this next part.&lt;/p&gt;
+&lt;p&gt;Continuing on this specific comparison...&lt;/p&gt;
+&lt;h2&gt;Comparative Plots&lt;/h2&gt;
+&lt;p&gt;We've already established that these estimates are way different. Is there 
+any patten to the difference?&lt;/p&gt;
+&lt;p&gt;First, let's see the numbers at the census tract level as proportions of the 
+total population:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_prop.png"&gt;&lt;/p&gt;
+&lt;p&gt;And second, as total population estimates:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_popul.png"&gt;&lt;/p&gt;
+&lt;p&gt;We already knew the area-based values were going to generally exceed the 
+population-density-based values. I was just kind of hoping there might be a 
+pattern to it.&lt;/p&gt;
+&lt;h1&gt;Discussion&lt;/h1&gt;
+&lt;h2&gt;Total Well Water Population (Now with 3rd Parties)&lt;/h2&gt;
+&lt;p&gt;The PA Dept of 
+Conservation and Natural Resources states that &lt;a href="https://www.pa.gov/agencies/dcnr/conservation/water/groundwater.html"&gt;over 1 million&lt;/a&gt; homeowners depend on 
+private wells for drinking water. I suppose then the question is: how big is 
+a home? The US Census Bureau's estimate for PA in 2019-2023 is &lt;a href="https://www.census.gov/quickfacts/fact/table/PA/INC110223"&gt;2.40 persons 
+per household&lt;/a&gt;. 
+So a rough estimate is &lt;strong&gt;2.4 million&lt;/strong&gt; well users, though there are factors 
+like 
+rural areas having larger average household sizes.  &lt;/p&gt;
+&lt;p&gt;Penn State estimates &lt;a href="https://extension.psu.edu/private-water-systems-faqs"&gt;3.5 million&lt;/a&gt;, though I don't see 
+their source. Penn State also estimates &lt;a href="https://extension.psu.edu/social-science-of-drinking-water"&gt;1-3.5 million&lt;/a&gt;, this time with some good sources 
+that I'll look into and discuss later, though I'm wondering if they 
+subconsciously misread "homes" as "people" for the 1M case.&lt;/p&gt;
+&lt;p&gt;It turns out that "later" is now.&lt;/p&gt;
+&lt;h3&gt;Johnson Papers&lt;/h3&gt;
+&lt;p&gt;There were a couple of related papers &lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; that estimated the well water 
+reliant population across the entire contiguous US, at a 1km^2 resolution, 
+for 1990, 2000, and 2010. Apparently 1990 is the last time the US Census 
+asked people about their water sources, so they extrapolated from there. 
+I've read through the first only, but it presents some interesting 
+information:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;it appears that the number of people supplied by domestic-wells has plateaued and may in fact be dropping.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;and&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The proportion of the population dependent upon domestic wells (domestic ratio) is slowly decreasing nationally.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Their own estimates for Pennsylvania's well water reliant populations are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1990: 2.43 million &lt;sup id="fnref2:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; (see Table 3)&lt;/li&gt;
+&lt;li&gt;2000: 2.29 million (calculated via Zonal statistics (sum) of the PA 
+    TIGER/Line 
+    shapefile, dissolved to all of PA, on their REM 
+    map &lt;sup id="fnref:3"&gt;&lt;a class="footnote-ref" href="#fn:3"&gt;3&lt;/a&gt;&lt;/sup&gt;)&lt;/li&gt;
+&lt;li&gt;2010: &lt;strong&gt;2.20 million&lt;/strong&gt; (same calculation)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Murray&lt;/h3&gt;
+&lt;p&gt;Murray &lt;sup id="fnref:4"&gt;&lt;a class="footnote-ref" href="#fn:4"&gt;4&lt;/a&gt;&lt;/sup&gt; provides yet another national estimate of well water reliance, 
+but looking at housing units. I haven't even skimmed this one yet, but it 
+estimates that in 2010, &lt;strong&gt;1.25 million housing units&lt;/strong&gt; had private wells in PA 
+(Figure 9). This doesn't disagree with the estimate by the PA Dept of 
+Conservation and Natural Resources.&lt;/p&gt;
+&lt;p&gt;In trying to compare the population-density-based estimates to this, which was 
+easy 
+enough because ACS (in the SVI) has housing unit estimates as well, I wound 
+up with an estimated 1.75 million housing units. That number seems high, 
+especially considering my population estimate of 2.4 million, but it's what 
+the ACS says, so... &lt;/p&gt;
+&lt;h2&gt;So Which Estimate to Use?&lt;/h2&gt;
+&lt;p&gt;Given the results by Murray and Johnson, my inclination is that the 
+population-density-based estimates of well water 
+users might be an overestimate, while the area-based estimate is 
+likely a huge overestimate.&lt;/p&gt;
+&lt;p&gt;While the population-density-based estimates can be converted to either 
+population or housing units, I am leaning towards population because:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(I know 
+this is dumb) it's what I first thought of.&lt;/li&gt;
+&lt;li&gt;I am interested in people, not housing.&lt;/li&gt;
+&lt;li&gt;I'm concerned converting to housing units might lead to some extra 
+    uncertainty, whereas the CEISIN-direct population estimates (method 2.2) 
+    closely 
+    align with the ACS-based ones (method 2.1) (see supplemental graphs &lt;sup id="fnref:5"&gt;&lt;a class="footnote-ref" href="#fn:5"&gt;5&lt;/a&gt;&lt;/sup&gt;).&lt;/li&gt;
+&lt;li&gt;It seems to more closely align with a third party (Johnson).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;How is the alignment exactly? Let's do another scatter plot:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_Johnson.png"&gt;&lt;/p&gt;
+&lt;p&gt;A spot check of some of the largest discrepancies seems to indicate that the 
+population-density-based estimates are better: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cases with large Johnson 
+estimates and small population-density-based estimates seem to be tracts 
+that are covered by a PWS. &lt;/li&gt;
+&lt;li&gt;cases with small Johnson 
+estimates and large population-density-based estimates have little to no PWS 
+    coverage, so I think it's just a question of population estimates, which 
+    I'll go with the recent ACS data for.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Factoring all of this together, I want to &lt;strong&gt;first just use the 
+population-density-based estimates&lt;/strong&gt;. I will want to also try the Johnson 
+numbers, to see how that compares.&lt;/p&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I have some estimates for the outcome variable now. That's good! I think I'm 
+ready to fire up Premium and see what this baby can do.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;Johnson, Tyler &amp;amp; Belitz, Kenneth &amp;amp; Lombard, Melissa. (2019). 
+Estimating domestic well locations and populations served in the contiguous 
+U.S. for years 2000 and 2010. Science of The Total Environment. 687. 10.
+1016/j.scitotenv.2019.06.036. &lt;a href="https://www.researchgate.net/publication/333728321_Estimating_domestic_well_locations_and_populations_served_in_the_contiguous_US_for_years_2000_and_2010"&gt;open source&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Tyler D. Johnson, Kenneth Belitz, Domestic well locations and 
+populations served in the contiguous U.S.: 1990, Science of The Total 
+Environment, Volumes 607–608, 2017, Pages 658-668, ISSN 0048-9697. https://doi.org/10.1016/j.scitotenv.2017.07.018. &lt;a href="https://www.researchgate.net/publication/318446309_Domestic_well_locations_and_populations_served_in_the_contiguous_US_1990"&gt;open source&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:3"&gt;
+&lt;p&gt;Johnson, T.D., and Belitz, K., 2019, Domestic well locations and populations served in the contiguous U.S.: datasets for decadal years 2000 and 2010: U.S. Geological Survey data release, https://doi.org/10.5066/P9FSLU3B.&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:4"&gt;
+&lt;p&gt;Murray, A., A. Hall, J. Weaver, and F. Kremer. 2021. "Methods for Estimating Locations of Housing Units Served by Private Domestic Wells in the United States Applied to 2010." Journal of the American Water Resources Association 57 (5): 828–843. https://doi.org/10.1111/1752-1688.12937.&amp;#160;&lt;a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:5"&gt;
+&lt;p&gt;&lt;img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_CEISIN_methods.png"&gt;
+&lt;img alt="Figure 5" src="https://swpease.github.io/images/science/well_water/ww_CEISIN_HU_vs_pop.png"&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 4</title><link href="https://swpease.github.io/pa-well-water-part-4.html" rel="alternate"></link><published>2025-06-10T00:00:00-07:00</published><updated>2025-06-10T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-10:/pa-well-water-part-4.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; and covers the
 Bayesian profile regression model.&lt;/p&gt;
 &lt;h1&gt;Bayesian Profile Regression&lt;/h1&gt;
