@@ -1,5 +1,6 @@
 Title: PA Well Water, Part 3
 Date: 2025-6-9
+Modified: 2025-06-18
 Category: Science
 Tags: analysis
 
@@ -41,6 +42,12 @@ details, but the gist is:
 > density, and also on criteria that account for non-residential urban land 
 > uses, such as commercial, industrial, transportation, and open space that 
 > are part of the urban landscape.
+
+## Some Useful References
+The [Center for Rural Pennsylvania](https://www.rural.pa.gov/home) 
+(apparently that's a thing) has some nice resources about rural PA, and in 
+comparison to urban PA, for instance [Quick Facts](https://www.rural.pa.gov/data/rural-quick-facts) is good to look through, and [A Report on PA 
+Population Decline](https://www.rural.pa.gov/download.cfm?file=Resources/PDFs/Pennsylvania%27s%20Population%20is%20Declining%20Faster%20Than%20Expected%20Fact%20Sheet%20Web.pdf).
 
 # DAGs
 I think it's worthwhile to explicitly make some DAGs (using [daggity](https://www.dagitty.net)) to 

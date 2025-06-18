@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-16T00:00:00-07:00</updated><entry><title>PA Well Water, Part 5: Estimating the Outcome Variable</title><link href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html" rel="alternate"></link><published>2025-06-16T00:00:00-07:00</published><updated>2025-06-16T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-16:/pa-well-water-part-5-estimating-the-outcome-variable.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-18T00:00:00-07:00</updated><entry><title>PA Well Water, Part 5: Estimating the Outcome Variable</title><link href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html" rel="alternate"></link><published>2025-06-16T00:00:00-07:00</published><updated>2025-06-16T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-16:/pa-well-water-part-5-estimating-the-outcome-variable.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post expands on &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; -- specifically the 
 section concerning Outcome Approximations -- and begins preparing data for 
 analysis.&lt;/p&gt;
@@ -489,7 +489,7 @@ Those resources helped me, at least.&amp;#160;&lt;a class="footnote-backref" hre
 &lt;p&gt;Anaïs Rouanet, Rob Johnson, Magdalena Strauss, Sylvia Richardson, Brian D Tom, Simon R White, Paul D W Kirk, Bayesian profile regression for clustering analysis involving a longitudinal response and explanatory variables, Journal of the Royal Statistical Society Series C: Applied Statistics, Volume 73, Issue 2, March 2024, Pages 314–339, https://doi.org/10.1093/jrsssc/qlad097&amp;#160;&lt;a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 3</title><link href="https://swpease.github.io/pa-well-water-part-3.html" rel="alternate"></link><published>2025-06-09T00:00:00-07:00</published><updated>2025-06-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-09:/pa-well-water-part-3.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;/div&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 3</title><link href="https://swpease.github.io/pa-well-water-part-3.html" rel="alternate"></link><published>2025-06-09T00:00:00-07:00</published><updated>2025-06-18T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-09:/pa-well-water-part-3.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-2.html"&gt;Part 2&lt;/a&gt; and covers the 
 model's accounting for rurality.&lt;/p&gt;
 &lt;p&gt;The authors write:&lt;/p&gt;
@@ -532,6 +532,11 @@ density, and also on criteria that account for non-residential urban land
 uses, such as commercial, industrial, transportation, and open space that 
 are part of the urban landscape.&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h2&gt;Some Useful References&lt;/h2&gt;
+&lt;p&gt;The &lt;a href="https://www.rural.pa.gov/home"&gt;Center for Rural Pennsylvania&lt;/a&gt; 
+(apparently that's a thing) has some nice resources about rural PA, and in 
+comparison to urban PA, for instance &lt;a href="https://www.rural.pa.gov/data/rural-quick-facts"&gt;Quick Facts&lt;/a&gt; is good to look through, and &lt;a href="https://www.rural.pa.gov/download.cfm?file=Resources/PDFs/Pennsylvania%27s%20Population%20is%20Declining%20Faster%20Than%20Expected%20Fact%20Sheet%20Web.pdf"&gt;A Report on PA 
+Population Decline&lt;/a&gt;.&lt;/p&gt;
 &lt;h1&gt;DAGs&lt;/h1&gt;
 &lt;p&gt;I think it's worthwhile to explicitly make some DAGs (using &lt;a href="https://www.dagitty.net"&gt;daggity&lt;/a&gt;) to 
 get an 
