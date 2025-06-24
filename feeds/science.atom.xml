@@ -1,5 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Science</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/science.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-18T00:00:00-07:00</updated><entry><title>PA Well Water, Part 5: Estimating the Outcome Variable</title><link href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html" rel="alternate"></link><published>2025-06-16T00:00:00-07:00</published><updated>2025-06-16T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-16:/pa-well-water-part-5-estimating-the-outcome-variable.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Science</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/science.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-23T00:00:00-07:00</updated><entry><title>PA Well Water, Part 6: Analyzing the Data</title><link href="https://swpease.github.io/pa-well-water-part-6-analyzing-the-data.html" rel="alternate"></link><published>2025-06-23T00:00:00-07:00</published><updated>2025-06-23T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-23:/pa-well-water-part-6-analyzing-the-data.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html"&gt;Part 5&lt;/a&gt;. At 
+long last, we've got our pieces in place. Time to plug it into our 
+processing method!&lt;/p&gt;
+&lt;h1&gt;Method&lt;/h1&gt;
+&lt;p&gt;The actual code for what follows is &lt;a href="https://github.com/swpease/well_water/blob/master/R/BPR_CAR.Rmd"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I used the following clustering covariates: "EP_POV150", "EP_UNEMP", 
+"EP_NOHSDP", "EP_AGE65", "EP_AGE17", "EP_MINRTY", "EP_HBURD". These are the 
+Estimated …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html"&gt;Part 5&lt;/a&gt;. At 
+long last, we've got our pieces in place. Time to plug it into our 
+processing method!&lt;/p&gt;
+&lt;h1&gt;Method&lt;/h1&gt;
+&lt;p&gt;The actual code for what follows is &lt;a href="https://github.com/swpease/well_water/blob/master/R/BPR_CAR.Rmd"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I used the following clustering covariates: "EP_POV150", "EP_UNEMP", 
+"EP_NOHSDP", "EP_AGE65", "EP_AGE17", "EP_MINRTY", "EP_HBURD". These are the 
+Estimated Percentage of the population that is: below 150% poverty, 
+unemployed, without a high school diploma, over 65, under 17, minority, and housing cost-burdened
+occupied housing units with annual income less than $75,000 (30%+ of income 
+spent on housing costs). The housing burden is new, and replaces the median 
+income component that was used in Wamsley, and poverty has changed from 100% 
+to 150% federal poverty level. See the SVI 2020 documentation for 
+details (SVI 2020 Updates section).&lt;/p&gt;
+&lt;p&gt;The outcome variable (estimated # of well water users) and confounder (population density) are 
+described in the bulleted list, below.&lt;/p&gt;
+&lt;p&gt;I diverged from Wamsley in a few places. First, some SVI indicators changed 
+(see above). I also excluded the three non-SVI ACS covariates, since they were 
+non-SVI. I also considered the population density to be an alternative to 
+county, so excluded county.&lt;/p&gt;
+&lt;p&gt;I used the Premium package (officially spelled obnoxiously) for the Bayesian 
+profile regression with conditional autocorrelation. I performed the 
+following preprocessing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;removed census tracts with estimated populations of zero (both via ACS 
+    and via CEISIN)&lt;/li&gt;
+&lt;li&gt;generated an INLA file for the CAR component&lt;/li&gt;
+&lt;li&gt;created the outcome, estimated # of well water users, by multiplying the 
+    ACS population estimate (&lt;code&gt;E_TOTPOP&lt;/code&gt;) by the fraction of the 
+    population-as-calculated-by-CEISIN-maps (see prior blog post) that 
+    relies on well water&lt;/li&gt;
+&lt;li&gt;created the population density, as tract population divided by land area 
+    (&lt;code&gt;E_TOTPOP&lt;/code&gt; / &lt;code&gt;ALAND&lt;/code&gt;), to use as a confounder for the outcome component 
+    of the model&lt;/li&gt;
+&lt;li&gt;replaced the &lt;code&gt;-999&lt;/code&gt; encodings for missing clustering covariates data with 
+    &lt;code&gt;NA&lt;/code&gt;s&lt;/li&gt;
+&lt;li&gt;converted the clustering covariates into quartiles&lt;ul&gt;
+&lt;li&gt;Premium can handle discrete or Gaussian cases, and these are not Gaussian.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So the final model's outcome component (i.e. excluding the clustering bit) 
+looks like:&lt;/p&gt;
+&lt;div class="math"&gt;$$ 
+  y_i \sim Poisson(\mu_i) \\
+  log(\mu_i) = \theta_{Z_i} + \beta\rho_i + log(n_i) + u_i
+$$&lt;/div&gt;
+&lt;p&gt;Well, I actually used a negative binomial model, but whatever. Anyway, so 
+&lt;span class="math"&gt;\(\mu_i\)&lt;/span&gt; is the expected number of well water users. 
+&lt;span class="math"&gt;\(\theta_{Z_i}\)&lt;/span&gt; is a categorical predictor (a random/varying intercept I 
+think), with &lt;span class="math"&gt;\(Z_i\)&lt;/span&gt; indicating the group to which &lt;span class="math"&gt;\(y_i\)&lt;/span&gt; belongs. 
+&lt;span class="math"&gt;\(\beta\rho_i\)&lt;/span&gt; is the confounder, population density acting to capture rurality. 
+&lt;span class="math"&gt;\(log
+(n_i)\)&lt;/span&gt; 
+is the offset (&lt;span class="math"&gt;\(n_i\)&lt;/span&gt; is the total census tract population). &lt;span class="math"&gt;\(u_i\)&lt;/span&gt; is 
+the 
+spatially structured error term. &lt;/p&gt;
+&lt;h1&gt;Results&lt;/h1&gt;
+&lt;p&gt;Tada!... :(&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/clusters.png"&gt;&lt;/p&gt;
+&lt;p&gt;Wait, what? Did I do something wrong? Well, I can't for sure say "No.", but I 
+subsequently tried a &lt;a href="https://github.com/swpease/well_water/tree/master/R"&gt;bunch of different modifications&lt;/a&gt; to the BPR to try and 
+get some sort of clustering. No luck.&lt;/p&gt;
+&lt;h1&gt;What Happened?&lt;/h1&gt;
+&lt;p&gt;So I finally did what I'd ordinarily do right off the bat: plot my data. 
+I'll look at the clustering covariates each against the fraction of the 
+census tract that is thought to rely on well water. That should do the trick!
+Let's see:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/eppov150.png"&gt;&lt;/p&gt;
+&lt;p&gt;Oh dear. Well, maybe the other covariates look better?&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/other_clustering_covs.png"&gt;&lt;/p&gt;
+&lt;p&gt;Hm. Not exactly the "complex and non-linear" relationships I was led to 
+believe existed. Well maybe it's something 
+that takes multiple 
+dimensions to see. How about a PCA biplot &lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/biplot.png"&gt;&lt;/p&gt;
+&lt;p&gt;It's quite blobby. I suppose it at least indicates that there's some 
+positive relationship between being old and using well water. That ties out 
+with rural populations being a bit older.&lt;/p&gt;
+&lt;p&gt;All I can really see in the plots against the proportion of well water users 
+("frac_WW_CEISIN") is that the boundaries are driving any correlations. The 
+fully urban (fully on a PWS) areas span the range of values for every 
+predictor, and the 
+fully rural (fully on well water) areas also have a somewhat wider range of 
+values compared to the intermediate values.&lt;/p&gt;
+&lt;h1&gt;Discussion&lt;/h1&gt;
+&lt;p&gt;Well that was a let-down. I'm not sure where I might have gone wrong. If I 
+didn't make any mistakes, then how the heck did they pull off their results? 
+I keep double checking my variables. Like in this post, I keep thinking, "the 
+fraction of well water users is the right y-axis variable, right?".&lt;/p&gt;
+&lt;p&gt;I suppose it's of interest that well water users in PA run the gamut with 
+respect to social vulnerability indicators.&lt;/p&gt;
+&lt;p&gt;Um... I guess at least I learned some things.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;I haven't use one of these in a while, so had to refresh on the 
+details. I found two good sources were a &lt;a href="https://blogs.sas.com/content/iml/2019/11/06/what-are-biplots.html"&gt;SAS blog post&lt;/a&gt; and the &lt;a href="https://friendly.github.io/ggbiplot/reference/ggbiplot.html"&gt;{ggbiplot} docs&lt;/a&gt;. The displayed 
+plot is actually from {ggfortify}, using its autoplot, 
+but all the plots I toyed around with look virtually the same.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>PA Well Water, Part 5: Estimating the Outcome Variable</title><link href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html" rel="alternate"></link><published>2025-06-16T00:00:00-07:00</published><updated>2025-06-16T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-16:/pa-well-water-part-5-estimating-the-outcome-variable.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post expands on &lt;a href="https://swpease.github.io/pa-well-water-part-3.html"&gt;Part 3&lt;/a&gt; -- specifically the 
 section concerning Outcome Approximations -- and begins preparing data for 
 analysis.&lt;/p&gt;

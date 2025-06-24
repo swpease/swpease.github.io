@@ -23,7 +23,197 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html">PA Well Water, Part 5: Estimating the Outcome Variable</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/pa-well-water-part-6-analyzing-the-data.html">PA Well Water, Part 6: Analyzing the Data</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2025-06-23T00:00:00-07:00">
+                Published: Mon 23 June 2025
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>This post continues from <a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html">Part 5</a>. At 
+long last, we've got our pieces in place. Time to plug it into our 
+processing method!</p>
+<h1>Method</h1>
+<p>The actual code for what follows is <a href="https://github.com/swpease/well_water/blob/master/R/BPR_CAR.Rmd">here</a>.</p>
+<p>I used the following clustering covariates: "EP_POV150", "EP_UNEMP", 
+"EP_NOHSDP", "EP_AGE65", "EP_AGE17", "EP_MINRTY", "EP_HBURD". These are the 
+Estimated Percentage of the population that is: below 150% poverty, 
+unemployed, without a high school diploma, over 65, under 17, minority, and housing cost-burdened
+occupied housing units with annual income less than $75,000 (30%+ of income 
+spent on housing costs). The housing burden is new, and replaces the median 
+income component that was used in Wamsley, and poverty has changed from 100% 
+to 150% federal poverty level. See the SVI 2020 documentation for 
+details (SVI 2020 Updates section).</p>
+<p>The outcome variable (estimated # of well water users) and confounder (population density) are 
+described in the bulleted list, below.</p>
+<p>I diverged from Wamsley in a few places. First, some SVI indicators changed 
+(see above). I also excluded the three non-SVI ACS covariates, since they were 
+non-SVI. I also considered the population density to be an alternative to 
+county, so excluded county.</p>
+<p>I used the Premium package (officially spelled obnoxiously) for the Bayesian 
+profile regression with conditional autocorrelation. I performed the 
+following preprocessing:</p>
+<ul>
+<li>removed census tracts with estimated populations of zero (both via ACS 
+    and via CEISIN)</li>
+<li>generated an INLA file for the CAR component</li>
+<li>created the outcome, estimated # of well water users, by multiplying the 
+    ACS population estimate (<code>E_TOTPOP</code>) by the fraction of the 
+    population-as-calculated-by-CEISIN-maps (see prior blog post) that 
+    relies on well water</li>
+<li>created the population density, as tract population divided by land area 
+    (<code>E_TOTPOP</code> / <code>ALAND</code>), to use as a confounder for the outcome component 
+    of the model</li>
+<li>replaced the <code>-999</code> encodings for missing clustering covariates data with 
+    <code>NA</code>s</li>
+<li>converted the clustering covariates into quartiles<ul>
+<li>Premium can handle discrete or Gaussian cases, and these are not Gaussian.</li>
+</ul>
+</li>
+</ul>
+<p>So the final model's outcome component (i.e. excluding the clustering bit) 
+looks like:</p>
+<div class="math">$$ 
+  y_i \sim Poisson(\mu_i) \\
+  log(\mu_i) = \theta_{Z_i} + \beta\rho_i + log(n_i) + u_i
+$$</div>
+<p>Well, I actually used a negative binomial model, but whatever. Anyway, so 
+<span class="math">\(\mu_i\)</span> is the expected number of well water users. 
+<span class="math">\(\theta_{Z_i}\)</span> is a categorical predictor (a random/varying intercept I 
+think), with <span class="math">\(Z_i\)</span> indicating the group to which <span class="math">\(y_i\)</span> belongs. 
+<span class="math">\(\beta\rho_i\)</span> is the confounder, population density acting to capture rurality. 
+<span class="math">\(log
+(n_i)\)</span> 
+is the offset (<span class="math">\(n_i\)</span> is the total census tract population). <span class="math">\(u_i\)</span> is 
+the 
+spatially structured error term. </p>
+<h1>Results</h1>
+<p>Tada!... :(</p>
+<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/clusters.png"></p>
+<p>Wait, what? Did I do something wrong? Well, I can't for sure say "No.", but I 
+subsequently tried a <a href="https://github.com/swpease/well_water/tree/master/R">bunch of different modifications</a> to the BPR to try and 
+get some sort of clustering. No luck.</p>
+<h1>What Happened?</h1>
+<p>So I finally did what I'd ordinarily do right off the bat: plot my data. 
+I'll look at the clustering covariates each against the fraction of the 
+census tract that is thought to rely on well water. That should do the trick!
+Let's see:</p>
+<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/eppov150.png"></p>
+<p>Oh dear. Well, maybe the other covariates look better?</p>
+<p><img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/other_clustering_covs.png"></p>
+<p>Hm. Not exactly the "complex and non-linear" relationships I was led to 
+believe existed. Well maybe it's something 
+that takes multiple 
+dimensions to see. How about a PCA biplot <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>?</p>
+<p><img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/biplot.png"></p>
+<p>It's quite blobby. I suppose it at least indicates that there's some 
+positive relationship between being old and using well water. That ties out 
+with rural populations being a bit older.</p>
+<p>All I can really see in the plots against the proportion of well water users 
+("frac_WW_CEISIN") is that the boundaries are driving any correlations. The 
+fully urban (fully on a PWS) areas span the range of values for every 
+predictor, and the 
+fully rural (fully on well water) areas also have a somewhat wider range of 
+values compared to the intermediate values.</p>
+<h1>Discussion</h1>
+<p>Well that was a let-down. I'm not sure where I might have gone wrong. If I 
+didn't make any mistakes, then how the heck did they pull off their results? 
+I keep double checking my variables. Like in this post, I keep thinking, "the 
+fraction of well water users is the right y-axis variable, right?".</p>
+<p>I suppose it's of interest that well water users in PA run the gamut with 
+respect to social vulnerability indicators.</p>
+<p>Um... I guess at least I learned some things.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I haven't use one of these in a while, so had to refresh on the 
+details. I found two good sources were a <a href="https://blogs.sas.com/content/iml/2019/11/06/what-are-biplots.html">SAS blog post</a> and the <a href="https://friendly.github.io/ggbiplot/reference/ggbiplot.html">{ggbiplot} docs</a>. The displayed 
+plot is actually from {ggfortify}, using its autoplot, 
+but all the plots I toyed around with look virtually the same.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html" rel="bookmark"
+                           title="Permalink to PA Well Water, Part 5: Estimating the Outcome Variable">PA Well Water, Part 5: Estimating the Outcome Variable</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2025-06-16T00:00:00-07:00">
                 Published: Mon 16 June 2025
@@ -34,267 +224,17 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>This post expands on <a href="https://swpease.github.io/pa-well-water-part-3.html">Part 3</a> -- specifically the 
 section concerning Outcome Approximations -- and begins preparing data for 
 analysis.</p>
 <p>In this post, I will compare the estimation method used in the paper vs an 
 alternative, and then look at a few other published methods. The estimation is 
 for <strong>the 
-outcome variable, which 
-is: the number 
-of people who rely on domestic well water, i.e. who do not have coverage by 
-a public water system (PWS) at their residence</strong>. In the paper, they use 
-number of 
-households for some reason. I don't see what the practical difference to 
-individuals vs households might be, so I'll just leave it as individuals.</p>
-<h2>The Two Estimation Methods</h2>
-<p>Comparing their method (1) vs an alternate (2):</p>
-<ol>
-<li>Area-based estimation: The proportion of the census tract's area that is not 
-   covered by a PWS 
-   equals the proportion of the census tract's population that relies on domestic 
-   well water. The census tract's population is provided by the SVI data 
-   (which is taken from the ACS).</li>
-<li>Population density-based estimation: Use high-resolution population density 
-   estimates to 
-   directly count the 
-   estimated number of people who rely on domestic well water, again based 
-   on PWS coverage. This value 
-   can be used in two ways:<ol>
-<li>Directly.</li>
-<li>Use the same population density estimate data to determine the 
-   estimated population for the whole census tract, take the proportion of 
-   that total that is on domestic well water, and apply said proportion to 
-   the ACS population estimate. This might be better, as it would -- 
-   assuming the population ratio of PWS/well-water remains consistent -- 
-   let us apply this proportion to what should be a better 
-   population estimate: the ACS estimate. ACS data is more recent (2022 
-   vs 2019).</li>
-</ol>
-</li>
-</ol>
-<h1>Methods (in the Paper-y Sense)</h1>
-<p>Getting these estimates of population relying on well water required working 
-with several map datasets (Shapefiles, GeoTIFF...). I initially conducted 
-much of the data processing in QGIS. I want to translate it to scripting (in 
-Python) for reproducibility/defensibility/recall, but only have a part of it 
-in Python so far.</p>
-<h2>Data Sources</h2>
-<p>Firstly, the four data sources I collected:</p>
-<h3>SVI Data</h3>
-<ul>
-<li>src: https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html</li>
-<li>params:<ul>
-<li>Year = 2022</li>
-<li>Geography = Pennsylvania</li>
-<li>Geography Type = Census Tracts</li>
-</ul>
-</li>
-</ul>
-<h3>PA Public Water Systems (PA PWS)</h3>
-<ul>
-<li>src: https://newdata-padep-1.opendata.arcgis.com/datasets/PADEP-1::public-water-systems-public-water-supplier-service-areas/about</li>
-</ul>
-<h3>TIGER/Line Shapefile (T/L)</h3>
-<ul>
-<li>src: https://www.census.gov/cgi-bin/geo/shapefiles/index.php</li>
-<li>params:<ul>
-<li>Year = 2022</li>
-<li>Layer Type = Census Tracts</li>
-<li>State = Pennsylvania</li>
-</ul>
-</li>
-</ul>
-<h3>Population Density Data</h3>
-<ul>
-<li>src: https://data.humdata.org/dataset/united-states-high-resolution-population-density-maps-demographic-estimates#</li>
-<li>refs: <ul>
-<li>https://dataforgood.facebook.com/dfg/tools/high-resolution-population-density-maps</li>
-<li>https://ciesin.climate.columbia.edu/programs#!#cu_card_group_media-400</li>
-</ul>
-</li>
-<li>files:<ul>
-<li>population_usa38_-80.tif.zipGeoTIFF</li>
-<li>population_usa38_-90.tif.zipGeoTIFF</li>
-</ul>
-</li>
-<li>citation:<ul>
-<li>Facebook Connectivity Lab and Center for International Earth Science 
- Information 
-Network - CIESIN - Columbia University. 2016. High Resolution Settlement 
-Layer (HRSL). Source imagery for HRSL © 2016 DigitalGlobe. Accessed 01 
-06 2025. </li>
-<li>Please note that as of 2024, Meta’s high resolution population 
-density maps are no longer being updated.</li>
-</ul>
-</li>
-</ul>
-<h2>Processing Outline</h2>
-<p>I did some of the processing in QGIS, and some in Python. I'll link to the 
-Python file, and outline the QGIS steps:</p>
-<ul>
-<li>Join SVI and T/L by census tract ID</li>
-<li>Fix geometries on PA PWS</li>
-<li>Reproject PA PWS to match T/L-SVI join</li>
-<li>Difference T/L-SVI using PA PWS overlay<ul>
-<li>Yields well water region (WWR) layer</li>
-</ul>
-</li>
-<li>Create virtual raster from Pop Dens GeoTIFFs</li>
-<li>Reproject T/L-SVI and WWR to match Pop Dens</li>
-<li>Zonal stats (sum) using Pop Dens virtual raster and<ul>
-<li>T/L-SVI  =&gt; pop est of the census tract</li>
-<li>WWR  =&gt; pop est of the well water reliant parts of the census tract</li>
-</ul>
-</li>
-</ul>
-<p>From there, I used Python (see the <a href="https://github. com/swpease/well_water/tree/master/python">repository</a>).</p>
-<h1>Results</h1>
-<p>Note that I am comparing method 1 to method 2.2 (above).</p>
-<h2>Total Well Water Population</h2>
-<p>Firstly, what do these methods say the total PA well water population is?</p>
-<ul>
-<li>Area based: 3.92 million</li>
-<li>Pop density based: 2.42 million<ul>
-<li>Note: the two alternative methods I outlined above were within 50k of 
-  each other (~2%), as method 2.1 (direct usage of pop #) was 2.38M.</li>
-</ul>
-</li>
-</ul>
-<p>These are way different! Are either of these more likely to be accurate? Is 
-there a third party? (Yes). It didn't occur to me to see if someone had 
-already estimated these values until just now, so I'll have to see what they 
-say after I finish this next part.</p>
-<p>Continuing on this specific comparison...</p>
-<h2>Comparative Plots</h2>
-<p>We've already established that these estimates are way different. Is there 
-any patten to the difference?</p>
-<p>First, let's see the numbers at the census tract level as proportions of the 
-total population:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_prop.png"></p>
-<p>And second, as total population estimates:</p>
-<p><img alt="Figure 2" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_popul.png"></p>
-<p>We already knew the area-based values were going to generally exceed the 
-population-density-based values. I was just kind of hoping there might be a 
-pattern to it.</p>
-<h1>Discussion</h1>
-<h2>Total Well Water Population (Now with 3rd Parties)</h2>
-<p>The PA Dept of 
-Conservation and Natural Resources states that <a href="https://www.pa.gov/agencies/dcnr/conservation/water/groundwater.html">over 1 million</a> homeowners depend on 
-private wells for drinking water. I suppose then the question is: how big is 
-a home? The US Census Bureau's estimate for PA in 2019-2023 is <a href="https://www.census.gov/quickfacts/fact/table/PA/INC110223">2.40 persons 
-per household</a>. 
-So a rough estimate is <strong>2.4 million</strong> well users, though there are factors 
-like 
-rural areas having larger average household sizes.  </p>
-<p>Penn State estimates <a href="https://extension.psu.edu/private-water-systems-faqs">3.5 million</a>, though I don't see 
-their source. Penn State also estimates <a href="https://extension.psu.edu/social-science-of-drinking-water">1-3.5 million</a>, this time with some good sources 
-that I'll look into and discuss later, though I'm wondering if they 
-subconsciously misread "homes" as "people" for the 1M case.</p>
-<p>It turns out that "later" is now.</p>
-<h3>Johnson Papers</h3>
-<p>There were a couple of related papers <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> that estimated the well water 
-reliant population across the entire contiguous US, at a 1km^2 resolution, 
-for 1990, 2000, and 2010. Apparently 1990 is the last time the US Census 
-asked people about their water sources, so they extrapolated from there. 
-I've read through the first only, but it presents some interesting 
-information:</p>
-<blockquote>
-<p>it appears that the number of people supplied by domestic-wells has plateaued and may in fact be dropping.</p>
-</blockquote>
-<p>and</p>
-<blockquote>
-<p>The proportion of the population dependent upon domestic wells (domestic ratio) is slowly decreasing nationally.</p>
-</blockquote>
-<p>Their own estimates for Pennsylvania's well water reliant populations are:</p>
-<ul>
-<li>1990: 2.43 million <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup> (see Table 3)</li>
-<li>2000: 2.29 million (calculated via Zonal statistics (sum) of the PA 
-    TIGER/Line 
-    shapefile, dissolved to all of PA, on their REM 
-    map <sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>)</li>
-<li>2010: <strong>2.20 million</strong> (same calculation)</li>
-</ul>
-<h3>Murray</h3>
-<p>Murray <sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> provides yet another national estimate of well water reliance, 
-but looking at housing units. I haven't even skimmed this one yet, but it 
-estimates that in 2010, <strong>1.25 million housing units</strong> had private wells in PA 
-(Figure 9). This doesn't disagree with the estimate by the PA Dept of 
-Conservation and Natural Resources.</p>
-<p>In trying to compare the population-density-based estimates to this, which was 
-easy 
-enough because ACS (in the SVI) has housing unit estimates as well, I wound 
-up with an estimated 1.75 million housing units. That number seems high, 
-especially considering my population estimate of 2.4 million, but it's what 
-the ACS says, so... </p>
-<h2>So Which Estimate to Use?</h2>
-<p>Given the results by Murray and Johnson, my inclination is that the 
-population-density-based estimates of well water 
-users might be an overestimate, while the area-based estimate is 
-likely a huge overestimate.</p>
-<p>While the population-density-based estimates can be converted to either 
-population or housing units, I am leaning towards population because:</p>
-<ul>
-<li>(I know 
-this is dumb) it's what I first thought of.</li>
-<li>I am interested in people, not housing.</li>
-<li>I'm concerned converting to housing units might lead to some extra 
-    uncertainty, whereas the CEISIN-direct population estimates (method 2.2) 
-    closely 
-    align with the ACS-based ones (method 2.1) (see supplemental graphs <sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>).</li>
-<li>It seems to more closely align with a third party (Johnson).</li>
-</ul>
-<p>How is the alignment exactly? Let's do another scatter plot:</p>
-<p><img alt="Figure 3" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_Johnson.png"></p>
-<p>A spot check of some of the largest discrepancies seems to indicate that the 
-population-density-based estimates are better: </p>
-<ul>
-<li>cases with large Johnson 
-estimates and small population-density-based estimates seem to be tracts 
-that are covered by a PWS. </li>
-<li>cases with small Johnson 
-estimates and large population-density-based estimates have little to no PWS 
-    coverage, so I think it's just a question of population estimates, which 
-    I'll go with the recent ACS data for.</li>
-</ul>
-<p>Factoring all of this together, I want to <strong>first just use the 
-population-density-based estimates</strong>. I will want to also try the Johnson 
-numbers, to see how that compares.</p>
-<h1>Conclusion</h1>
-<p>I have some estimates for the outcome variable now. That's good! I think I'm 
-ready to fire up Premium and see what this baby can do.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Johnson, Tyler &amp; Belitz, Kenneth &amp; Lombard, Melissa. (2019). 
-Estimating domestic well locations and populations served in the contiguous 
-U.S. for years 2000 and 2010. Science of The Total Environment. 687. 10.
-1016/j.scitotenv.2019.06.036. <a href="https://www.researchgate.net/publication/333728321_Estimating_domestic_well_locations_and_populations_served_in_the_contiguous_US_for_years_2000_and_2010">open source</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:2">
-<p>Tyler D. Johnson, Kenneth Belitz, Domestic well locations and 
-populations served in the contiguous U.S.: 1990, Science of The Total 
-Environment, Volumes 607–608, 2017, Pages 658-668, ISSN 0048-9697. https://doi.org/10.1016/j.scitotenv.2017.07.018. <a href="https://www.researchgate.net/publication/318446309_Domestic_well_locations_and_populations_served_in_the_contiguous_US_1990">open source</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-<li id="fn:3">
-<p>Johnson, T.D., and Belitz, K., 2019, Domestic well locations and populations served in the contiguous U.S.: datasets for decadal years 2000 and 2010: U.S. Geological Survey data release, https://doi.org/10.5066/P9FSLU3B.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
-</li>
-<li id="fn:4">
-<p>Murray, A., A. Hall, J. Weaver, and F. Kremer. 2021. "Methods for Estimating Locations of Housing Units Served by Private Domestic Wells in the United States Applied to 2010." Journal of the American Water Resources Association 57 (5): 828–843. https://doi.org/10.1111/1752-1688.12937.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
-</li>
-<li id="fn:5">
-<p><img alt="Figure 4" src="https://swpease.github.io/images/science/well_water/ww_pop_comp_CEISIN_methods.png">
-<img alt="Figure 5" src="https://swpease.github.io/images/science/well_water/ww_CEISIN_HU_vs_pop.png">&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+outcome …</strong></p>
+                <a class="readmore" href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -526,38 +466,6 @@ stuff for a job I applied to. I had been learning how to use Bayesian …</p>
 </ul>
 <p>Strangely, they also offered the scores for each frame …</p>
                 <a class="readmore" href="https://swpease.github.io/livescore-graphics-wishes.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://swpease.github.io/what-does-tournament-structure-matter.html" rel="bookmark"
-                           title="Permalink to What Does Tournament Structure Matter?">What Does Tournament Structure Matter?</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-05-31T00:00:00-07:00">
-                Published: Wed 31 May 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
-        </address>
-<p>In <a href="https://swpease.github.io/category/snooker.html">Snooker</a>.</p>
-<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
-</footer><!-- /.post-info -->                <h1>The Situation</h1>
-<p>"Oh boy, Jersey Shore!" you might be thinking. Sorry, not today.</p>
-<p>There are a few different tournament structures that they use in snooker. The three that I'm considering today are:</p>
-<ol>
-<li>Random draws:<ul>
-<li>Tournaments: ShootOut, British Open</li>
-<li>Structure: What it says on the tin.</li>
-</ul>
-</li>
-<li>Flat draws:<ul>
-<li>Tournaments: UK Championship …</li></ul></li></ol>
-                <a class="readmore" href="https://swpease.github.io/what-does-tournament-structure-matter.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
