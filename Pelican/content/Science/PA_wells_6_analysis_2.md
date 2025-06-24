@@ -121,3 +121,8 @@ Um... I guess at least I learned some things.
 details. I found two good sources were a [SAS blog post](https://blogs.sas.com/content/iml/2019/11/06/what-are-biplots.html) and the [{ggbiplot} docs](https://friendly.github.io/ggbiplot/reference/ggbiplot.html). The displayed 
 plot is actually from {ggfortify}, using its autoplot, 
 but all the plots I toyed around with look virtually the same.
+
+## Links
+[Part 1]({filename}./PA_wells_1.md) [Part 2]({filename}./PA_wells_2.md)
+[Part 3]({filename}./PA_wells_3.md) [Part 4]({filename}./PA_wells_4.md)
+[Part 5]({filename}./PA_wells_5_analysis_1.md)

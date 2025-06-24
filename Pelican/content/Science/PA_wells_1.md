@@ -1,5 +1,6 @@
 Title: PA Well Water, Part 1
 Date: 2025-5-29
+Modified: 2025-06-24
 Category: Science
 Tags: analysis
 
@@ -167,3 +168,8 @@ Beyond the aforementioned formula confusion, I found some other errors.
 # Future Writing
 I'll write separate posts at least on each of my 3 beefs(?) with this paper, 
 and want to write some more about Bayesian Profile Regression afterwards.
+
+## Links
+[Part 2]({filename}./PA_wells_2.md) [Part 3]({filename}./PA_wells_3.md) 
+[Part 4]({filename}./PA_wells_4.md) [Part 5]({filename}./PA_wells_5_analysis_1.md)
+[Part 6]({filename}./PA_wells_6_analysis_2.md)

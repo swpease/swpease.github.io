@@ -1,5 +1,6 @@
 Title: PA Well Water, Part 2
 Date: 2025-6-1
+Modified: 2025-06-24
 Category: Science
 Tags: analysis
 
@@ -85,3 +86,8 @@ That's about it. I could go on, but I think the idea is presented well
 enough. The researcher obviously thought about this and made the 
 decision and effort to 
 do this z-scoring, so maybe I'm just missing something and am the wrong one. 
+
+## Links
+[Part 1]({filename}./PA_wells_1.md) [Part 3]({filename}./PA_wells_3.md)
+[Part 4]({filename}./PA_wells_4.md) [Part 5]({filename}./PA_wells_5_analysis_1.md)
+[Part 6]({filename}./PA_wells_6_analysis_2.md)

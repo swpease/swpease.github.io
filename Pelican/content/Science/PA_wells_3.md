@@ -1,6 +1,6 @@
 Title: PA Well Water, Part 3
 Date: 2025-6-9
-Modified: 2025-06-18
+Modified: 2025-06-24
 Category: Science
 Tags: analysis
 
@@ -157,3 +157,8 @@ use of Bayesian profile regression.
 [^1]: Liverani, S, Lavigne, A, Blangiardo, M, 2016. Modelling collinear and spatially
 correlated data. Spatial and Spatio-temporal Epidemiology 18, 63–73. https://doi.org/10.1016/j.sste.2016.04.003.
 [^2]: Coker ES, Molitor J, Liverani S, Martin J, Maranzano P, Pontarollo N, et al. Bayesian profile regression to study the ecologic associations of correlated environmental exposures with excess mortality risk during the first year of the Covid-19 epidemic in lombardy, Italy. Environ Res 216(Pt 1):114484. Available from: https://europepmc.org/articles/PMC9547389 https:// doi.org/10.1016/j.envres.2022.114484 PMID: 36220446
+
+## Links
+[Part 1]({filename}./PA_wells_1.md) [Part 2]({filename}./PA_wells_2.md)
+[Part 4]({filename}./PA_wells_4.md) [Part 5]({filename}./PA_wells_5_analysis_1.md)
+[Part 6]({filename}./PA_wells_6_analysis_2.md)

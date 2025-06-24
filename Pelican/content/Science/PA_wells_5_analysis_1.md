@@ -1,5 +1,6 @@
 Title: PA Well Water, Part 5: Estimating the Outcome Variable
 Date: 2025-6-16
+Modified: 2025-06-18
 Category: Science
 Tags: analysis
 
@@ -249,3 +250,8 @@ Environment, Volumes 607–608, 2017, Pages 658-668, ISSN 0048-9697. https://doi
 [^5]: 
 ![Figure 4]({static}/images/science/well_water/ww_pop_comp_CEISIN_methods.png)
 ![Figure 5]({static}/images/science/well_water/ww_CEISIN_HU_vs_pop.png)
+
+## Links
+[Part 1]({filename}./PA_wells_1.md) [Part 2]({filename}./PA_wells_2.md)
+[Part 3]({filename}./PA_wells_3.md) [Part 4]({filename}./PA_wells_4.md)
+[Part 6]({filename}./PA_wells_6_analysis_2.md)

@@ -1,5 +1,6 @@
 Title: PA Well Water, Part 4
 Date: 2025-6-10
+Modified: 2025-06-18
 Category: Science
 Tags: analysis
 
@@ -234,3 +235,8 @@ on [PyMC](https://www.pymc.io/projects/examples/en/latest/mixture_models
 non-statistician [here](https://pmc.ncbi.nlm.nih.gov/articles/PMC6583910/). 
 Those resources helped me, at least.
 [^7]: Anaïs Rouanet, Rob Johnson, Magdalena Strauss, Sylvia Richardson, Brian D Tom, Simon R White, Paul D W Kirk, Bayesian profile regression for clustering analysis involving a longitudinal response and explanatory variables, Journal of the Royal Statistical Society Series C: Applied Statistics, Volume 73, Issue 2, March 2024, Pages 314–339, https://doi.org/10.1093/jrsssc/qlad097
+
+## Links
+[Part 1]({filename}./PA_wells_1.md) [Part 2]({filename}./PA_wells_2.md)
+[Part 3]({filename}./PA_wells_3.md) [Part 5]({filename}./PA_wells_5_analysis_1.md)
+[Part 6]({filename}./PA_wells_6_analysis_2.md)
