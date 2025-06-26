@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Science</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/science.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-24T00:00:00-07:00</updated><entry><title>PA Well Water, Part 6: Analyzing the Data</title><link href="https://swpease.github.io/pa-well-water-part-6-analyzing-the-data.html" rel="alternate"></link><published>2025-06-23T00:00:00-07:00</published><updated>2025-06-23T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-23:/pa-well-water-part-6-analyzing-the-data.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Science</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/science.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-25T00:00:00-07:00</updated><entry><title>PA Well Water, Part 6: Analyzing the Data</title><link href="https://swpease.github.io/pa-well-water-part-6-analyzing-the-data.html" rel="alternate"></link><published>2025-06-23T00:00:00-07:00</published><updated>2025-06-23T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-23:/pa-well-water-part-6-analyzing-the-data.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html"&gt;Part 5&lt;/a&gt;. At 
 long last, we've got our pieces in place. Time to plug it into our 
 processing method!&lt;/p&gt;
@@ -1363,7 +1363,7 @@ suggests. Have people noticed sand crab population shifts? I feel like as a
 kid there were tons around at the beach, but even just a decade later they 
 were much rarer, though that's a pretty flimsy bit of anecdotal evidence 
 (for instance, I 
-certainly went to the shore much less often as I got older).&lt;/p&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>Sand Crabs Eating Bits of Plastic String</title><link href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html" rel="alternate"></link><published>2024-10-15T00:00:00-07:00</published><updated>2024-10-15T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2024-10-15:/sand-crabs-eating-bits-of-plastic-string.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+certainly went to the shore much less often as I got older).&lt;/p&gt;</content><category term="Science"></category><category term="analysis"></category></entry><entry><title>Sand Crabs Eating Bits of Plastic String</title><link href="https://swpease.github.io/sand-crabs-eating-bits-of-plastic-string.html" rel="alternate"></link><published>2024-10-15T00:00:00-07:00</published><updated>2025-06-25T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2024-10-15:/sand-crabs-eating-bits-of-plastic-string.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;I read a paper, &lt;a href="https://aslopubs.
 onlinelibrary.wiley.com/doi/10.1002/lol2.10137"&gt;"Effects of environmentally relevant concentrations of 
 microplastic fibers on Pacific mole crab (Emerita analoga) mortality and
@@ -1464,15 +1464,11 @@ duration, and three in one crab after nine days.&lt;/p&gt;
 &lt;p&gt;I tried a statistical test to get at this being the case, by looking for an 
 association between exposure duration (i.e. days alive in the experiment) and 
 number of fibers internalized. I 
-used a Poisson regression on &lt;span class="math"&gt;\(log(days)\)&lt;/span&gt;, because I read that doing so lets 
-you combine data with different exposure durations, with the &lt;span class="math"&gt;\(log(days)\)&lt;/span&gt;'s 
-coefficient indicating the change in rate over time. As it is, I feel like 
+used a Poisson regression on &lt;span class="math"&gt;\(fibers \sim days alive\)&lt;/span&gt;. As it is, I feel like 
 it would be difficult to find a statistical test that &lt;em&gt;did&lt;/em&gt; show some sort 
 of relationship between counts and duration of exposure. So my model (in R 
 code) was essentially (names changed for clarity): &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;glm(fibers ~ log(days 
-alive), family = poisson(), data = 
-treatment crabs)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;glm(fibers ~ days alive, family = poisson(), data = treatment crabs)&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Which yielded:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -1487,21 +1483,24 @@ treatment crabs)&lt;/code&gt;&lt;/p&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;(Intercept)&lt;/td&gt;
-&lt;td&gt;0.87576&lt;/td&gt;
-&lt;td&gt;0.69172&lt;/td&gt;
-&lt;td&gt;1.266&lt;/td&gt;
-&lt;td&gt;0.205&lt;/td&gt;
+&lt;td&gt;0.717652&lt;/td&gt;
+&lt;td&gt;0.281430&lt;/td&gt;
+&lt;td&gt;2.550&lt;/td&gt;
+&lt;td&gt;0.0108&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;log(num_of_days_alive)&lt;/td&gt;
-&lt;td&gt;-0.07686&lt;/td&gt;
-&lt;td&gt;0.18669&lt;/td&gt;
-&lt;td&gt;-0.412&lt;/td&gt;
-&lt;td&gt;0.681&lt;/td&gt;
+&lt;td&gt;num_of_days_alive&lt;/td&gt;
+&lt;td&gt;-0.002617&lt;/td&gt;
+&lt;td&gt;0.005387&lt;/td&gt;
+&lt;td&gt;-0.486&lt;/td&gt;
+&lt;td&gt;0.6271&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Which I interpret as "no, there isn't much of an association between counts and the different durations over which the counts accumulated", because of the small Estimate, relatively large Std. Error, and small Pr() for log(num_of_days_alive)."&lt;/p&gt;
+&lt;p&gt;Which I interpret as "no, there isn't much of an association between counts 
+and the different durations over which the counts accumulated", because of 
+the small Estimate, relatively large Std. Error, and large Pr() for 
+num_of_days_alive."&lt;/p&gt;
 &lt;p&gt;I kinda wish they'd checked the number of fibers suspended in the water of 
 the jars somehow.&lt;/p&gt;
 &lt;p&gt;I also wonder if sand crabs can vomit. This paper on decapod crustacean 

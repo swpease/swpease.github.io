@@ -1,5 +1,6 @@
 Title: Sand Crabs Eating Bits of Plastic String
 Date: 2024-10-15
+Modified: 2025-06-25
 Category: Science
 Tags: analysis
 
@@ -116,25 +117,24 @@ duration, and three in one crab after nine days.
 I tried a statistical test to get at this being the case, by looking for an 
 association between exposure duration (i.e. days alive in the experiment) and 
 number of fibers internalized. I 
-used a Poisson regression on $log(days)$, because I read that doing so lets 
-you combine data with different exposure durations, with the $log(days)$'s 
-coefficient indicating the change in rate over time. As it is, I feel like 
+used a Poisson regression on $fibers \sim days alive$. As it is, I feel like 
 it would be difficult to find a statistical test that *did* show some sort 
 of relationship between counts and duration of exposure. So my model (in R 
 code) was essentially (names changed for clarity): 
 
-`glm(fibers ~ log(days 
-alive), family = poisson(), data = 
-treatment crabs)`
+`glm(fibers ~ days alive, family = poisson(), data = treatment crabs)`
 
 Which yielded:
 
 | param | Estimate | Std. Error | z value | Pr(>\|z\|) |
 | - | - | - | - | - |
-|(Intercept) | 0.87576 | 0.69172 | 1.266 |  0.205 |
-|log(num_of_days_alive) | -0.07686 | 0.18669 | -0.412 | 0.681 |
+|(Intercept) | 0.717652 | 0.281430 | 2.550 |  0.0108 |
+|num_of_days_alive | -0.002617 | 0.005387 | -0.486 | 0.6271 |
 
-Which I interpret as "no, there isn't much of an association between counts and the different durations over which the counts accumulated", because of the small Estimate, relatively large Std. Error, and small Pr() for log(num_of_days_alive)."
+Which I interpret as "no, there isn't much of an association between counts 
+and the different durations over which the counts accumulated", because of 
+the small Estimate, relatively large Std. Error, and large Pr() for 
+num_of_days_alive."
 
 I kinda wish they'd checked the number of fibers suspended in the water of 
 the jars somehow.

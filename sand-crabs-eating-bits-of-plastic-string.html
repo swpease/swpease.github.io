@@ -34,6 +34,10 @@
         <abbr class="published" title="2024-10-15T00:00:00-07:00">
                 Published: Tue 15 October 2024
         </abbr>
+		<br />
+        <abbr class="modified" title="2025-06-25T00:00:00-07:00">
+                Updated: Wed 25 June 2025
+        </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
@@ -136,15 +140,11 @@ duration, and three in one crab after nine days.</p>
 <p>I tried a statistical test to get at this being the case, by looking for an 
 association between exposure duration (i.e. days alive in the experiment) and 
 number of fibers internalized. I 
-used a Poisson regression on <span class="math">\(log(days)\)</span>, because I read that doing so lets 
-you combine data with different exposure durations, with the <span class="math">\(log(days)\)</span>'s 
-coefficient indicating the change in rate over time. As it is, I feel like 
+used a Poisson regression on <span class="math">\(fibers \sim days alive\)</span>. As it is, I feel like 
 it would be difficult to find a statistical test that <em>did</em> show some sort 
 of relationship between counts and duration of exposure. So my model (in R 
 code) was essentially (names changed for clarity): </p>
-<p><code>glm(fibers ~ log(days 
-alive), family = poisson(), data = 
-treatment crabs)</code></p>
+<p><code>glm(fibers ~ days alive, family = poisson(), data = treatment crabs)</code></p>
 <p>Which yielded:</p>
 <table>
 <thead>
@@ -159,21 +159,24 @@ treatment crabs)</code></p>
 <tbody>
 <tr>
 <td>(Intercept)</td>
-<td>0.87576</td>
-<td>0.69172</td>
-<td>1.266</td>
-<td>0.205</td>
+<td>0.717652</td>
+<td>0.281430</td>
+<td>2.550</td>
+<td>0.0108</td>
 </tr>
 <tr>
-<td>log(num_of_days_alive)</td>
-<td>-0.07686</td>
-<td>0.18669</td>
-<td>-0.412</td>
-<td>0.681</td>
+<td>num_of_days_alive</td>
+<td>-0.002617</td>
+<td>0.005387</td>
+<td>-0.486</td>
+<td>0.6271</td>
 </tr>
 </tbody>
 </table>
-<p>Which I interpret as "no, there isn't much of an association between counts and the different durations over which the counts accumulated", because of the small Estimate, relatively large Std. Error, and small Pr() for log(num_of_days_alive)."</p>
+<p>Which I interpret as "no, there isn't much of an association between counts 
+and the different durations over which the counts accumulated", because of 
+the small Estimate, relatively large Std. Error, and large Pr() for 
+num_of_days_alive."</p>
 <p>I kinda wish they'd checked the number of fibers suspended in the water of 
 the jars somehow.</p>
 <p>I also wonder if sand crabs can vomit. This paper on decapod crustacean 
