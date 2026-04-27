@@ -1,5 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-06-25T00:00:00-07:00</updated><entry><title>PA Well Water, Part 6: Analyzing the Data</title><link href="https://swpease.github.io/pa-well-water-part-6-analyzing-the-data.html" rel="alternate"></link><published>2025-06-23T00:00:00-07:00</published><updated>2025-06-23T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-23:/pa-well-water-part-6-analyzing-the-data.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/all.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2026-04-27T00:00:00-07:00</updated><entry><title>Noise</title><link href="https://swpease.github.io/noise.html" rel="alternate"></link><published>2026-04-27T00:00:00-07:00</published><updated>2026-04-27T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2026-04-27:/noise.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;I found a paper about noise pollution in Portland. This was related to a job posting I saw by one of the authors. It is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Mowrer, C., Larkin, A., Roscoe, C., Grady, S. T., Peters, J. L., Haggerty, B., Hystad, P., Bozigar, M. (2025) Systematic measurement and machine learning-based …&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;I found a paper about noise pollution in Portland. This was related to a job posting I saw by one of the authors. It is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Mowrer, C., Larkin, A., Roscoe, C., Grady, S. T., Peters, J. L., Haggerty, B., Hystad, P., Bozigar, M. (2025) Systematic measurement and machine learning-based profile characterization of community noise in a medium-large city in the United States. Journal of Exposure Science &amp;amp; Environmental Epidemiology.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I don't have a link, because no open access. I probably asked for a copy from the authors via ResearchGate and got no response. I asked my friend who is in academia for a copy. Anyway,&lt;/p&gt;
+&lt;p&gt;I actually read this like a year ago; I just decided to write my memories of what my thoughts were at the time, because I have nothing better I can think to do.&lt;/p&gt;
+&lt;h1&gt;Portland Noise&lt;/h1&gt;
+&lt;p&gt;I feel like a lot of care and good work went into this thing, and yet my general take-aways were:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Well duh.&lt;/li&gt;
+&lt;li&gt;But what about the uncaptured heterogeneity?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;Noise and Cardiovascular Disease (CVD)&lt;/h1&gt;
+&lt;p&gt;I mostly wanted to bring up a few ideas I thought up for another paper by an author of the above paper:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Roscoe C, Grady ST, Hart JE, Iyer HS, Manson JE, Rexrode KM, Rimm EB, Laden F, James P. Association between Noise and Cardiovascular Disease in a Nationwide U.S. Prospective Cohort Study of Women Followed from 1988 to 2018. Environ Health Perspect. 2023 Dec;131(12):127005. doi: 10.1289/EHP12906. Epub 2023 Dec 4. PMID: 38048103; PMCID: PMC10695265. &lt;a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10695265/"&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The authors have one heck of an adjustment set, and in spite of that, mention in their discussion that there may of course be yet more factors that affect the relationship between noise and CVD. Well, I thought of a couple:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Dogs&lt;/li&gt;
+&lt;li&gt;Walking&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Dogs&lt;/h2&gt;
+&lt;p&gt;Dogs. Dogs both make noise and make you get exercise. In one Keigo Higashino murder mystery, when the detective first gets on the scene, an officer tells him a dog walker found the body that morning. The detective says, "Where would we be without dog walkers?". I once decided to count the proportion of dog walkers to regular walkers while going on a walk of my own, and wound up at ~50% (20ish each).&lt;/p&gt;
+&lt;p&gt;I think that dogs would constitute a... precision variable? Possibly a confounder? I guess we could stratify dog owners by Good Boys and Bad Dogs.&lt;/p&gt;
+&lt;h2&gt;Walking&lt;/h2&gt;
+&lt;p&gt;Here I think is a significantly more important parameter. Maybe something like a Walkability Score could have been included; some sort of measure of physical activity beyond the BMI groupings they did include. &lt;/p&gt;
+&lt;p&gt;I'm thinking of it as a mediator. I certainly am strongly disinclined to walk somewhere if there is no pleasant route, and traffic noise is the biggest factor for me in that respect.&lt;/p&gt;
+&lt;h1&gt;Fin&lt;/h1&gt;
+&lt;p&gt;I feel like I should write more, but my neck is acting up and I suppose this doesn't really matter all that much.&lt;/p&gt;</content><category term="Science"></category><category term="opinion"></category></entry><entry><title>Count Data Model Options</title><link href="https://swpease.github.io/count-data-model-options.html" rel="alternate"></link><published>2025-07-09T00:00:00-07:00</published><updated>2025-07-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-07-09:/count-data-model-options.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In going through that ill-fated analysis of &lt;a href="{filename}./PA_wells_1.md"&gt;Pennsylvania well water&lt;/a&gt;, I plotted the actual count data of (# of well users) in each census tract. There were an awful lot of zeroes: overall 46% of census tracts, more specifically 14% of rural and 59% of urban tracts. The histograms look …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In going through that ill-fated analysis of &lt;a href="{filename}./PA_wells_1.md"&gt;Pennsylvania well water&lt;/a&gt;, I plotted the actual count data of (# of well users) in each census tract. There were an awful lot of zeroes: overall 46% of census tracts, more specifically 14% of rural and 59% of urban tracts. The histograms look like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/statistics/count_data/PA_wells_hists.png"&gt;&lt;/p&gt;
+&lt;p&gt;Clearly a lot of small numbers.&lt;/p&gt;
+&lt;p&gt;With that in mind, I started looking into the various count models. 
+Specifically, Poisson, negative binomial, and zero inflations of those, plus 
+I learned about the existence of hurdle models. I am mostly just putting 
+together some resources here for reference in case I need to use such models 
+in the future.&lt;/p&gt;
+&lt;p&gt;Speaking of the PA well water analysis, the profile regression in Premium 
+provides only an overdispered Poisson (i.e. negative binomial) model. That 
+is, it does not have a model for excess zeroes. It appears that making new 
+variations of a profile regression is non-trivial (e.g. &lt;a href="https://academic.oup.com/jrsssc/article/73/2/314/7382190"&gt;here&lt;/a&gt; and &lt;a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7652768/"&gt;here&lt;/a&gt;), but based on my 
+attempting to fit a model without any of the zero cases, the unsuitability 
+of the available models was not what derailed the analysis.&lt;/p&gt;
+&lt;h1&gt;References&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3238139/"&gt;Zero-inflated and Hurdle Models of Count Data with Extra Zeros: Examples 
+   from an HIV-Risk Reduction Intervention Trial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stats.stackexchange.com/questions/651155/standard-negative-binomial-regression-when-counts-are-mainly-zeros"&gt;Standard negative binomial regression when counts are mainly zeros?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stats.stackexchange.com/questions/81457/what-is-the-difference-between-zero-inflated-and-hurdle-models"&gt;What is the difference between zero-inflated and hurdle models?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stats.stackexchange.com/questions/320924/is-a-hurdle-model-really-one-model-or-just-two-separate-sequential-models"&gt;Is a "hurdle model" really one model? Or just two separate, sequential models?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://fromthebottomoftheheap.net/2016/06/07/rootograms/"&gt;Gavin Simpson blog: rootograms&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><category term="Statistics"></category><category term="statistics"></category></entry><entry><title>PA Well Water, Part 6: Analyzing the Data</title><link href="https://swpease.github.io/pa-well-water-part-6-analyzing-the-data.html" rel="alternate"></link><published>2025-06-23T00:00:00-07:00</published><updated>2025-06-23T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-06-23:/pa-well-water-part-6-analyzing-the-data.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post continues from &lt;a href="https://swpease.github.io/pa-well-water-part-5-estimating-the-outcome-variable.html"&gt;Part 5&lt;/a&gt;. At 
 long last, we've got our pieces in place. Time to plug it into our 
 processing method!&lt;/p&gt;
