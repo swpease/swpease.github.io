@@ -23,7 +23,132 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/count-data-model-options.html">Count Data Model Options</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/causal-inference-what-if-part-1.html">Causal Inference: What If, Part 1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2026-06-01T00:00:00-07:00">
+                Published: Mon 01 June 2026
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/statistics.html">Statistics</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/statistics.html">statistics</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>I was exposed to the concept of causal inference in the excellent 
+Statistical Rethinking series/book, by Richard McElreath. I suppose I had 
+been exposed to it indirectly via my scientific education, but not in the 
+formal sense of back-door criterion, etc. Anyway, I decided to try and 
+expand/harden my understanding of the concepts, and found the book <a href="https://miguelhernan.org/whatifbook">Causal 
+Inference: What If</a> via this helpful 
+<a href="https://www.bradyneal.com/which-causal-inference-book">blog post</a>.</p>
+<h1>Preliminary Review</h1>
+<p>In evaluating a textbook, I think one of the most effective things to do is 
+to find a section of the text that you already have an understanding of, and 
+see how well you can follow the author's attempt at explaining it. </p>
+<p>Doing that with this textbook, I'm kind of on the fence. I read through 
+four or five chapters about half a year ago, and called it quits for the 
+time. I remember thinking that I kind of lost apart in terms of the purpose. 
+It didn't help that I was more or less familiar with the concepts being 
+introduced, which can flag your interest. I feel like this text 
+leans a 
+bit too far into the 
+mathematics 
+at the expense of pedagogy. I also feel like the presentation of the math in 
+narrative form, by which I mean, written in paragraphs, kind of obfuscates 
+what's being said. I'm not sure what the solution there is, although I am a 
+big fan of colorized math. I think that can probably help here. I was left 
+wondering how to translate what I was reading into actual real life problems,
+i.e. "So what?", that most important of questions, though that might come later in the book.</p>
+<p>Supporting my opinion, I found a set of <a href="https://www.manifoldmadness.com/blog/whatif/notes/chapter1">blog posts</a> going over this text. These 
+posts stopped at Chapter 4. Coincidence? Or is this a... causal association?</p>
+<p>I think it is quite useful to have an accompanying intro epidemiology book on 
+hand to reference/read along with. I have the book by Gordis, from my own 
+days as a public health student. </p>
+<p>I'm planning on providing some commentary on things that I think could be 
+done better, in a series of posts.</p>
+<h1>Chapter 1</h1>
+<p>This introduces causal inference. </p>
+<p>My main gripe with it is how the 
+terminology, specifically the mathematical symbols, is given a quick 
+run-down. I wish that authors would reiterate what objects these symbols 
+represent when they are used, at least for a chapter or two, and maybe an 
+occasional, "remember, this means [stuff]" in later chapters; students 
+aren't practicing professionals. </p>
+<p>This issue came up in Chapter 2 (I guess I'll say it now), where the author 
+introduces the mathematical representation of exchangeability. I found 
+myself using my understanding of exchangeability in order to figure out what 
+the math was saying. That's always a sore spot for me.</p>
+<p>Also, the authors introduce a couple of different "consistency"ies. This 
+word appears to mean roughly "trustworthy": consistent observations match 
+the "true" counterfactual outcomes, and consistent estimators provide 
+estiimates of "true" parameter values that tend to improve as you 
+collect 
+more 
+data. </p>
+<h1>Chapter 2</h1>
+<p>Beyond my math notation gripe listed above, which came to a head here, my 
+main issue was in converting the conditional randomized study design into 
+English, dammit!</p>
+<h2>Conditional Randomization</h2>
+<p>I feel the authors could have gone more deeply into the merits and rationale 
+for such a study design. Or maybe just separated it out into its own section.
+For instance, the concept of effect modification is buried, in my opinion. As a 
+contrast, Gordis expresses that you might use 
+this (at least, if "conditional randomization" == "stratified randomization")
+if 
+you wanted to be sure that 
+something that might impact 
+the outcome 
+(e.g. sex) is equally distributed between treatments, because random chance 
+could lead to (e.g.) uneven M/F ratios in groups.</p>
+<h3>Calculating Population-level Estimates in C.R. Experiments</h3>
+<p>The authors take up a lot of space here. The overall principle to calculate 
+population-level estimates in these studies is:</p>
+<ol>
+<li>Use the principle of exchangeability to say "the observed 
+   distribution of outcomes for this 
+   treatment within this stratum holds for the entire stratum".</li>
+<li>Calculate the weighted mean across strata.</li>
+</ol>
+<p>You have a few options of how to get there (written for binary outcome):</p>
+<ol>
+<li>take the (proportion with outcome)</li>
+<li>multiply that by either:<ol>
+<li>(stratum size, as a proportion of total pop)</li>
+<li>(stratum size, as a number)</li>
+</ol>
+</li>
+<li>add these up across all strata</li>
+</ol>
+<p>Route 2.1 gets you a population-level proportion, while 2.2 provides the 
+answer as a count. You can interchange between them by * or / by the 
+population size, respectively.</p>
+<p>Going with method 2.1 is "standardization". "Inverse probability weighting" 
+is technically a third route, wherein you use (# with outcome) / ( treatment 
+group
+size, as a proportion of stratum size), which nets you the same as route 2.2. 
+Really, whichever method you use 
+will probably just depend on what information is on hand, to minimize the 
+cognitive overhead. I think that these two names and their associated 
+mathematese just obfuscate a fairly straightforward concept.</p>
+<h1>I forgot about this.</h1>
+<p>I dropped this again at the start of chapter 4. Chapter 3 was a slog. 
+Chapter 4 didn't seem to be providing me with anything revolutionary to make 
+it worth the effort, and I couldn't see any purpose in continuing to read.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/count-data-model-options.html" rel="bookmark"
+                           title="Permalink to Count Data Model Options">Count Data Model Options</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2025-07-09T00:00:00-07:00">
                 Published: Wed 09 July 2025
@@ -34,35 +159,11 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/statistics.html">Statistics</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/statistics.html">statistics</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
-<p>In going through that ill-fated analysis of <a href="{filename}./PA_wells_1.md">Pennsylvania well water</a>, I plotted the actual count data of (# of well users) in each census tract. There were an awful lot of zeroes: overall 46% of census tracts, more specifically 14% of rural and 59% of urban tracts. The histograms look like:</p>
-<p><img alt="Figure 1" src="https://swpease.github.io/images/statistics/count_data/PA_wells_hists.png"></p>
-<p>Clearly a lot of small numbers.</p>
-<p>With that in mind, I started looking into the various count models. 
-Specifically, Poisson, negative binomial, and zero inflations of those, plus 
-I learned about the existence of hurdle models. I am mostly just putting 
-together some resources here for reference in case I need to use such models 
-in the future.</p>
-<p>Speaking of the PA well water analysis, the profile regression in Premium 
-provides only an overdispered Poisson (i.e. negative binomial) model. That 
-is, it does not have a model for excess zeroes. It appears that making new 
-variations of a profile regression is non-trivial (e.g. <a href="https://academic.oup.com/jrsssc/article/73/2/314/7382190">here</a> and <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7652768/">here</a>), but based on my 
-attempting to fit a model without any of the zero cases, the unsuitability 
-of the available models was not what derailed the analysis.</p>
-<h1>References</h1>
-<ol>
-<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3238139/">Zero-inflated and Hurdle Models of Count Data with Extra Zeros: Examples 
-   from an HIV-Risk Reduction Intervention Trial</a></li>
-<li><a href="https://stats.stackexchange.com/questions/651155/standard-negative-binomial-regression-when-counts-are-mainly-zeros">Standard negative binomial regression when counts are mainly zeros?</a></li>
-<li><a href="https://stats.stackexchange.com/questions/81457/what-is-the-difference-between-zero-inflated-and-hurdle-models">What is the difference between zero-inflated and hurdle models?</a></li>
-<li><a href="https://stats.stackexchange.com/questions/320924/is-a-hurdle-model-really-one-model-or-just-two-separate-sequential-models">Is a "hurdle model" really one model? Or just two separate, sequential models?</a></li>
-<li><a href="https://fromthebottomoftheheap.net/2016/06/07/rootograms/">Gavin Simpson blog: rootograms</a></li>
-</ol>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
+<p>In going through that ill-fated analysis of <a href="{filename}./PA_wells_1.md">Pennsylvania well water</a>, I plotted the actual count data of (# of well users) in each census tract. There were an awful lot of zeroes: overall 46% of census tracts, more specifically 14% of rural and 59% of urban tracts. The histograms look …</p>
+                <a class="readmore" href="https://swpease.github.io/count-data-model-options.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

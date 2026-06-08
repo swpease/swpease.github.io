@@ -1,5 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Statistics</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/statistics.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2025-07-09T00:00:00-07:00</updated><entry><title>Count Data Model Options</title><link href="https://swpease.github.io/count-data-model-options.html" rel="alternate"></link><published>2025-07-09T00:00:00-07:00</published><updated>2025-07-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-07-09:/count-data-model-options.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Scott's Stuff - Statistics</title><link href="https://swpease.github.io/" rel="alternate"></link><link href="https://swpease.github.io/feeds/statistics.atom.xml" rel="self"></link><id>https://swpease.github.io/</id><updated>2026-06-01T00:00:00-07:00</updated><entry><title>Causal Inference: What If, Part 1</title><link href="https://swpease.github.io/causal-inference-what-if-part-1.html" rel="alternate"></link><published>2026-06-01T00:00:00-07:00</published><updated>2026-06-01T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2026-06-01:/causal-inference-what-if-part-1.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;I was exposed to the concept of causal inference in the excellent 
+Statistical Rethinking series/book, by Richard McElreath. I suppose I had 
+been exposed to it indirectly via my scientific education, but not in the 
+formal sense of back-door criterion, etc. Anyway, I decided to try and 
+expand …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;I was exposed to the concept of causal inference in the excellent 
+Statistical Rethinking series/book, by Richard McElreath. I suppose I had 
+been exposed to it indirectly via my scientific education, but not in the 
+formal sense of back-door criterion, etc. Anyway, I decided to try and 
+expand/harden my understanding of the concepts, and found the book &lt;a href="https://miguelhernan.org/whatifbook"&gt;Causal 
+Inference: What If&lt;/a&gt; via this helpful 
+&lt;a href="https://www.bradyneal.com/which-causal-inference-book"&gt;blog post&lt;/a&gt;.&lt;/p&gt;
+&lt;h1&gt;Preliminary Review&lt;/h1&gt;
+&lt;p&gt;In evaluating a textbook, I think one of the most effective things to do is 
+to find a section of the text that you already have an understanding of, and 
+see how well you can follow the author's attempt at explaining it. &lt;/p&gt;
+&lt;p&gt;Doing that with this textbook, I'm kind of on the fence. I read through 
+four or five chapters about half a year ago, and called it quits for the 
+time. I remember thinking that I kind of lost apart in terms of the purpose. 
+It didn't help that I was more or less familiar with the concepts being 
+introduced, which can flag your interest. I feel like this text 
+leans a 
+bit too far into the 
+mathematics 
+at the expense of pedagogy. I also feel like the presentation of the math in 
+narrative form, by which I mean, written in paragraphs, kind of obfuscates 
+what's being said. I'm not sure what the solution there is, although I am a 
+big fan of colorized math. I think that can probably help here. I was left 
+wondering how to translate what I was reading into actual real life problems,
+i.e. "So what?", that most important of questions, though that might come later in the book.&lt;/p&gt;
+&lt;p&gt;Supporting my opinion, I found a set of &lt;a href="https://www.manifoldmadness.com/blog/whatif/notes/chapter1"&gt;blog posts&lt;/a&gt; going over this text. These 
+posts stopped at Chapter 4. Coincidence? Or is this a... causal association?&lt;/p&gt;
+&lt;p&gt;I think it is quite useful to have an accompanying intro epidemiology book on 
+hand to reference/read along with. I have the book by Gordis, from my own 
+days as a public health student. &lt;/p&gt;
+&lt;p&gt;I'm planning on providing some commentary on things that I think could be 
+done better, in a series of posts.&lt;/p&gt;
+&lt;h1&gt;Chapter 1&lt;/h1&gt;
+&lt;p&gt;This introduces causal inference. &lt;/p&gt;
+&lt;p&gt;My main gripe with it is how the 
+terminology, specifically the mathematical symbols, is given a quick 
+run-down. I wish that authors would reiterate what objects these symbols 
+represent when they are used, at least for a chapter or two, and maybe an 
+occasional, "remember, this means [stuff]" in later chapters; students 
+aren't practicing professionals. &lt;/p&gt;
+&lt;p&gt;This issue came up in Chapter 2 (I guess I'll say it now), where the author 
+introduces the mathematical representation of exchangeability. I found 
+myself using my understanding of exchangeability in order to figure out what 
+the math was saying. That's always a sore spot for me.&lt;/p&gt;
+&lt;p&gt;Also, the authors introduce a couple of different "consistency"ies. This 
+word appears to mean roughly "trustworthy": consistent observations match 
+the "true" counterfactual outcomes, and consistent estimators provide 
+estiimates of "true" parameter values that tend to improve as you 
+collect 
+more 
+data. &lt;/p&gt;
+&lt;h1&gt;Chapter 2&lt;/h1&gt;
+&lt;p&gt;Beyond my math notation gripe listed above, which came to a head here, my 
+main issue was in converting the conditional randomized study design into 
+English, dammit!&lt;/p&gt;
+&lt;h2&gt;Conditional Randomization&lt;/h2&gt;
+&lt;p&gt;I feel the authors could have gone more deeply into the merits and rationale 
+for such a study design. Or maybe just separated it out into its own section.
+For instance, the concept of effect modification is buried, in my opinion. As a 
+contrast, Gordis expresses that you might use 
+this (at least, if "conditional randomization" == "stratified randomization")
+if 
+you wanted to be sure that 
+something that might impact 
+the outcome 
+(e.g. sex) is equally distributed between treatments, because random chance 
+could lead to (e.g.) uneven M/F ratios in groups.&lt;/p&gt;
+&lt;h3&gt;Calculating Population-level Estimates in C.R. Experiments&lt;/h3&gt;
+&lt;p&gt;The authors take up a lot of space here. The overall principle to calculate 
+population-level estimates in these studies is:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use the principle of exchangeability to say "the observed 
+   distribution of outcomes for this 
+   treatment within this stratum holds for the entire stratum".&lt;/li&gt;
+&lt;li&gt;Calculate the weighted mean across strata.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You have a few options of how to get there (written for binary outcome):&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;take the (proportion with outcome)&lt;/li&gt;
+&lt;li&gt;multiply that by either:&lt;ol&gt;
+&lt;li&gt;(stratum size, as a proportion of total pop)&lt;/li&gt;
+&lt;li&gt;(stratum size, as a number)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;add these up across all strata&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Route 2.1 gets you a population-level proportion, while 2.2 provides the 
+answer as a count. You can interchange between them by * or / by the 
+population size, respectively.&lt;/p&gt;
+&lt;p&gt;Going with method 2.1 is "standardization". "Inverse probability weighting" 
+is technically a third route, wherein you use (# with outcome) / ( treatment 
+group
+size, as a proportion of stratum size), which nets you the same as route 2.2. 
+Really, whichever method you use 
+will probably just depend on what information is on hand, to minimize the 
+cognitive overhead. I think that these two names and their associated 
+mathematese just obfuscate a fairly straightforward concept.&lt;/p&gt;
+&lt;h1&gt;I forgot about this.&lt;/h1&gt;
+&lt;p&gt;I dropped this again at the start of chapter 4. Chapter 3 was a slog. 
+Chapter 4 didn't seem to be providing me with anything revolutionary to make 
+it worth the effort, and I couldn't see any purpose in continuing to read.&lt;/p&gt;</content><category term="Statistics"></category><category term="statistics"></category></entry><entry><title>Count Data Model Options</title><link href="https://swpease.github.io/count-data-model-options.html" rel="alternate"></link><published>2025-07-09T00:00:00-07:00</published><updated>2025-07-09T00:00:00-07:00</updated><author><name>Scott Pease</name></author><id>tag:swpease.github.io,2025-07-09:/count-data-model-options.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;In going through that ill-fated analysis of &lt;a href="{filename}./PA_wells_1.md"&gt;Pennsylvania well water&lt;/a&gt;, I plotted the actual count data of (# of well users) in each census tract. There were an awful lot of zeroes: overall 46% of census tracts, more specifically 14% of rural and 59% of urban tracts. The histograms look …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;In going through that ill-fated analysis of &lt;a href="{filename}./PA_wells_1.md"&gt;Pennsylvania well water&lt;/a&gt;, I plotted the actual count data of (# of well users) in each census tract. There were an awful lot of zeroes: overall 46% of census tracts, more specifically 14% of rural and 59% of urban tracts. The histograms look like:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Figure 1" src="https://swpease.github.io/images/statistics/count_data/PA_wells_hists.png"&gt;&lt;/p&gt;
