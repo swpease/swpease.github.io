@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Vibrio</title>
+        <link rel="stylesheet" href="https://swpease.github.io/theme/css/main.css" />
+        <link href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Scott's Stuff Atom Feed" />
+        <meta name="description" content="Introduction I found a paper on Vibrio infection prediction: Campbell AM, Cabrera-Gumbau JM, Trinanes J, Baker-Austin C, Martinez-Urtaza J...." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://swpease.github.io/">Scott's Stuff</a></h1>
+                <nav><ul>
+                    <li><a href="https://swpease.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="https://swpease.github.io/category/network-and-web.html">Network and Web</a></li>
+                    <li class="active"><a href="https://swpease.github.io/category/science.html">Science</a></li>
+                    <li><a href="https://swpease.github.io/category/snooker.html">Snooker</a></li>
+                    <li><a href="https://swpease.github.io/category/statistics.html">Statistics</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://swpease.github.io/vibrio.html" rel="bookmark"
+           title="Permalink to Vibrio">Vibrio</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2026-06-12T00:00:00-07:00">
+                Published: Fri 12 June 2026
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info -->      <h1>Introduction</h1>
+<p>I found a paper on Vibrio infection prediction:</p>
+<blockquote>
+<p>Campbell AM, Cabrera-Gumbau JM, Trinanes J, Baker-Austin C, Martinez-Urtaza J. Machine Learning Potential for Identifying and Forecasting Complex Environmental Drivers of Vibrio vulnificus Infections in the United States. Environ Health Perspect. 2025 Jan;133(1):17006. doi: 10.1289/EHP15593. Epub 2025 Jan 23. PMID: 39847704; PMCID: PMC11756857.</p>
+</blockquote>
+<p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11756857/">Link</a></p>
+<p>I wanted to try using {mvgam} to analyze the data, maybe an occupancy model; they used a random forest.</p>
+<h1>The Hitch</h1>
+<p>I was somewhat surprised (well maybe not quite that extreme) that the processed dataset was not available online somwhere. I asked the lead author for the processed dataset, and unsurprisingly got no response. So I decided to see how regenerating it on my own would go. I could always tap out if I lost interest / my eyes hurt. Well, I failed at the first hurdle.</p>
+<p>The paper lists <a href="https://www.cdc.gov/vibrio/php/surveillance/">https://www.cdc.gov/vibrio/php/surveillance/</a> as the data source for Vibrio infections. I was able to find some data in the BEAM Dashboard, but nothing at the county-level, only the state-level. I cannot find any data at more specific than the state level. Well, I found that Florida's state health department lists infections by county, but only annually, and that's not the whole US.    </p>
+<p>Oh well.</p>
+<h1>Consolations</h1>
+<p>I've convinced myself that ultimately the important thing is communicating to the public that Vibrio is a hazard that they should be cautious of their exposure to. The surveillance of interest is some sort of environmental sampling method to detect/quantify Vibrio in natural waters and shellfish. </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://swpease.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://github.com/swpease">github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -23,7 +23,43 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://swpease.github.io/noise.html">Noise</a></h1>
+                    <h1 class="entry-title"><a href="https://swpease.github.io/vibrio.html">Vibrio</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2026-06-12T00:00:00-07:00">
+                Published: Fri 12 June 2026
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://swpease.github.io/author/scott-pease.html">Scott Pease</a>
+        </address>
+<p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
+<p>tags: <a href="https://swpease.github.io/tag/analysis.html">analysis</a> </p>
+</footer><!-- /.post-info --><h1>Introduction</h1>
+<p>I found a paper on Vibrio infection prediction:</p>
+<blockquote>
+<p>Campbell AM, Cabrera-Gumbau JM, Trinanes J, Baker-Austin C, Martinez-Urtaza J. Machine Learning Potential for Identifying and Forecasting Complex Environmental Drivers of Vibrio vulnificus Infections in the United States. Environ Health Perspect. 2025 Jan;133(1):17006. doi: 10.1289/EHP15593. Epub 2025 Jan 23. PMID: 39847704; PMCID: PMC11756857.</p>
+</blockquote>
+<p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11756857/">Link</a></p>
+<p>I wanted to try using {mvgam} to analyze the data, maybe an occupancy model; they used a random forest.</p>
+<h1>The Hitch</h1>
+<p>I was somewhat surprised (well maybe not quite that extreme) that the processed dataset was not available online somwhere. I asked the lead author for the processed dataset, and unsurprisingly got no response. So I decided to see how regenerating it on my own would go. I could always tap out if I lost interest / my eyes hurt. Well, I failed at the first hurdle.</p>
+<p>The paper lists <a href="https://www.cdc.gov/vibrio/php/surveillance/">https://www.cdc.gov/vibrio/php/surveillance/</a> as the data source for Vibrio infections. I was able to find some data in the BEAM Dashboard, but nothing at the county-level, only the state-level. I cannot find any data at more specific than the state level. Well, I found that Florida's state health department lists infections by county, but only annually, and that's not the whole US.    </p>
+<p>Oh well.</p>
+<h1>Consolations</h1>
+<p>I've convinced myself that ultimately the important thing is communicating to the public that Vibrio is a hazard that they should be cautious of their exposure to. The surveillance of interest is some sort of environmental sampling method to detect/quantify Vibrio in natural waters and shellfish. </p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://swpease.github.io/noise.html" rel="bookmark"
+                           title="Permalink to Noise">Noise</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2026-04-27T00:00:00-07:00">
                 Published: Mon 27 April 2026
@@ -34,42 +70,13 @@
         </address>
 <p>In <a href="https://swpease.github.io/category/science.html">Science</a>.</p>
 <p>tags: <a href="https://swpease.github.io/tag/opinion.html">opinion</a> </p>
-</footer><!-- /.post-info --><h1>Introduction</h1>
+</footer><!-- /.post-info -->                <h1>Introduction</h1>
 <p>I found a paper about noise pollution in Portland. This was related to a job posting I saw by one of the authors. It is:</p>
 <blockquote>
-<p>Mowrer, C., Larkin, A., Roscoe, C., Grady, S. T., Peters, J. L., Haggerty, B., Hystad, P., Bozigar, M. (2025) Systematic measurement and machine learning-based profile characterization of community noise in a medium-large city in the United States. Journal of Exposure Science &amp; Environmental Epidemiology.</p>
-</blockquote>
-<p>I don't have a link, because no open access. I probably asked for a copy from the authors via ResearchGate and got no response. I asked my friend who is in academia for a copy. Anyway,</p>
-<p>I actually read this like a year ago; I just decided to write my memories of what my thoughts were at the time, because I have nothing better I can think to do.</p>
-<h1>Portland Noise</h1>
-<p>I feel like a lot of care and good work went into this thing, and yet my general take-aways were:</p>
-<ol>
-<li>Well duh.</li>
-<li>But what about the uncaptured heterogeneity?</li>
-</ol>
-<h1>Noise and Cardiovascular Disease (CVD)</h1>
-<p>I mostly wanted to bring up a few ideas I thought up for another paper by an author of the above paper:</p>
-<blockquote>
-<p>Roscoe C, Grady ST, Hart JE, Iyer HS, Manson JE, Rexrode KM, Rimm EB, Laden F, James P. Association between Noise and Cardiovascular Disease in a Nationwide U.S. Prospective Cohort Study of Women Followed from 1988 to 2018. Environ Health Perspect. 2023 Dec;131(12):127005. doi: 10.1289/EHP12906. Epub 2023 Dec 4. PMID: 38048103; PMCID: PMC10695265. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10695265/">link</a></p>
-</blockquote>
-<p>The authors have one heck of an adjustment set, and in spite of that, mention in their discussion that there may of course be yet more factors that affect the relationship between noise and CVD. Well, I thought of a couple:</p>
-<ol>
-<li>Dogs</li>
-<li>Walking</li>
-</ol>
-<h2>Dogs</h2>
-<p>Dogs. Dogs both make noise and make you get exercise. In one Keigo Higashino murder mystery, when the detective first gets on the scene, an officer tells him a dog walker found the body that morning. The detective says, "Where would we be without dog walkers?". I once decided to count the proportion of dog walkers to regular walkers while going on a walk of my own, and wound up at ~50% (20ish each).</p>
-<p>I think that dogs would constitute a... precision variable? Possibly a confounder? I guess we could stratify dog owners by Good Boys and Bad Dogs.</p>
-<h2>Walking</h2>
-<p>Here I think is a significantly more important parameter. Maybe something like a Walkability Score could have been included; some sort of measure of physical activity beyond the BMI groupings they did include. </p>
-<p>I'm thinking of it as a mediator. I certainly am strongly disinclined to walk somewhere if there is no pleasant route, and traffic noise is the biggest factor for me in that respect.</p>
-<h1>Fin</h1>
-<p>I feel like I should write more, but my neck is acting up and I suppose this doesn't really matter all that much.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Mowrer, C., Larkin, A., Roscoe, C., Grady, S. T., Peters, J. L., Haggerty, B., Hystad, P., Bozigar, M. (2025) Systematic measurement and machine learning-based …</p></blockquote>
+                <a class="readmore" href="https://swpease.github.io/noise.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
